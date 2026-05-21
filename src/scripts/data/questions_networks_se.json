@@ -1,0 +1,450 @@
+[
+  {
+    "text": "Which of the following functions is primarily associated with the Data Link Layer (Layer 2) of the OSI model to ensure that a sender does not overwhelm a receiver with packet transmissions?",
+    "choices": [
+      { "id": "a", "text": "Routing and logical path determination using IP addresses", "correct": false },
+      { "id": "b", "text": "Process-to-process communication and port multiplexing", "correct": false },
+      { "id": "c", "text": "Flow control using techniques such as stop-and-wait or sliding window", "correct": true },
+      { "id": "d", "text": "Bit-level synchronization and physical line encoding", "correct": false }
+    ],
+    "explanation": "The Data Link Layer (Layer 2) is responsible for framing, error control, and flow control on a single physical link. Flow control (e.g., stop-and-wait or sliding window) ensures that a fast sender does not overwhelm a slow receiver. Option A is the network layer's role (Layer 3). Option B describes the transport layer's role (Layer 4). Option D refers to the physical layer (Layer 1).",
+    "interest": "Computer Networks",
+    "difficulty": "Easy",
+    "topics": ["OSI model", "Data Link Layer", "Flow Control"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "An organization is assigned the IPv4 address block 192.168.10.0/26. What is the maximum number of usable host IP addresses that can be allocated within this subnet?",
+    "choices": [
+      { "id": "a", "text": "64", "correct": false },
+      { "id": "b", "text": "62", "correct": true },
+      { "id": "c", "text": "30", "correct": false },
+      { "id": "d", "text": "32", "correct": false }
+    ],
+    "explanation": "A CIDR prefix of /26 means that 26 bits are used for the network prefix, leaving 32 - 26 = 6 host bits. The total number of IP addresses in this block is 2^6 = 64. However, in any standard IPv4 subnet, the first address (network address, 192.168.10.0) and the last address (subnet broadcast address, 192.168.10.63) are reserved and cannot be assigned to hosts. Therefore, the maximum number of usable host IP addresses is 2^6 - 2 = 62.",
+    "interest": "Computer Networks",
+    "difficulty": "Easy",
+    "topics": ["IPv4", "Subnetting", "CIDR"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following characteristics is unique to the User Datagram Protocol (UDP) as compared to the Transmission Control Protocol (TCP)?",
+    "choices": [
+      { "id": "a", "text": "Connectionless service with minimal overhead, lacking built-in congestion and flow control", "correct": true },
+      { "id": "b", "text": "Guaranteed in-order delivery of data bytes using sequence numbers", "correct": false },
+      { "id": "c", "text": "Three-way handshake process to establish a reliable session prior to data transfer", "correct": false },
+      { "id": "d", "text": "Automatic retransmission of corrupted segments using selective acknowledgment (SACK)", "correct": false }
+    ],
+    "explanation": "UDP is a simple, connectionless transport protocol that does not guarantee delivery, order, or congestion/flow control. This makes it low-overhead and fast compared to TCP. Options B, C, and D are key features of TCP, which is connection-oriented and reliable.",
+    "interest": "Computer Networks",
+    "difficulty": "Easy",
+    "topics": ["Transport Layer", "TCP", "UDP"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which DNS resource record (RR) type must be configured to map a domain name to a 128-bit IPv6 address?",
+    "choices": [
+      { "id": "a", "text": "A record", "correct": false },
+      { "id": "b", "text": "CNAME record", "correct": false },
+      { "id": "c", "text": "MX record", "correct": false },
+      { "id": "d", "text": "AAAA record", "correct": true }
+    ],
+    "explanation": "An 'AAAA' (quad-A) record maps a domain name to its corresponding 128-bit IPv6 address. An 'A' record maps a domain to a 32-bit IPv4 address. A 'CNAME' (Canonical Name) record maps an alias to a canonical domain name. An 'MX' (Mail Exchanger) record specifies the mail server responsible for receiving email on behalf of the domain.",
+    "interest": "Computer Networks",
+    "difficulty": "Easy",
+    "topics": ["DNS", "IPv6", "Application Layer"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In a Go-Back-N (GBN) sliding window protocol, the sender has a window size of N = 7. If the sequence numbers range from 0 to 15, what is the maximum number of unacknowledged packets that the sender can have in flight without causing ambiguity at the receiver?",
+    "choices": [
+      { "id": "a", "text": "7", "correct": true },
+      { "id": "b", "text": "8", "correct": false },
+      { "id": "c", "text": "15", "correct": false },
+      { "id": "d", "text": "6", "correct": false }
+    ],
+    "explanation": "In Go-Back-N, the sender window size must be less than the sequence number space size to avoid sequence number overlap and ambiguity. Specifically, if the sequence number space is size M, then N <= M - 1. Here, N is explicitly given as 7. Thus, the sender can transmit up to N = 7 packets before pausing for an acknowledgment. The sequence number space of 16 (0 to 15) is more than sufficient for N = 7, so the max unacknowledged packets is limited by the sender window size N, which is 7.",
+    "interest": "Computer Networks",
+    "difficulty": "Medium",
+    "topics": ["Sliding Window", "Go-Back-N", "Sequence Numbers"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the context of Distance Vector Routing, which of the following techniques is specifically designed to prevent routing loops caused by the 'Count-to-Infinity' problem?",
+    "choices": [
+      { "id": "a", "text": "Path vector routing with path lists", "correct": false },
+      { "id": "b", "text": "Dijkstra's shortest path calculation", "correct": false },
+      { "id": "c", "text": "Split Horizon with Poison Reverse", "correct": true },
+      { "id": "d", "text": "Link-state advertisements with sequence numbers", "correct": false }
+    ],
+    "explanation": "Distance Vector Routing suffers from the 'Count-to-Infinity' problem when a link goes down. The 'Split Horizon' rule prevents a router from advertising a route back out the interface it learned it from. 'Poison Reverse' optimizes this by explicitly advertising the metric as infinity back to that interface, immediately breaking two-node loops. Path Vector (Option A) is used in BGP. Dijkstra (Option B) and Link-state advertisements (Option D) are used in Link-State routing protocols like OSPF.",
+    "interest": "Computer Networks",
+    "difficulty": "Medium",
+    "topics": ["Routing Protocols", "Distance Vector", "Split Horizon"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During the Congestion Avoidance phase of TCP Reno, how does the Congestion Window (cwnd) change upon receiving a non-duplicate cumulative acknowledgment?",
+    "choices": [
+      { "id": "a", "text": "It doubles every Round Trip Time (RTT).", "correct": false },
+      { "id": "b", "text": "It increases by approximately 1 MSS (Maximum Segment Size) per Round Trip Time (RTT).", "correct": true },
+      { "id": "c", "text": "It remains constant until a triple duplicate ACK is received.", "correct": false },
+      { "id": "d", "text": "It increases exponentially based on the slow start threshold (ssthresh).", "correct": false }
+    ],
+    "explanation": "TCP Reno has two main phases for congestion window adjustment. In Slow Start, the cwnd increases exponentially (doubles each RTT, or increases by 1 MSS for each ACK). Once cwnd reaches the slow start threshold (ssthresh), it enters Congestion Avoidance, where it increases linearly (Additive Increase) by 1 MSS per RTT. This is mathematically implemented as cwnd = cwnd + (MSS * MSS) / cwnd for every ACK received.",
+    "interest": "Computer Networks",
+    "difficulty": "Medium",
+    "topics": ["TCP Reno", "Congestion Control", "Congestion Avoidance"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Which of the following IPv6 address types is designed to replace the standard IPv4 broadcast address, allowing packets to be sent to a dynamically formed group of hosts?",
+    "choices": [
+      { "id": "a", "text": "Link-Local Unicast Address", "correct": false },
+      { "id": "b", "text": "Anycast Address", "correct": false },
+      { "id": "c", "text": "Multicast Address", "correct": true },
+      { "id": "d", "text": "Unique Local Address", "correct": false }
+    ],
+    "explanation": "IPv6 does not use broadcast addresses. Instead, it relies on Multicast addresses (which start with the prefix ff00::/8) to send packets to multiple interfaces or a dynamically subscribed group of hosts. Anycast (Option B) is sent to the nearest interface in a group. Link-Local Unicast (Option A) is for single-hop communication on a link. Unique Local (Option D) is analogous to private IPv4 addresses.",
+    "interest": "Computer Networks",
+    "difficulty": "Medium",
+    "topics": ["IPv6", "Multicast", "Broadcasting"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "A BGP router receives multiple external paths to the exact same IP destination prefix. Assuming no vendor-proprietary attributes (like Cisco's Weight) are set, which of the following standard BGP attributes has the highest priority in the decision path, and which has higher priority between MED and AS-Path length?",
+    "choices": [
+      { "id": "a", "text": "Highest priority: Local Preference; AS-Path length has higher priority than MED", "correct": true },
+      { "id": "b", "text": "Highest priority: Multi-Exit Discriminator (MED); AS-Path length has higher priority than Local Preference", "correct": false },
+      { "id": "c", "text": "Highest priority: Local Preference; MED has higher priority than AS-Path length", "correct": false },
+      { "id": "d", "text": "Highest priority: Origin Type; MED has higher priority than AS-Path length", "correct": false }
+    ],
+    "explanation": "In standard BGP path selection (RFC 4271), the decision process is sequential: 1. Prefer the path with the highest Local Preference. 2. Prefer the path that was locally originated (next-hop of 0.0.0.0). 3. Prefer the path with the shortest AS_PATH length. 4. Prefer the lowest origin type (IGP < EGP < Incomplete). 5. Prefer the lowest Multi-Exit Discriminator (MED) attribute. Therefore, Local Preference is the highest priority standard attribute among these, and AS-Path length is evaluated and prioritized before MED.",
+    "interest": "Computer Networks",
+    "difficulty": "Hard",
+    "topics": ["BGP", "Routing", "BGP Path Selection"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "After a TCP connection is active, one of the endpoints initiates an active close by sending a FIN segment. Upon receiving the ACK for its FIN, but BEFORE receiving the FIN from the remote host, what is the exact state of this active close endpoint, and why is this state transition critical?",
+    "choices": [
+      { "id": "a", "text": "FIN_WAIT_1; it must wait in this state to guarantee that the remote application has finished writing all data before closing.", "correct": false },
+      { "id": "b", "text": "CLOSE_WAIT; it must remain in this state to allow any outstanding packets in the network to drain.", "correct": false },
+      { "id": "c", "text": "FIN_WAIT_2; it indicates the host has finished sending its data and received an ACK, but is still waiting for the remote peer to close its half of the connection.", "correct": true },
+      { "id": "d", "text": "TIME_WAIT; it enters this state immediately to prevent overlapping socket pairs from reusing old sequence numbers.", "correct": false }
+    ],
+    "explanation": "When a TCP endpoint performs an active close: 1. It sends a FIN and enters FIN_WAIT_1. 2. When it receives the ACK for its FIN, it transitions to FIN_WAIT_2. In FIN_WAIT_2, the connection is half-closed: the active closer cannot send any more data, but it can still receive data from the other side. It stays in FIN_WAIT_2 until it receives a FIN from the peer, at which point it ACKs that FIN and transitions to TIME_WAIT. CLOSE_WAIT is entered by the passive closer.",
+    "interest": "Computer Networks",
+    "difficulty": "Hard",
+    "topics": ["TCP State Machine", "Active Close", "FIN_WAIT_2"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A router has the following entries in its IPv4 routing table:\n1. 172.16.0.0/16 (Next hop: Router A)\n2. 172.16.128.0/18 (Next hop: Router B)\n3. 172.16.160.0/19 (Next hop: Router C)\n4. 0.0.0.0/0 (Next hop: Router D)\n\nIf a packet arrives with destination IP address 172.16.175.45, to which next hop will the router forward the packet, and why?",
+    "choices": [
+      { "id": "a", "text": "Router B, because 172.16.175.45 falls under 172.16.128.0/18 which has a higher metric than 172.16.0.0/16.", "correct": false },
+      { "id": "b", "text": "Router C, because 172.16.175.45 matches the /19 prefix, which represents the longest prefix match among all matching routes.", "correct": true },
+      { "id": "c", "text": "Router A, because it is the most general classful boundary subnet that matches the destination.", "correct": false },
+      { "id": "d", "text": "Router D, because 172.16.175.45 does not exactly match any of the classless subnet scopes.", "correct": false }
+    ],
+    "explanation": "To determine the next hop, we must check which prefixes match 172.16.175.45 and then choose the matching route with the longest prefix (longest prefix match). Let's convert 172.16.175.45's third octet to binary: 175 = 10101111.\n- For 172.16.128.0/18, the prefix requires the first 18 bits to match. The third octet's prefix mask is /18 - 16 = 2 bits (11000000). The first 2 bits of 128 in binary are 10. The first 2 bits of 175 are also 10. So it matches.\n- For 172.16.160.0/19, the prefix requires the first 19 bits to match. The third octet's prefix mask is /19 - 16 = 3 bits (11100000). The first 3 bits of 160 are 101. The first 3 bits of 175 are also 101. So it matches.\n- Since both /18 and /19 match, and /19 is longer than /18, the router selects Router C due to the Longest Prefix Match rule.",
+    "interest": "Computer Networks",
+    "difficulty": "Hard",
+    "topics": ["CIDR", "Longest Prefix Match", "Routing Tables"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following options correctly describes the primary architectural difference in the cryptographic handshake of TLS 1.3 compared to TLS 1.2, and how does it improve security and performance?",
+    "choices": [
+      { "id": "a", "text": "TLS 1.3 deprecates RSA key exchange in favor of ephemeral Diffie-Hellman (DHE/ECDHE), reducing the handshake to a single Round Trip Time (1-RTT) while ensuring perfect forward secrecy.", "correct": true },
+      { "id": "b", "text": "TLS 1.3 mandates symmetric encryption using RC4 and AES-CBC to speed up packet throughput at the expense of a 2-RTT handshake.", "correct": false },
+      { "id": "c", "text": "TLS 1.3 introduces static RSA key exchange to eliminate the need for Diffie-Hellman parameters, thereby preventing logjam attacks.", "correct": false },
+      { "id": "d", "text": "TLS 1.3 increases the handshake to 3-RTT by adding mandatory client certificate verification at the transport layer for all connections.", "correct": false }
+    ],
+    "explanation": "TLS 1.3 brings significant improvements over TLS 1.2. First, it simplifies the handshake, reducing latency from 2-RTT to 1-RTT for full handshakes (and 0-RTT for resumed sessions). Second, it dramatically improves security by removing insecure algorithms and key exchange mechanisms, specifically deprecating static RSA key exchange and custom static Diffie-Hellman in favor of ephemeral Diffie-Hellman (ECDHE/DHE) to ensure Perfect Forward Secrecy (PFS) by default. AES-CBC and RC4 are also deprecated.",
+    "interest": "Computer Networks",
+    "difficulty": "Hard",
+    "topics": ["TLS 1.3", "Handshake", "Cryptography", "Perfect Forward Secrecy"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In an OpenFlow-compliant SDN switch supporting multi-table pipelining, what is the exact mechanism that governs how a packet is processed when it matches a flow entry containing a 'GoTo' instruction, and how are actions accumulated?",
+    "choices": [
+      { "id": "a", "text": "The packet is instantly modified and forwarded out the target physical port, ignoring any remaining action sets in the pipeline.", "correct": false },
+      { "id": "b", "text": "The action set of the packet is modified, and control is directed to a lower-numbered table, resetting all previously accumulated actions.", "correct": false },
+      { "id": "c", "text": "The packet is redirected to a higher-numbered flow table in the pipeline. Actions are accumulated in the packet's 'Action Set' and executed only when pipeline processing terminates.", "correct": true },
+      { "id": "d", "text": "The packet is encapsulated in a 'Packet-In' message and sent to the controller, which synchronously runs table lookups on behalf of the switch.", "correct": false }
+    ],
+    "explanation": "In OpenFlow pipelining, a packet starts at Table 0 and can only move forward to higher-numbered tables (GoTo instruction to a lower-numbered table is illegal to prevent infinite loops). As the packet traverses the pipeline tables, matching flow entries can write actions to the 'Action Set' or execute them immediately (using 'Apply-Actions'). The accumulated 'Action Set' is evaluated and executed in a specific order (e.g., copy TTL, push VLAN, set field, output) only when the packet reaches the end of the pipeline (i.e., table lookup returns no GoTo instruction).",
+    "interest": "Computer Networks",
+    "difficulty": "Expert",
+    "topics": ["SDN", "OpenFlow", "Table Pipelining", "Action Set"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In RoCEv2 (RDMA over Converged Ethernet) environments, Priority-based Flow Control (PFC) is used to achieve loss-less transmission. However, PFC can lead to 'PFC Deadlocks'. Which of the following conditions triggers a PFC deadlock, and how does the ECN-based DCTCP or DCQCN protocol mitigate this?",
+    "choices": [
+      { "id": "a", "text": "A routing loop causes PFC pause frames to circulate endlessly, which DCQCN mitigates by dropping packets when TTL reaches zero.", "correct": false },
+      { "id": "b", "text": "A cyclic dependency of buffer allocations occurs across switches when queues are full, causing them to send pause frames to each other in a loop; DCQCN mitigates this by proactively marking packets with Explicit Congestion Notification (ECN) to throttle sources before buffers fill.", "correct": true },
+      { "id": "c", "text": "An unresolvable ARP storm fills the switch CAM tables; DCTCP mitigates this by using flow labels to route around congested ports.", "correct": false },
+      { "id": "d", "text": "Head-of-Line blocking forces the receiver to send pause frames to all ports simultaneously; DCTCP solves this by disabling priority queues altogether.", "correct": false }
+    ],
+    "explanation": "PFC operates at Layer 2 to pause upstream transmission of specific traffic classes when downstream buffers fill up. A PFC deadlock occurs when there is a cyclic dependency of buffer allocations (e.g., Switch A pauses Switch B, B pauses C, C pauses A) in a network loop, freezing all traffic in those classes. To avoid this lossless trap, congestion control algorithms like DCQCN or DCTCP use Explicit Congestion Notification (ECN) at Layer 3. When queue depths exceed a threshold, switches mark packets with ECN (CE bit in IP header). The receiver then notifies the sender (via CNP or ACK), which throttles its transmission rate *before* buffers fill to the point of sending PFC pause frames, preventing deadlocks.",
+    "interest": "Computer Networks",
+    "difficulty": "Expert",
+    "topics": ["RoCEv2", "PFC Deadlock", "DCQCN", "ECN"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "How does the UDP-based QUIC protocol completely resolve the 'Head-of-Line (HoL) Blocking' issue that occurs at the transport layer in TCP when using HTTP/2, and how does it handle connection migration?",
+    "choices": [
+      { "id": "a", "text": "QUIC multiplexes streams onto separate TCP sockets, allowing the operating system kernel to parallelize packet delivery.", "correct": false },
+      { "id": "b", "text": "QUIC uses a single UDP stream where lost packets are ignored by the receiver, shifting the responsibility of retransmission to the application layer.", "correct": false },
+      { "id": "c", "text": "QUIC implements independent byte-stream abstractions within a single connection; a packet loss on one stream only pauses delivery for that stream while others proceed. Connection migration is handled via a 64-bit Connection ID rather than the 4-tuple IP/Port.", "correct": true },
+      { "id": "d", "text": "QUIC encrypts the transport header so that intermediate routers cannot see port numbers, forcing them to treat all UDP packets as a single flow.", "correct": false }
+    ],
+    "explanation": "Under TCP, HTTP/2 multiplexing still suffers from Head-of-Line (HoL) blocking at the transport layer: if a single TCP packet containing segments of one stream is lost, the entire TCP connection is paused until the lost packet is retransmitted, even if segments of other streams arrived successfully. QUIC resolves this by implementing streams directly in the transport layer over UDP. Each stream is independent: if a packet belonging to Stream A is lost, only Stream A is blocked, while Stream B packets can be delivered to the application immediately. Furthermore, QUIC identifies connections using a cryptographic Connection ID instead of the traditional IP/Port 4-tuple, enabling seamless connection migration when a client switches networks (e.g., from Wi-Fi to LTE) without tearing down the session.",
+    "interest": "Computer Networks",
+    "difficulty": "Expert",
+    "topics": ["QUIC", "UDP", "Head-of-Line Blocking", "Connection Migration"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When establishing multiple subflows in Multipath TCP (MPTCP - RFC 8684), how does the protocol ensure that the subflows are securely joined to the existing MPTCP connection, and how is coupled congestion control managed?",
+    "choices": [
+      { "id": "a", "text": "It uses the MP_CAPABLE option during the handshake, and subsequent subflows are joined using the MP_JOIN option with a token derived from the initial key exchange. Coupled congestion control shifts traffic from more congested paths to less congested ones (e.g., LIA or OLIA algorithms).", "correct": true },
+      { "id": "b", "text": "It establishes separate standard TCP connections and links them using IPsec tunnels, relying on BGP to load balance segments across links.", "correct": false },
+      { "id": "c", "text": "It uses DNS SRV records to discover alternative IP interfaces and coordinates them using a centralized control plane agent.", "correct": false },
+      { "id": "d", "text": "It relies on the receiver to send duplicate ACKs on all interfaces simultaneously, using the round-trip times to dynamically adjust TCP window sizes independently.", "correct": false }
+    ],
+    "explanation": "MPTCP allows a single TCP connection to use multiple paths/subflows. The initial subflow is established with the 'MP_CAPABLE' option in the TCP SYN. This exchange negotiates keys (keys A and B). Additional subflows are established by sending a SYN with the 'MP_JOIN' option containing a token (HMAC-SHA256 hash of the receiver's key) to identify the connection they want to join, along with a random nonce. To avoid unfairness to single-path TCP flows, MPTCP uses 'coupled congestion control' algorithms like LIA (Linked Increase Algorithm) or OLIA (Opportunistic LIA). These algorithms couple the window increases of the subflows: paths with higher congestion increase their windows slower, effectively shifting traffic from congested paths to cleaner paths, while ensuring the aggregate throughput is at least as good as the best single path.",
+    "interest": "Computer Networks",
+    "difficulty": "Expert",
+    "topics": ["MPTCP", "Coupled Congestion Control", "LIA", "MP_JOIN"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following scenarios is best suited for the traditional Waterfall model of software development rather than an Agile framework?",
+    "choices": [
+      { "id": "a", "text": "A highly complex mobile app where user preferences and core features are expected to change frequently based on market feedback", "correct": false },
+      { "id": "b", "text": "A project with well-defined, stable, and rigid requirements (such as a regulated medical device safety system) where changes are extremely costly", "correct": true },
+      { "id": "c", "text": "A startup MVP (Minimum Viable Product) that needs to be delivered rapidly to secure venture funding", "correct": false },
+      { "id": "d", "text": "A system integration project where the third-party APIs are under active development and lack stable specifications", "correct": false }
+    ],
+    "explanation": "The Waterfall model is linear and sequential. It works best when requirements are fully understood, stable, and unlikely to change, and where rigorous up-front documentation and verification are required (such as regulated embedded or safety-critical software). Agile is far better suited for projects with volatile requirements, fast feedback loops, or emerging specifications (Options A, C, and D).",
+    "interest": "Software Engineering",
+    "difficulty": "Easy",
+    "topics": ["SDLC", "Waterfall", "Agile"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In Git version control, what is the primary operational difference between a 'git merge' and a 'git rebase' when combining changes from a feature branch into the main branch?",
+    "choices": [
+      { "id": "a", "text": "Merge deletes the commit history of the feature branch, while rebase preserves it exactly as a branch node.", "correct": false },
+      { "id": "b", "text": "Merge is a local operation, whereas rebase always pushes the rewritten commits directly to the remote repository.", "correct": false },
+      { "id": "c", "text": "Merge creates a new commit representing the combination of both branches, preserving history chronologically, whereas rebase rewrites commits from the feature branch on top of the main branch, creating a linear history.", "correct": true },
+      { "id": "d", "text": "Merge can resolve conflicts automatically, while rebase will always abort if any conflicts are detected between the branches.", "correct": false }
+    ],
+    "explanation": "When combining changes: 'git merge' takes the head of the feature branch and the head of the target branch, finds their common ancestor, and creates a new merge commit. This preserves the branch structure and chronological history. 'git rebase' takes the commits made on the feature branch, sets their base commit to the latest commit of the target branch, and reapplies them one by one. This rewrites history to create a clean, linear commit log, but alters commit hashes and requires caution on public shared branches.",
+    "interest": "Software Engineering",
+    "difficulty": "Easy",
+    "topics": ["Git", "Version Control", "Merge vs Rebase"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In software testing, what is the key distinction between Black-box testing and White-box testing?",
+    "choices": [
+      { "id": "a", "text": "Black-box testing is performed exclusively by automated scripts, whereas White-box testing is always done manually by end-users.", "correct": false },
+      { "id": "b", "text": "Black-box testing focuses on validating functional requirements without knowledge of the internal code structure, while White-box testing utilizes internal code implementation details to design test cases.", "correct": true },
+      { "id": "c", "text": "Black-box testing can only be executed during production, while White-box testing is strictly restricted to development environments.", "correct": false },
+      { "id": "d", "text": "Black-box testing checks code performance and scalability, whereas White-box testing only checks syntax and compilation errors.", "correct": false }
+    ],
+    "explanation": "Black-box testing treats the system as a 'black box'—tests are based on specifications and requirements, without any knowledge of internal code or design. White-box testing (or glass-box testing) assumes the tester has full visibility into the internal structure, algorithms, and logic of the code, allowing them to test specific paths, branches, and statements.",
+    "interest": "Software Engineering",
+    "difficulty": "Easy",
+    "topics": ["Software Testing", "Black-box", "White-box"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Which of the following statements represents a NON-FUNCTIONAL requirement for an e-commerce platform?",
+    "choices": [
+      { "id": "a", "text": "The system shall allow users to filter search results by price, brand, and customer rating.", "correct": false },
+      { "id": "b", "text": "The system shall send an email confirmation to the user within 5 seconds of a successful checkout.", "correct": false },
+      { "id": "c", "text": "The system database must encrypt all stored user passwords using the bcrypt hashing algorithm.", "correct": false },
+      { "id": "d", "text": "The system's payment processing API must process transactions in less than 2 seconds under a concurrent load of 1,000 requests per second.", "correct": true }
+    ],
+    "explanation": "Functional requirements define what the system does (features, inputs, behaviors like filtering, sending emails, or encrypting). Non-functional requirements (NFRs) specify how well the system performs its functions, defining quality attributes, constraints, or performance targets (e.g., scalability, throughput, latency, availability). Option D specifies a performance and load constraint, making it a classic non-functional requirement.",
+    "interest": "Software Engineering",
+    "difficulty": "Easy",
+    "topics": ["Requirements Engineering", "Functional vs Non-functional"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the following designs violates the Liskov Substitution Principle (LSP) in object-oriented software engineering?",
+    "choices": [
+      { "id": "a", "text": "A subclass 'Square' inherits from class 'Rectangle', and overriding 'setWidth' forces the height to change as well, breaking the base class invariants.", "correct": true },
+      { "id": "b", "text": "A class 'Car' implements an interface 'Vehicle', providing fully functional implementations for all defined interface methods.", "correct": false },
+      { "id": "c", "text": "A subclass 'AdminUser' extends 'User' and overrides the 'login' method to add MFA (Multi-Factor Authentication) logging while maintaining original parameter types.", "correct": false },
+      { "id": "d", "text": "A class uses dependency injection to pass an abstract repository rather than a concrete SQL database connection.", "correct": false }
+    ],
+    "explanation": "The Liskov Substitution Principle (LSP) states that objects of a superclass should be replaceable with objects of its subclasses without breaking the correctness of the program. The classic Square-Rectangle dilemma violates LSP because a Rectangle invariant is that width and height can be changed independently. If a Square subclass overrides 'setWidth' to change both width and height, any client code written for Rectangle that assumes width changes independently will behave incorrectly when passed a Square.",
+    "interest": "Software Engineering",
+    "difficulty": "Medium",
+    "topics": ["SOLID Principles", "LSP", "Object-Oriented Design"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "You are designing a system that must integrate with a legacy third-party logging library. The legacy library has incompatible method signatures compared to your new system's standard 'ILogger' interface. Which design pattern should you apply to resolve this without modifying the legacy code?",
+    "choices": [
+      { "id": "a", "text": "Facade Pattern", "correct": false },
+      { "id": "b", "text": "Adapter Pattern", "correct": true },
+      { "id": "c", "text": "Singleton Pattern", "correct": false },
+      { "id": "d", "text": "Factory Method Pattern", "correct": false }
+    ],
+    "explanation": "The Adapter Pattern is a structural design pattern used to convert the interface of a class into another interface that clients expect. It acts as a wrapper, translating calls from the new interface (ILogger) into the legacy library's incompatible methods. Facade (Option A) provides a simplified interface to a complex subsystem. Singleton (Option C) ensures a class has only one instance. Factory Method (Option D) is a creational pattern for instantiating objects without exposing creation logic.",
+    "interest": "Software Engineering",
+    "difficulty": "Medium",
+    "topics": ["Design Patterns", "Adapter Pattern", "Structural Patterns"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Consider a software function with a single entry point and a single exit point. If the control flow graph of this function has 12 nodes and 15 edges, what is the Cyclomatic Complexity (M) of this function, and what does this metric represent?",
+    "choices": [
+      { "id": "a", "text": "M = 3; it represents the maximum execution depth of nested loops.", "correct": false },
+      { "id": "b", "text": "M = 5; it represents the number of linearly independent paths through the code, which dictates the minimum number of test cases needed.", "correct": true },
+      { "id": "c", "text": "M = 27; it represents the total number of CPU cycles required to compile the function.", "correct": false },
+      { "id": "d", "text": "M = 4; it represents the number of decision branches that can be tested in parallel.", "correct": false }
+    ],
+    "explanation": "For a control flow graph with a single entry and exit point, Cyclomatic Complexity is calculated as M = E - V + 2P, where E is the number of edges, V is the number of nodes, and P is the number of connected components. For a single function, P = 1. Here, E = 15, V = 12. Therefore, M = 15 - 12 + 2(1) = 5. Cyclomatic complexity represents the number of linearly independent paths through the program and dictates the minimum number of unit test cases required to achieve 100% path coverage.",
+    "interest": "Software Engineering",
+    "difficulty": "Medium",
+    "topics": ["Software Metrics", "Cyclomatic Complexity", "Testing"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "According to the Semantic Versioning (SemVer 2.0.0) standard, if a developer introduces a new, backward-compatible feature to a public API, which digit in the version string 'X.Y.Z' must be incremented?",
+    "choices": [
+      { "id": "a", "text": "The major version (X), and the minor and patch versions are reset to zero.", "correct": false },
+      { "id": "b", "text": "The patch version (Z), and the major and minor versions remain unchanged.", "correct": false },
+      { "id": "c", "text": "The minor version (Y), and the patch version (Z) is reset to zero.", "correct": true },
+      { "id": "d", "text": "All three digits (X, Y, and Z) must be incremented simultaneously.", "correct": false }
+    ],
+    "explanation": "Under SemVer, a version number is formatted as MAJOR.MINOR.PATCH (X.Y.Z):\n1. Increment MAJOR (X) when making incompatible API changes.\n2. Increment MINOR (Y) when adding functionality in a backward-compatible manner (including deprecating features).\n3. Increment PATCH (Z) when making backward-compatible bug fixes.\nWhen incrementing MINOR, the PATCH version is reset to 0.",
+    "interest": "Software Engineering",
+    "difficulty": "Medium",
+    "topics": ["Semantic Versioning", "Release Management", "API Design"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "When implementing a distributed transaction across multiple microservices in an e-commerce system (e.g., Order, Payment, and Inventory), what is the key difference between Choreography-based and Orchestration-based Saga patterns, and how are failures handled?",
+    "choices": [
+      { "id": "a", "text": "Choreography uses a central manager to invoke services sequentially; Orchestration relies on each service listening to events and acting independently. Failures in both are rolled back using database two-phase commit.", "correct": false },
+      { "id": "b", "text": "Choreography has no central coordinator; services react to domain events to trigger their local transactions. Orchestration uses a centralized orchestrator that explicitly directs services. Failures are handled by executing compensating transactions in reverse order.", "correct": true },
+      { "id": "c", "text": "Choreography relies on database-level triggers to replicate states; Orchestration relies on message queues. Failures are handled by throwing run-time exceptions that freeze all services.", "correct": false },
+      { "id": "d", "text": "Choreography requires synchronous gRPC calls; Orchestration requires asynchronous Kafka messages. Failures are handled by automatically retrying the failed transaction indefinitely.", "correct": false }
+    ],
+    "explanation": "The Saga pattern manages distributed transactions through a sequence of local transactions. 1. Choreography-based Saga: There is no central point of control. Services publish and subscribe to events (e.g., PaymentSuccess, InventoryReserved). Each service listens to events, performs its work, and emits new events. 2. Orchestration-based Saga: A centralized Saga Orchestrator class tells the participant services what local transactions to execute. If a step fails, the orchestrator is responsible for coordinating the execution of compensating transactions (which undo the changes of previously successful steps) in reverse order to maintain eventual consistency. Two-phase commit (2PC) is not used in Sagas because it is blocking and doesn't scale well.",
+    "interest": "Software Engineering",
+    "difficulty": "Hard",
+    "topics": ["Microservices", "Saga Pattern", "Eventual Consistency", "Compensating Transactions"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A microservice uses a Circuit Breaker to protect itself from cascading failures when calling an external payment gateway. Describe the exact conditions that cause the Circuit Breaker to transition from the OPEN state to the HALF-OPEN state, and from HALF-OPEN to CLOSED.",
+    "choices": [
+      { "id": "a", "text": "It transitions from OPEN to HALF-OPEN automatically after a pre-configured timeout expires. It transitions from HALF-OPEN to CLOSED only if a limited number of trial requests succeed without errors.", "correct": true },
+      { "id": "b", "text": "It transitions from OPEN to HALF-OPEN when the failure rate drops below 50%. It transitions from HALF-OPEN to CLOSED when the system is rebooted manually.", "correct": false },
+      { "id": "c", "text": "It transitions from OPEN to HALF-OPEN immediately after a single request succeeds. It transitions from HALF-OPEN to CLOSED when the thread pool is completely cleared.", "correct": false },
+      { "id": "d", "text": "It transitions from OPEN to HALF-OPEN when the client retries the request 3 times with exponential backoff. It transitions from HALF-OPEN to CLOSED when the database goes offline.", "correct": false }
+    ],
+    "explanation": "The Circuit Breaker pattern has three states: 1. CLOSED: Normal operation. Requests flow to the external service. If failure rate exceeds a threshold, it transitions to OPEN. 2. OPEN: The breaker is tripped. Requests fail immediately (fail-fast) to prevent resource exhaustion and allow the downstream service to recover. A timer is started. 3. HALF-OPEN: Once the timeout (cool-off period) expires, the breaker enters HALF-OPEN. In this state, a limited number of test/trial requests are allowed through. If these trial requests succeed, it assumes the downstream service is healthy and closes the circuit (transitions to CLOSED). If any of them fail, it assumes the service is still down and immediately trips back to OPEN, resetting the timer.",
+    "interest": "Software Engineering",
+    "difficulty": "Hard",
+    "topics": ["Microservices Patterns", "Circuit Breaker", "Resilience"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "While both the Strategy Pattern and the State Pattern share highly similar class structures (delegating behavior to a polymorphic interface), what is their primary difference regarding intent and how transitions are managed?",
+    "choices": [
+      { "id": "a", "text": "Strategy delegates object creation, whereas State delegates object destruction.", "correct": false },
+      { "id": "b", "text": "Strategy is a structural pattern focused on interface mapping, while State is a creational pattern for dependency injection.", "correct": false },
+      { "id": "c", "text": "Strategy is typically configured once by the client at initialization and does not change; State enables the context object to dynamically switch its concrete state classes during runtime, often driven by actions within the states themselves.", "correct": true },
+      { "id": "d", "text": "Strategy requires inheritance to modify base class operations, whereas State relies entirely on class composition and static methods.", "correct": false }
+    ],
+    "explanation": "The Strategy and State patterns look nearly identical in UML (both use composition and delegate work to a polymorphic interface). However, their intent is completely different: 1. Strategy: The client selects a specific algorithm or strategy at runtime (e.g., choosing between AES or RSA encryption). The client is aware of the strategies, and the strategy object rarely, if ever, changes once configured. 2. State: The context object has an internal state that changes dynamically over time based on inputs or internal conditions (e.g., an Order transitioning from Pending -> Paid -> Shipped). The client is typically unaware of the state transitions, and the concrete State subclasses often trigger the transitions to the next state on the context.",
+    "interest": "Software Engineering",
+    "difficulty": "Hard",
+    "topics": ["Design Patterns", "State Pattern", "Strategy Pattern"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In project management, a software project has 5 sequential activities with the following dependencies and durations:\n- Task A: Duration 4 days (No dependency)\n- Task B: Duration 3 days (Depends on A)\n- Task C: Duration 6 days (Depends on A)\n- Task D: Duration 2 days (Depends on B)\n- Task E: Duration 5 days (Depends on C and D)\n\nWhat is the Critical Path of this project, its total duration, and the total float (slack) of Task B?",
+    "choices": [
+      { "id": "a", "text": "Critical Path: A -> B -> D -> E; Total Duration: 14 days; Float of Task B: 0 days", "correct": false },
+      { "id": "b", "text": "Critical Path: A -> C -> E; Total Duration: 15 days; Float of Task B: 1 day", "correct": true },
+      { "id": "c", "text": "Critical Path: A -> C -> E; Total Duration: 15 days; Float of Task B: 3 days", "correct": false },
+      { "id": "d", "text": "Critical Path: A -> B -> D -> E; Total Duration: 11 days; Float of Task B: 2 days", "correct": false }
+    ],
+    "explanation": "Let's perform the critical path method (CPM) analysis:\n1. Task A starts at Day 0, finishes at Day 4.\n2. Task B depends on A: starts at Day 4, finishes at Day 4 + 3 = 7.\n3. Task C depends on A: starts at Day 4, finishes at Day 4 + 6 = 10.\n4. Task D depends on B: starts at Day 7, finishes at Day 7 + 2 = 9.\n5. Task E depends on C and D: it can only start after both C (finishes Day 10) and D (finishes Day 9) are done. So Task E starts at Day 10, finishes at Day 10 + 5 = 15.\nLet's calculate the paths:\n- Path 1: A -> B -> D -> E: Duration = 4 + 3 + 2 + 5 = 14 days.\n- Path 2: A -> C -> E: Duration = 4 + 6 + 5 = 15 days.\nThe longest path is the Critical Path: A -> C -> E, with a total duration of 15 days.\nTo find the float (slack) of Task B:\n- Late Finish (LF) of Task D is 10 (since E must start at 10). Late Start (LS) of D is LF - Duration = 10 - 2 = 8.\n- Late Finish (LF) of Task B is LS of D = 8. Late Start (LS) of B is LF - Duration = 8 - 3 = 5.\n- Early Start (ES) of B is 4. Early Finish (EF) of B is 7.\n- Float of B = LS - ES = 5 - 4 = 1 day (or LF - EF = 8 - 7 = 1 day).",
+    "interest": "Software Engineering",
+    "difficulty": "Hard",
+    "topics": ["Project Management", "Critical Path", "PERT/CPM"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a high-throughput transaction processing system utilizing Event Sourcing and CQRS, how are write-side concurrency conflicts (such as double-spending or double-booking) resolved when multiple clients attempt to modify the same aggregate root concurrently without relying on distributed database locks?",
+    "choices": [
+      { "id": "a", "text": "The write-side automatically overwrites the event log, and a background reconciler fixes any conflicts using heuristic analysis.", "correct": false },
+      { "id": "b", "text": "The write-side uses optimistic concurrency control (OCC) by appending events along with an expected version number. If the aggregate's current version does not match, a concurrency exception is thrown, forcing the client to reload the aggregate and retry.", "correct": true },
+      { "id": "c", "text": "The system routes all writes through a read-side projection database, which performs synchronous pessimistic lock validation before writing to the log.", "correct": false },
+      { "id": "d", "text": "The aggregate roots are made stateless, offloading conflict resolution entirely to a distributed transaction coordinator running 2PC.", "correct": false }
+    ],
+    "explanation": "In an Event Sourcing and CQRS architecture, the state of an aggregate root is reconstructed by replaying its historical events from the Event Store. To handle concurrent writes to the same aggregate root (e.g., two users booking the last seat), the system employs Optimistic Concurrency Control (OCC). When appending new events to the event stream for a specific aggregate, the write-side passes the version number it read when creating the command. The Event Store enforces that the append only succeeds if the current stream version matches the expected version. If another write succeeded in the meantime, the version has increased, causing the write to fail with a ConcurrencyException. The application then catches this, reloads the aggregate state, checks if the command is still valid (e.g., if seats are still available), and retries. This avoids expensive database-level pessimistic locking.",
+    "interest": "Software Engineering",
+    "difficulty": "Expert",
+    "topics": ["Event Sourcing", "CQRS", "Optimistic Concurrency Control", "Aggregates"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Domain-Driven Design (DDD), what is the key architectural rule regarding Aggregate Roots, transaction boundaries, and references between different aggregates, and how does this affect database design?",
+    "choices": [
+      { "id": "a", "text": "An aggregate must contain all domain entities in the entire system, and other aggregates can reference any nested entity directly via foreign keys.", "correct": false },
+      { "id": "b", "text": "An aggregate represents a cluster of domain objects that can be treated as a single unit for data changes. External objects can only reference the Aggregate Root, not nested entities. Transactions must only modify a single aggregate instance per transaction; changes to other aggregates should be handled asynchronously via domain events.", "correct": true },
+      { "id": "c", "text": "Aggregate roots must be mapped to a single monolithic database table, and all sub-entities must be fetched synchronously using eager joins to prevent database synchronization lag.", "correct": false },
+      { "id": "d", "text": "Aggregates are forbidden from referencing each other by identity, requiring all cross-aggregate logic to be hardcoded in global SQL store procedures.", "correct": false }
+    ],
+    "explanation": "DDD enforces strict design rules to maintain consistency and boundaries: 1. Boundary: An aggregate is a cluster of associated objects (entities and value objects) that we treat as a unit for data changes. 2. Root: Every aggregate has a single root entity (the Aggregate Root) which is the only member that external objects are allowed to hold references to. 3. Transaction Boundary: A transaction should only modify a single aggregate instance. This enforces loose coupling and scalability. If a business process spans multiple aggregates, eventual consistency is used: modifying the first aggregate triggers a domain event, which is handled asynchronously by another aggregate.",
+    "interest": "Software Engineering",
+    "difficulty": "Expert",
+    "topics": ["DDD", "Aggregate Root", "Transaction Boundaries", "Domain Events"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In high-availability cloud architecture, how does the 'Bulkhead Pattern' isolate resources to prevent a localized failure in one service from bringing down the entire application, and how does it differ from a standard rate limiter?",
+    "choices": [
+      { "id": "a", "text": "It replicates the entire application database across multiple geographical zones, whereas a rate limiter only buffers SQL queries locally.", "correct": false },
+      { "id": "b", "text": "It dynamically spins up new virtual machine instances when request queue sizes exceed a threshold, whereas a rate limiter drops connections.", "correct": false },
+      { "id": "c", "text": "It partitions resource pools (such as thread pools, memory, or connections) dedicated to specific downstream services or consumers, so that if one pool becomes exhausted due to a slow service, other pools remain unaffected. A rate limiter restricts request frequency, not resource allocation.", "correct": true },
+      { "id": "d", "text": "It uses hardware firewalls to block malicious IP ranges, whereas a rate limiter is implemented at the application level.", "correct": false }
+    ],
+    "explanation": "The Bulkhead pattern is named after the watertight compartments (bulkheads) of a ship's hull: if a leak occurs in one compartment, only that compartment floods, preventing the ship from sinking. In software, it isolates resources (like thread pools, connection pools, or server instances) into distinct, bounded partitions. For example, if a microservice calls both a slow legacy Payment API and a fast Catalog API, allocating separate thread pools to each prevents the slow Payment API from consuming all application server threads and blocking the entire system. A rate limiter, on the other hand, restricts the number of incoming requests from a specific client or IP over a period to prevent abuse or overload, but does not partition internal execution resources.",
+    "interest": "Software Engineering",
+    "difficulty": "Expert",
+    "topics": ["Resilience Patterns", "Bulkhead Pattern", "Fault Tolerance"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In software verification and formal methods (Hoare Logic), what is the definition of a 'Loop Invariant', and what three properties must be mathematically proven to verify that a loop satisfies its postcondition?",
+    "choices": [
+      { "id": "a", "text": "A condition that changes dynamically on every iteration. Properties to prove: initial step, recursive step, and final compilation step.", "correct": false },
+      { "id": "b", "text": "A statement that is true at the start of the loop and false when it terminates. Properties to prove: initialization, progression, and termination.", "correct": false },
+      { "id": "c", "text": "A predicate that holds true before entering the loop, remains true after every iteration of the loop body, and, combined with the loop termination condition, logically implies the loop postcondition. Properties to prove: Initialization (Establishment), Maintenance (Preservation), and Termination.", "correct": true },
+      { "id": "d", "text": "A variable whose value remains constant throughout the entire runtime of the program, verified using static type checkers.", "correct": false }
+    ],
+    "explanation": "In formal program verification (specifically Hoare Logic), a loop invariant is a logical predicate that is true immediately before entering a loop, remains true after every execution of the loop body, and helps prove the correctness of the loop. To prove loop correctness, three properties must be established:\n1. Initialization (Establishment): The invariant is true before the first iteration (established by the code preceding the loop).\n2. Maintenance (Preservation): If the invariant is true at the start of an iteration and the loop guard is true, executing the loop body leaves the invariant true at the end of the iteration.\n3. Termination: When the loop terminates (the guard is false), the invariant combined with the termination condition logically implies the postcondition of the loop.",
+    "interest": "Software Engineering",
+    "difficulty": "Expert",
+    "topics": ["Formal Methods", "Hoare Logic", "Loop Invariants", "Program Correctness"],
+    "bloomLevel": "Analyze"
+  }
+]

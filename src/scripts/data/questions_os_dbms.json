@@ -1,0 +1,1090 @@
+[
+  {
+    "text": "Which of the following state transitions is NOT possible in a standard five-state process transition model of an operating system?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Blocked -> Ready",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Running -> Blocked",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Blocked -> Running",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Running -> Ready",
+        "correct": false
+      }
+    ],
+    "explanation": "In a standard five-state process transition model (New, Ready, Running, Blocked, Terminated), a blocked process cannot transition directly to the running state. When a blocked process finishes waiting for an event (such as I/O completion or resource availability), it must first transition to the 'Ready' state, where it waits in the ready queue for the CPU scheduler to select it. Transition 'Running -> Blocked' occurs when the process requests an I/O or event. Transition 'Running -> Ready' occurs when a process is preempted (e.g., time-quantum expiration). Transition 'Blocked -> Ready' occurs when the awaited event completes.",
+    "interest": "Operating Systems",
+    "difficulty": "Easy",
+    "topics": [
+      "process-states",
+      "process-management"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which CPU scheduling algorithm is guaranteed to be non-preemptive by definition?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Round Robin (RR)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "First-Come, First-Served (FCFS)",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Shortest Remaining Time First (SRTF)",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Priority Scheduling",
+        "correct": false
+      }
+    ],
+    "explanation": "First-Come, First-Served (FCFS) is strictly non-preemptive. Once a process is allocated the CPU under FCFS, it keeps the CPU until it either terminates or blocks for I/O. Round Robin (RR) is preemptive by design, utilizing a time quantum to interrupt running processes. Shortest Remaining Time First (SRTF) is the preemptive variant of Shortest Job First (SJF). Priority Scheduling can be implemented in either preemptive or non-preemptive versions, so it is not non-preemptive by definition.",
+    "interest": "Operating Systems",
+    "difficulty": "Easy",
+    "topics": [
+      "cpu-scheduling",
+      "algorithms"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "What is the primary cause of a 'page fault' in an operating system utilizing virtual memory?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A process attempts to access a memory location that is protected by the kernel.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The CPU attempts to reference a logical page whose valid-invalid bit in the page table is set to 'invalid'.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "A page is modified in RAM but has not yet been written back to the swap space on disk.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The physical frame allocated to a process is corrupted due to a hardware ECC error.",
+        "correct": false
+      }
+    ],
+    "explanation": "A page fault is a hardware interrupt raised when a program accesses a page that is mapped in the virtual address space but is not currently loaded in physical memory (RAM). In the page table, this is indicated by the valid-invalid bit being set to 'invalid' (or 0). The OS page fault handler must intercept this interrupt, locate the page on disk, swap it into an empty physical frame, update the page table, and restart the instruction. Protected memory violations lead to a segmentation fault, not a page fault. Unwritten modifications refer to a 'dirty' page, and ECC errors are physical RAM faults.",
+    "interest": "Operating Systems",
+    "difficulty": "Easy",
+    "topics": [
+      "virtual-memory",
+      "paging"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "How does an operating system safely switch control from user space to kernel space when a user application needs to perform an I/O operation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The application directly jumps to the physical memory address where the driver routine is stored.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The CPU mode bit is set to kernel mode via an unprivileged assembly instruction.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "The application executes a software interrupt or trap instruction, triggering a controlled system call transition.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "The kernel constantly polls a shared user-space memory buffer for pending I/O requests.",
+        "correct": false
+      }
+    ],
+    "explanation": "To protect system integrity, user applications run in an unprivileged 'User Mode' and cannot access hardware or kernel memory directly. When a system service like I/O is needed, the application executes a software interrupt (trap) instruction (e.g., syscall in x86-64 or sysenter). This hardware instruction switches the CPU mode bit to 'Kernel Mode' (Ring 0) and jumps to a predefined handler address in the Interrupt Vector Table (IVT). Directly jumping to kernel space or changing the mode bit via unprivileged instructions is blocked by hardware security checks to prevent malicious behavior. Kernel polling of user buffer is highly inefficient and not the standard invocation mechanism.",
+    "interest": "Operating Systems",
+    "difficulty": "Easy",
+    "topics": [
+      "system-calls",
+      "protection-modes"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider a system with 3 processes (P1, P2, P3) and 1 resource type with 5 instances. The current allocation is: P1 has 1 instance, P2 has 2 instances, and P3 has 0 instances. The maximum demands are: P1 needs 4, P2 needs 3, and P3 needs 3. Under the Banker's Algorithm, is the system in a safe state, and what is a valid safety sequence?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Yes, the system is safe; a valid safety sequence is <P2, P1, P3>.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Yes, the system is safe; a valid safety sequence is <P3, P2, P1>.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "No, the system is not safe because P1's maximum demand exceeds total remaining resources.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "No, the system is in an active deadlock because total allocated resources exceed available instances.",
+        "correct": false
+      }
+    ],
+    "explanation": "Total instances = 5. Total allocated = 1 (P1) + 2 (P2) + 0 (P3) = 3. Available resources = 5 - 3 = 2. Let's calculate the Remaining Need (Max - Allocated) for each process:\n- P1: 4 - 1 = 3\n- P2: 3 - 2 = 1\n- P3: 3 - 0 = 3\nComparing Available (2) with Remaining Needs:\n- P2 needs 1, which is <= 2. We can satisfy P2's request. When P2 finishes, it releases its allocated 2 instances. New Available = 2 + 2 = 4.\n- Now, we can satisfy P1 (needs 3 <= 4) or P3 (needs 3 <= 4). If we satisfy P1, after it finishes, Available = 4 + 1 = 5. Then we satisfy P3.\nThus, <P2, P1, P3> (or <P2, P3, P1>) is a valid safety sequence, meaning the system is in a safe state. Options starting with P3 are invalid because P3's need (3) is greater than initial Available (2). P1's need (3) also exceeds initial Available (2).",
+    "interest": "Operating Systems",
+    "difficulty": "Medium",
+    "topics": [
+      "deadlocks",
+      "bankers-algorithm"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A binary semaphore S is initialized to 1. Three processes (A, B, C) execute the following operations in sequence: A executes wait(S), B executes wait(S), C executes wait(S), A executes signal(S). Assuming a standard blocked-queue implementation, what are the final state of the processes and the value of semaphore S?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "S = 0; A is running, B is ready, and C is blocked.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "S = -1; B is ready/running, and C is blocked.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "S = 1; all processes A, B, and C have finished executing.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "S = -2; B and C are both blocked in the queue.",
+        "correct": false
+      }
+    ],
+    "explanation": "In a classic blocked-queue semaphore implementation, wait(S) decrements the semaphore value (S--). If S < 0, the process is blocked and added to a queue. signal(S) increments the value (S++). If S <= 0, it removes a process from the blocked queue and makes it ready. Let's trace the sequence:\n1. Initialize S = 1.\n2. A executes wait(S): S becomes 0. Since S >= 0, A continues (does not block).\n3. B executes wait(S): S becomes -1. Since S < 0, B blocks and goes to the queue.\n4. C executes wait(S): S becomes -2. Since S < 0, C blocks and goes to the queue (queue is now [B, C]).\n5. A executes signal(S): S becomes -1. Since S <= 0, one process is woken up from the queue (typically the first one, B). B is unblocked and becomes ready to run. C remains blocked in the queue.\nHence, final S = -1, B is ready/running, and C is blocked.",
+    "interest": "Operating Systems",
+    "difficulty": "Medium",
+    "topics": [
+      "synchronization",
+      "semaphores"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A virtual memory system uses 3 physical frames and a page reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. Compare the number of page faults generated by the First-In-First-Out (FIFO) and Least Recently Used (LRU) algorithms.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "FIFO generates 9 page faults; LRU generates 10 page faults.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "FIFO generates 9 page faults; LRU generates 9 page faults.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "FIFO generates 10 page faults; LRU generates 10 page faults.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "FIFO generates 10 page faults; LRU generates 9 page faults.",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's trace FIFO with 3 frames:\n- 1 -> Fault [1]\n- 2 -> Fault [1, 2]\n- 3 -> Fault [1, 2, 3]\n- 4 -> Fault [2, 3, 4] (replaces 1)\n- 1 -> Fault [3, 4, 1] (replaces 2)\n- 2 -> Fault [4, 1, 2] (replaces 3)\n- 5 -> Fault [1, 2, 5] (replaces 4)\n- 1 -> Hit [1, 2, 5]\n- 2 -> Hit [1, 2, 5]\n- 3 -> Fault [2, 5, 3] (replaces 1)\n- 4 -> Fault [5, 3, 4] (replaces 2)\n- 5 -> Hit [5, 3, 4]\nTotal faults for FIFO: 9.\nLet's trace LRU with 3 frames:\n- 1 -> Fault [1]\n- 2 -> Fault [1, 2]\n- 3 -> Fault [1, 2, 3]\n- 4 -> Fault [4, 2, 3] (1 was LRU)\n- 1 -> Fault [4, 1, 3] (2 was LRU)\n- 2 -> Fault [4, 1, 2] (3 was LRU)\n- 5 -> Fault [5, 1, 2] (4 was LRU)\n- 1 -> Hit [5, 1, 2] (stack: 1, 2, 5)\n- 2 -> Hit [5, 1, 2] (stack: 2, 1, 5)\n- 3 -> Fault [3, 1, 2] (5 was LRU)\n- 4 -> Fault [3, 4, 2] (1 was LRU)\n- 5 -> Fault [3, 4, 5] (2 was LRU)\nTotal faults for LRU: 10.",
+    "interest": "Operating Systems",
+    "difficulty": "Medium",
+    "topics": [
+      "page-replacement-algorithms",
+      "virtual-memory"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a Unix-like file system, an inode contains 12 direct block pointers, 1 single indirect pointer, 1 double indirect pointer, and 1 triple indirect pointer. If the block size is 4 KB and each disk block address is represented by a 32-bit (4-byte) integer, what is the maximum file size that can be supported by this inode structure?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "4.03 GB",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "16.06 GB",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "4.00 TB",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "64.24 TB",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's compute the capacities of block pointers:\n- Block size = 4 KB = 4096 bytes.\n- Block address size = 4 bytes.\n- Number of pointers per index block = 4096 / 4 = 1024 pointers (which is 2^10).\nLet's calculate the blocks addressable by each pointer type:\n1. Direct pointers: 12 blocks.\n2. Single indirect pointer: 1 block of pointers = 1024 blocks.\n3. Double indirect pointer: 1024 * 1024 = 1,048,576 blocks (which is 2^20).\n4. Triple indirect pointer: 1024 * 1024 * 1024 = 1,073,741,824 blocks (which is 2^30).\nTotal blocks = 12 + 1024 + 1,048,576 + 1,073,741,824 = 1,074,791,436 blocks.\nMaximum file size = Total blocks * Block size = 1,074,791,436 * 4 KB.\nIn bytes: 2^30 * 4 KB = 4 TB for the triple indirect part. The other parts sum up to approximately 4 GB (double) and 4 MB (single), yielding a total of ~4.004 TB (commonly simplified as 4.00 TB).",
+    "interest": "Operating Systems",
+    "difficulty": "Medium",
+    "topics": [
+      "file-systems",
+      "inode-structure"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Two periodic tasks, T1 and T2, are scheduled on a uniprocessor system using Rate Monotonic Scheduling (RMS). T1 has a period T1 = 5 ms and execution time C1 = 2 ms. T2 has a period T2 = 8 ms and execution time C2 = 3 ms. What is the total processor utilization, and is this task set guaranteed to be schedulable under RMS?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Utilization is 77.5%; schedulability is guaranteed because it is less than the Liu and Layland utilization bound for 2 tasks (~82.8%).",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Utilization is 77.5%; schedulability is NOT guaranteed by the Liu and Layland bound, but a exact critical-zone analysis proves it is schedulable.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Utilization is 90.0%; schedulability is NOT guaranteed because it exceeds the necessary and sufficient schedulability condition.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Utilization is 77.5%; schedulability is NOT guaranteed because the utilization exceeds the scheduling bound of 69.3%.",
+        "correct": false
+      }
+    ],
+    "explanation": "First, let's calculate the CPU utilization: U = (C1 / T1) + (C2 / T2) = (2 / 5) + (3 / 8) = 0.40 + 0.375 = 0.775 or 77.5%.\nNext, let's look at the Liu and Layland scheduling bound for n periodic tasks: U <= n(2^(1/n) - 1). For n = 2 tasks, the bound is 2(2^(1/2) - 1) = 2(sqrt(2) - 1) ~ 0.828 or 82.8%.\nSince the system utilization U = 77.5% is strictly less than the Liu and Layland bound of 82.8%, the task set is guaranteed to be schedulable under RMS without needing further critical-zone analysis. (69.3% is the asymptotic bound as n goes to infinity, which is ln(2), but for n=2 the specific bound is 82.8%).",
+    "interest": "Operating Systems",
+    "difficulty": "Hard",
+    "topics": [
+      "real-time-operating-systems",
+      "rate-monotonic-scheduling"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A virtual memory system uses 48-bit virtual addresses, 40-bit physical addresses, and a page size of 8 KB. It employs a multi-level page table structure where each page table entry (PTE) is 8 bytes. What is the minimum number of paging levels required so that a page table at any level fits exactly within a single physical page frame?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "3 levels",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "4 levels",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "5 levels",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "2 levels",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's perform the calculations:\n- Page size = 8 KB = 2^13 bytes.\n- PTE size = 8 bytes = 2^3 bytes.\n- Number of PTEs that can fit in one page frame = Page Size / PTE Size = 2^13 / 2^3 = 2^10 = 1024 entries.\nTherefore, each level of the page table can resolve up to 10 bits of the virtual address space (since 1024 entries require a 10-bit index).\n- Virtual Address Size = 48 bits.\n- Since the page size is 8 KB (2^13 bytes), the page offset requires the lower 13 bits of the virtual address.\n- The remaining bits to be resolved by the page tables = 48 - 13 = 35 bits.\nSince each level of page table can resolve a maximum of 10 bits of virtual address, let's find the number of levels L:\nL >= ceil(35 / 10) = ceil(3.5) = 4 levels.\nSpecifically, the 35 bits are divided into: 5 bits (Level 4/outermost), 10 bits (Level 3), 10 bits (Level 2), and 10 bits (Level 1/innermost). A 5-bit index table fits easily within a single frame since it needs only 2^5 = 32 entries (256 bytes, which is less than 8 KB). Therefore, 4 levels are required.",
+    "interest": "Operating Systems",
+    "difficulty": "Hard",
+    "topics": [
+      "paging",
+      "multi-level-page-tables"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In lock-free programming, what is the 'ABA problem' and how is it typically solved using standard hardware support?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "An interrupt handler preempts a thread and overwrites a shared variable; solved by disabling hardware interrupts globally during updates.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "A thread reads value 'A', another thread changes it to 'B' then back to 'A', causing a Compare-And-Swap (CAS) to succeed incorrectly; solved by using a tagged CAS (e.g., double-word CAS) with a generation counter.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Two threads continuously lock resources in a circular wait; solved by implementing a hardware-level arbiter to break cycles automatically.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "A memory access is reordered by the CPU pipeline; solved by inserting standard assembly instruction memory barriers (fences).",
+        "correct": false
+      }
+    ],
+    "explanation": "The ABA problem occurs during synchronization when a thread reads a value 'A' from a shared memory location, is preempted, and in the meantime, other threads change that value to 'B' and then back to 'A'. When the original thread resumes, it performs a Compare-And-Swap (CAS) operation, sees 'A' is still there, and assumes nothing changed. However, the structural state (e.g., a node reallocation in a linked stack/queue) may have changed dramatically, leading to corruption (like pointing to deleted memory). The standard solution is to use a tagged/counted reference (e.g., Double-Word Compare-And-Swap or DWCAS) where each update increments a generation count or version number along with the pointer, changing the check from 'A' to 'A with version 2', which fails if ABA occurred. CPU reordering is solved by fences, circular wait is deadlock, and disabling interrupts is for kernel synchronization, not standard user-level lock-free programming.",
+    "interest": "Operating Systems",
+    "difficulty": "Hard",
+    "topics": [
+      "concurrency",
+      "lock-free-programming",
+      "aba-problem"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider a disk drive where the read/write head is currently at cylinder 100, moving towards higher cylinders. The disk has 200 cylinders (numbered 0 to 199). The queue of pending requests in order of arrival is: 150, 180, 40, 20. Assuming C-SCAN disk scheduling is used, what is the total number of cylinder head movements required?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "159 cylinders",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "338 cylinders",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "279 cylinders",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "359 cylinders",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's trace C-SCAN. Current head position = 100. Moving towards higher cylinders (0 to 199).\n- The head first moves up to the end of the disk (199), serving 150 and 180.\n  Movement = 199 - 100 = 99 cylinders.\n- Under C-SCAN, the head must jump all the way back to the beginning of the disk (0). This jump counts as head movement.\n  Movement = 199 - 0 = 199 cylinders.\n- Now at 0, moving up, it serves remaining requests: 20 and then 40.\n  Movement = 40 - 0 = 40 cylinders.\n- Total cylinder movement = 99 + 199 + 40 = 338 cylinders.",
+    "interest": "Operating Systems",
+    "difficulty": "Hard",
+    "topics": [
+      "disk-scheduling",
+      "c-scan",
+      "elevator-algorithm"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In hardware-assisted virtualization (such as Intel VT-x with Extended Page Tables - EPT), what happens during a 'two-dimensional page walk' and how does it impact performance?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The guest OS bypasses its own page tables entirely, allowing the hypervisor to translate guest virtual addresses directly in a single step.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "For every step of the guest page table walk (typically 4 levels), the MMU must perform a full host page table walk (typically 4 levels) to translate the guest physical address, resulting in up to 24 memory accesses in the worst case.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "The hardware uses two concurrent instruction pipelines to compile page tables into a flat physical address space, removing TLB misses entirely.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The guest kernel and host kernel synchronize page table entries using a shared ring buffer, triggering a VM Exit on every memory allocation.",
+        "correct": false
+      }
+    ],
+    "explanation": "In nested/two-dimensional paging (like Intel's EPT or AMD's NPT), the CPU hardware must translate a Guest Virtual Address (GVA) to a Guest Physical Address (GPA), and then translate that GPA to a Host Physical Address (HPA). When a TLB miss occurs, the CPU must perform a two-dimensional page walk. For a standard 4-level guest page table (CR3 translation), each level access refers to a guest physical address which itself must be translated using the 4-level EPT. This means: to read the first guest page table directory, the hardware does a 4-step walk of EPT. Then, for the next level, another 4-step EPT walk, and so on. The total number of memory accesses for a single translation can be up to (4 + 1) * (4 + 1) - 1 = 24 memory references in the worst case. This causes massive translation overhead on TLB misses, which is mitigated in hardware via aggressive caching of nested translations in the TLB (such as EPT Page-Directory Pointer Tables).",
+    "interest": "Operating Systems",
+    "difficulty": "Expert",
+    "topics": [
+      "virtualization",
+      "intel-vt-x",
+      "extended-page-tables",
+      "hardware-virtualization"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the Linux Kernel, how does Read-Copy-Update (RCU) achieve lockless read performance while ensuring that readers never access deallocated memory?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Readers acquire a read-lock that blocks writers, while writers copy the entire data structure under a write-lock before swapping pointers.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Readers access data locklessly without atomic instructions; writers update by copying the data, swapping the pointer atomically, and deferring deallocation of the old data until all pre-existing readers have completed a context switch (grace period).",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Readers and writers access data concurrently through a transactional memory bus that hardware-rolls back any conflicting reads.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The kernel blocks all interrupts on the local CPU during reads, ensuring that no preemption or pointer updates can occur during the critical section.",
+        "correct": false
+      }
+    ],
+    "explanation": "Read-Copy-Update (RCU) is an advanced synchronization mechanism that allows extremely fast, lock-free read access to shared data structures. Readers execute locklessly, without acquiring locks or using expensive atomic instructions (like CAS), by simply disabling preemption (in non-preemptible kernels) and reading the pointers directly. When a writer needs to modify a node, it: (1) allocates a new copy of the node, (2) makes the modification on the copy, (3) atomically swaps the pointer to point to the new node. The old node cannot be freed immediately because active readers might still be traversing it. The writer defers deallocation of the old node until a 'grace period' has passed. A grace period is completed when every CPU has undergone a context switch (or entered a quiescent state), meaning no thread could possibly still hold a reference to the old node. Once the grace period expires, the old memory is safely reclaimed. Locking readers or disabling interrupts globally are incorrect because RCU readers do not block writers, and disabling local interrupts does not prevent other cores from updating data.",
+    "interest": "Operating Systems",
+    "difficulty": "Expert",
+    "topics": [
+      "kernel-internals",
+      "concurrency",
+      "rcu",
+      "synchronization"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Under Lamport's Logical Clocks and Vector Clocks in distributed operating systems, which statement correctly identifies their capabilities regarding causal ordering?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Lamport timestamps can determine the exact physical time of events, whereas Vector Clocks can only establish logical sequence.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "If L(e) < L(f) in Lamport Clocks, then event e must causally precede event f; Vector Clocks do not have this property.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "If V(e) < V(f) in Vector Clocks, then e causally preceded f; conversely, if L(e) < L(f) in Lamport Clocks, we cannot conclude that e causally preceded f (concurrency is possible).",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Vector Clocks require no message overhead, while Lamport Clocks require appending the entire process list to every network packet.",
+        "correct": false
+      }
+    ],
+    "explanation": "In distributed systems, logical clocks are used to order events. Under Lamport Logical Clocks, if event e causally precedes f (e -> f), then the logical timestamp L(e) < L(f). However, the converse is NOT true: if we observe L(e) < L(f), we cannot assert that e causally preceded f, because e and f could have occurred concurrently in different processes without any message exchange. Vector Clocks solve this limitation. A Vector Clock V maintains a vector of size N (number of processes). If and only if V(e) < V(f) (meaning every component of V(e) is <= the corresponding component of V(f) and at least one component is strictly less), then e causally preceded f. This provides an isomorphic mapping to causality: e -> f <=> V(e) < V(f). Vector clocks have a message overhead of O(N) since the whole vector must be transmitted with messages, whereas Lamport clocks only transmit a single integer.",
+    "interest": "Operating Systems",
+    "difficulty": "Expert",
+    "topics": [
+      "distributed-systems",
+      "logical-clocks",
+      "vector-clocks",
+      "concurrency"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "How does Page Table Isolation (KPTI), introduced to mitigate the Meltdown hardware vulnerability, protect kernel memory from unauthorized user-space read operations?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It encrypts all kernel memory pages using AMD SEV keys, decrypting them only inside the CPU cache.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It completely separates the user-space and kernel-space page tables, mapping only a minimal, non-sensitive subset of kernel memory (like entry/exit code) when running in user mode.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It forces the CPU to execute a cache flush (WBINVD) on every single instruction cycle, preventing speculative cache loading.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It disables speculative execution entirely in the CPU microcode by writing to the MSR registers.",
+        "correct": false
+      }
+    ],
+    "explanation": "Meltdown is a hardware vulnerability where a user-space process can speculatively read kernel memory by exploiting out-of-order execution. Even though the CPU eventually raises a privilege violation segment fault, the speculatively read data is brought into the L1 data cache, allowing a side-channel attack (flush+reload) to extract the data. Kernel Page Table Isolation (KPTI) mitigates this by splitting the page table structure. Instead of mapping kernel and user memory in the same page table (where kernel space is supervisor-only), KPTI uses two separate page tables for each process. In user mode, the user page table is loaded, which does NOT contain any mappings for kernel space except for a minimal stub required to handle interrupts, system calls, and switching the page table (CR3 register). In kernel mode, the full kernel page table is loaded. This prevents speculative reads because the kernel virtual addresses are simply not mapped in the MMU when the CPU is running in user space.",
+    "interest": "Operating Systems",
+    "difficulty": "Expert",
+    "topics": [
+      "operating-system-security",
+      "kernel-exploitation",
+      "meltdown-vulnerability",
+      "kpti"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In a relational database, what is the core operational difference between a 'Primary Key' and a 'Unique Key' constraint?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A Primary Key allows multiple NULL values, whereas a Unique Key allows absolutely no NULL values.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "A table can have only one Primary Key, which implicitly disallows NULL values; however, a table can have multiple Unique Keys, which may permit NULL values.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Unique Keys can only be defined on numeric columns, whereas Primary Keys can be defined on any data type.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Primary Keys are stored in RAM, whereas Unique Keys are stored in secondary storage.",
+        "correct": false
+      }
+    ],
+    "explanation": "By relational database standards, a table can have at most one primary key. The Primary Key constraint uniquely identifies each row and implicitly prevents any component column from containing NULL values. In contrast, a table can have multiple Unique Key constraints. A Unique Key enforces uniqueness among non-NULL values, but depending on the RDBMS (like PostgreSQL or MySQL), it may allow one or more NULL values since NULL represents an unknown value and is not considered equal to another NULL under standard SQL logic. Both constraints can be defined on any indexable data type.",
+    "interest": "Database Management",
+    "difficulty": "Easy",
+    "topics": [
+      "database-design",
+      "constraints",
+      "keys"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider a relation R(A, B, C) containing 100 tuples and a relation S(C, D) containing 50 tuples. What is the maximum possible number of tuples in the natural join R |><| S?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "150 tuples",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "5,000 tuples",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "100 tuples",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "50 tuples",
+        "correct": false
+      }
+    ],
+    "explanation": "The natural join R |><| S joins the relations on their common attribute, which is C. In the worst-case scenario where every tuple in R has the exact same value for attribute C (say c1), and every tuple in S also has that exact same value c1 for attribute C, the natural join will act as a Cartesian product of all tuples. In this case, each of the 100 tuples of R matches with all 50 tuples of S, resulting in 100 * 50 = 5,000 tuples. If C were a key in S, the maximum would be 100, but since no key constraint is specified, the mathematical maximum is the Cartesian product size, 5,000.",
+    "interest": "Database Management",
+    "difficulty": "Easy",
+    "topics": [
+      "relational-algebra",
+      "joins",
+      "cardinality"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In SQL, what is the precise logical difference between the WHERE clause and the HAVING clause in a query containing a GROUP BY statement?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "WHERE filters rows before any grouping or aggregation takes place; HAVING filters aggregated group results after the GROUP BY clause is processed.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "HAVING can only refer to non-aggregated columns, whereas WHERE can only refer to aggregate functions.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "WHERE is executed after the SELECT statement is evaluated, whereas HAVING is executed before SELECT.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "WHERE can only be used with inner joins, whereas HAVING must be used with outer joins.",
+        "correct": false
+      }
+    ],
+    "explanation": "In SQL query execution, the WHERE clause is applied first to filter individual rows from the tables before any grouping occurs. The remaining rows are then grouped via the GROUP BY clause. After grouping, aggregate calculations (like SUM, COUNT, AVG) are computed. The HAVING clause is subsequently applied to filter these aggregated groups. Consequently, you cannot use aggregate functions (like SUM(sales) > 1000) in a WHERE clause because aggregation hasn't happened yet, but they are perfectly valid in a HAVING clause. Conversely, filtering columns that are not part of the group should be done in WHERE for performance.",
+    "interest": "Database Management",
+    "difficulty": "Easy",
+    "topics": [
+      "sql",
+      "query-execution",
+      "group-by"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the ACID properties guarantees that once a database transaction is committed, its updates will survive subsequent system crashes or power failures?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Atomicity",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Consistency",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Isolation",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Durability",
+        "correct": true
+      }
+    ],
+    "explanation": "Durability guarantees that once a transaction has been committed, its effects are permanently written to non-volatile storage (such as SSD/HDD) and will survive even in the event of a system crash, power outage, or OS failure. This is typically achieved using Write-Ahead Logging (WAL) where transaction modifications are flushed to disk before the commit is acknowledged. Atomicity ensures all-or-nothing execution. Consistency ensures the database transitions from one valid state to another. Isolation prevents concurrent transactions from interfering.",
+    "interest": "Database Management",
+    "difficulty": "Easy",
+    "topics": [
+      "acid-properties",
+      "transactions"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "A relation R(A, B, C, D, E) has the following functional dependencies: A -> BC, CD -> E, B -> D. What is the primary key of this relation, and what is its highest normal form?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Primary key is A; highest normal form is 1NF.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Primary key is A; highest normal form is 2NF.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Primary key is {A, E}; highest normal form is 3NF.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Primary key is A; highest normal form is BCNF.",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's find the candidate keys by computing attribute closures:\n- A+ = {A} -> {A, B, C} (using A -> BC).\n- Since we have B, we get D (using B -> D), so A+ = {A, B, C, D}.\n- Since we have C, D, we get E (using CD -> E), so A+ = {A, B, C, D, E}.\nSince A+ contains all attributes, A is a candidate key. Since no other attribute closure contains all attributes, A is the sole primary key.\nNow let's check normal forms:\n1. 2NF: A relation is in 2NF if there are no partial dependencies (i.e. no non-prime attribute depends on a proper subset of a candidate key). Since the only candidate key is a single attribute A, there can be no partial dependencies. Thus, it is in 2NF.\n2. 3NF: A relation is in 3NF if for every non-trivial functional dependency X -> Y, either X is a superkey, or Y is a prime attribute. Let's analyze B -> D:\n   - Is B a superkey? No, B+ = {B, D}, not all attributes.\n   - Is D a prime attribute? No, the only prime attribute (attribute in a candidate key) is A.\n   Since B -> D violates the 3NF condition, the relation is NOT in 3NF. Since it is in 2NF but not 3NF, its highest normal form is 2NF.",
+    "interest": "Database Management",
+    "difficulty": "Medium",
+    "topics": [
+      "normalization",
+      "functional-dependencies",
+      "normal-forms"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "What is the primary structural and performance advantage of a B+ Tree over a standard B-Tree for indexing disk-based database relations?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "B+ Trees store data pointers in both internal nodes and leaf nodes, reducing the tree height compared to B-Trees.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "B+ Trees keep all data records or pointers exclusively in the leaf nodes and link leaf nodes sequentially, enabling highly efficient range queries and sequential scans.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "B+ Trees use a hashing function to map keys to leaf nodes, achieving O(1) lookup time in the worst case.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "B+ Trees allow nodes to be less than half-full, significantly reducing the frequency of disk writes during inserts.",
+        "correct": false
+      }
+    ],
+    "explanation": "In a B-Tree, both keys and data pointers (or actual records) are stored in both internal and leaf nodes. In a B+ Tree, internal nodes store ONLY search keys and child pointers, while all actual data records (or data pointers) are stored exclusively in the leaf nodes. Because internal nodes in a B+ Tree do not store data pointers, they have a much higher fan-out (more pointers per node), which results in a shallower tree (less disk I/Os for search). More importantly, the leaf nodes in a B+ Tree are linked together in a doubly linked list. This allows the database engine to perform range queries or sequential scans very efficiently by locating the first key in O(log N) and then simply traversing the linked list, whereas in a B-Tree, traversing range queries requires expensive in-order tree traversals going up and down the tree hierarchy.",
+    "interest": "Database Management",
+    "difficulty": "Medium",
+    "topics": [
+      "indexing",
+      "b-trees",
+      "bplus-trees",
+      "storage-structures"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider two concurrent transactions executing on a database:\nTransaction T1: Read(X); Write(X); Read(Y);\nTransaction T2: Read(Y); Write(Y); Read(X);\nWhich of the following schedules is conflict serializable?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "r1(X); w1(X); r2(Y); w2(Y); r2(X); r1(Y);",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "r1(X); r2(Y); w1(X); w2(Y); r1(Y); r2(X);",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "r1(X); w1(X); r1(Y); r2(Y); w2(Y); r2(X);",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "r2(Y); w2(Y); r1(X); w1(X); r1(Y); r2(X);",
+        "correct": false
+      }
+    ],
+    "explanation": "A schedule is conflict serializable if it is conflict equivalent to some serial schedule. We check this by building a precedence graph where an edge Ti -> Tj is drawn if there are conflicting operations (accessing the same item, at least one is a write) where Ti occurs before Tj.\nLet's analyze Schedule C: r1(X); w1(X); r1(Y); r2(Y); w2(Y); r2(X);\n- Conflicting operations on X: w1(X) occurs before r2(X). This creates an edge T1 -> T2.\n- Conflicting operations on Y: r1(Y) occurs before w2(Y). This also creates an edge T1 -> T2.\n- There are no other conflicting operations (no operation in T2 on X or Y happens before a conflicting one in T1).\nSince the precedence graph contains only the edge T1 -> T2 and no cycles, Schedule C is conflict serializable (equivalent to the serial order T1 followed by T2). In all other options, conflicting read-write or write-write operations occur in orders that create a circular wait (both T1 -> T2 and T2 -> T1), creating a cycle in the precedence graph.",
+    "interest": "Database Management",
+    "difficulty": "Medium",
+    "topics": [
+      "concurrency-control",
+      "conflict-serializability",
+      "transactions"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In database query processing, under what resource constraints is a Hash Join preferred over a Sort-Merge Join?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "When both inputs are already sorted on the join key and fit entirely in memory.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "When the relations are extremely large, both fit in RAM, and the join condition is an inequality operator (e.g., R.A < S.A).",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "When the join condition is an equality (equi-join), the inputs are unsorted, and the smaller (build) relation can fit comfortably in the allocated memory buffer.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "When the database requires the output tuples to be returned in sorted order of the join attributes.",
+        "correct": false
+      }
+    ],
+    "explanation": "A Hash Join is highly efficient for equi-joins when the relations are unsorted. It operates in two phases: Build (hashes the smaller relation into an in-memory hash table) and Probe (scans the larger relation, hashing each join key to find matches in the build table). If the build relation fits entirely in memory, it requires only a single pass over both relations, resulting in O(M + N) I/O cost. In contrast, Sort-Merge Join requires sorting both inputs first, which costs O(M log M + N log N) and is only preferred if the inputs are already sorted, or if the join is a non-equality range join (which Hash Join cannot handle), or if memory is too constrained to fit the hash table (though external hashing is possible). If sorted output is required, Sort-Merge Join is naturally beneficial.",
+    "interest": "Database Management",
+    "difficulty": "Medium",
+    "topics": [
+      "query-processing",
+      "joins",
+      "hash-join",
+      "sort-merge-join"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "How does the Strict Two-Phase Locking (Strict 2PL) protocol differ from the basic Two-Phase Locking (2PL) protocol, and what specific problem does it solve?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Strict 2PL requires all locks to be acquired at the very beginning of the transaction; it prevents all deadlocks.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Strict 2PL requires that all exclusive (write) locks held by a transaction be released only after the transaction commits or aborts; it prevents cascading rollbacks.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Strict 2PL prevents transactions from upgrading shared locks to exclusive locks; it eliminates the phantom read problem.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Strict 2PL releases shared locks immediately after read operations, keeping only exclusive locks until commit; it guarantees serializability without locking overhead.",
+        "correct": false
+      }
+    ],
+    "explanation": "Under basic Two-Phase Locking (2PL), locks can be released dynamically during the shrinking phase before the transaction commits. However, if a transaction T1 modifies a data item X, releases its lock on X, and then another transaction T2 reads the uncommitted value of X and commits, a subsequent abort of T1 forces the rollback of T2. If T2 has already committed, this leads to an unrecoverable state or a cascading rollback if it hasn't. Strict 2PL solves this by requiring that all exclusive (write) locks held by a transaction must be held until the transaction terminates (commits or aborts). This guarantees that no other transaction can read uncommitted data (dirty reads), thereby ensuring that schedules are recoverable and free of cascading rollbacks. (Rigorous 2PL goes further and holds both shared and exclusive locks until commit). Strict 2PL does NOT prevent deadlocks (circular waits are still possible).",
+    "interest": "Database Management",
+    "difficulty": "Hard",
+    "topics": [
+      "concurrency-control",
+      "strict-2pl",
+      "cascading-rollbacks"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During the 'Redo Phase' of the ARIES crash recovery algorithm, which log records are processed, from what point in the log does processing begin, and how are actions handled?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only committed transaction log records are replayed starting from the last complete checkpoint to ensure consistency.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "All log records (including aborted transactions and non-committed updates) are replayed starting from the oldest active transaction's first log record (computed during the Analysis phase) to reconstruct the exact pre-crash state (repeating history).",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "All log records (committed, uncommitted, and aborted) are replayed starting from the smallest RecLSN in the Dirty Page Table (DPT) at the checkpoint, restoring the database state to the exact moment of the crash.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Only updates of active transactions are undone in reverse order starting from the end of the log, ignoring the checkpoint table.",
+        "correct": false
+      }
+    ],
+    "explanation": "The ARIES recovery algorithm operates in three phases after a crash:\n1. Analysis Phase: Scan log forward from the last checkpoint to reconstruct the active transaction table and the Dirty Page Table (DPT). It identifies the smallest RecLSN (Recovery Log Sequence Number, the oldest update that hasn't been written to disk) in the DPT.\n2. Redo Phase: Replays history to restore the database state to the exact moment of the crash. It starts from the minimum RecLSN identified in the DPT during the Analysis phase. It scans forward and reapplies all logged updates (for committed, aborted, or active transactions alike) unless it can be proven that the change is already on disk (by checking the page's LSN). This is called 'repeating history'.\n3. Undo Phase: Scans backward from the end of the log to undo the actions of all active transactions (losers) that were not committed at the time of the crash.",
+    "interest": "Database Management",
+    "difficulty": "Hard",
+    "topics": [
+      "crash-recovery",
+      "aries-algorithm",
+      "write-ahead-logging"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In query optimization, a database engine needs to select an access path for a selection query: SELECT * FROM Orders WHERE total_amount BETWEEN 100 AND 500. The table contains N = 100,000 pages, R = 1,000,000 tuples, and the values of total_amount are uniformly distributed between 0 and 1000. There is a clustered B+ Tree index on total_amount with a height of 3. What is the estimated cost (in disk page I/Os) of using this clustered index to retrieve the tuples, assuming 10 tuples fit per page?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "40,003 page I/Os",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "400,003 page I/Os",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "100,003 page I/Os",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "40,000 page I/Os",
+        "correct": false
+      }
+    ],
+    "explanation": "Let's perform the cost estimation mathematically:\n1. Selectivity calculation:\nThe predicate is total_amount BETWEEN 100 AND 500. Since the data is uniformly distributed between 0 and 1000, the range width is 500 - 100 = 400. The total domain width is 1000 - 0 = 1000. Thus, selectivity S = 400 / 1000 = 0.40 (or 40%).\n2. Number of matching tuples:\nT_match = S * R = 0.40 * 1,000,000 = 400,000 tuples.\n3. Since the index is clustered, the leaf level of the index stores the actual data pages (or the data pages are sorted in the same physical order as the index). The tuples are packed consecutively in physical pages. With 10 tuples fitting per page, the number of matching data pages is: Pages_match = T_match / 10 = 400,000 / 10 = 40,000 pages.\n4. B+ Tree Index search cost: The height of the index is 3. To find the first matching page (for total_amount = 100), we traverse the B+ tree, which takes H = 3 page I/Os.\n5. Once the first matching leaf is found, we scan sequentially through the clustered data pages to retrieve all matching tuples, which takes Pages_match = 40,000 page I/Os.\nTotal cost = Height + Matching pages = 3 + 40,000 = 40,003 page I/Os. (If the index were unclustered, the cost would be height + matching tuples = 3 + 400,000 = 400,003 page I/Os).",
+    "interest": "Database Management",
+    "difficulty": "Hard",
+    "topics": [
+      "query-optimization",
+      "cost-estimation",
+      "indexing-costs",
+      "clustered-index"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a distributed database system, what is the blocking problem of the Two-Phase Commit (2PC) protocol, and how does the Three-Phase Commit (3PC) protocol resolve it?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "In 2PC, if the coordinator fails during the commit phase, participants are blocked from writing updates; 3PC resolves this by removing the coordinator entirely.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "In 2PC, if both the coordinator and a participant that voted 'Yes' fail simultaneously, the remaining active participants cannot determine whether a commit decision was reached and must block; 3PC resolves this by introducing a 'Pre-Commit' state and ensuring that if any site is in Pre-Commit, all sites have voted Yes.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "In 2PC, network partitions cause duplicate commit messages; 3PC resolves this by using quorum consensus algorithms like Paxos.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "In 2PC, locks are held too long; 3PC resolves this by releasing locks during the prepare phase.",
+        "correct": false
+      }
+    ],
+    "explanation": "The Two-Phase Commit (2PC) protocol is blocking: if the coordinator crashes after participants vote 'Yes' but before broadcasting the global commit/abort decision, participants are left in an uncertain state. They cannot unilaterally abort (as another participant might have committed) or commit (as another might have aborted). Even if participants consult each other, if both the coordinator and a key participant crash, the remaining sites cannot make a decision and must block (holding locks) until the crashed sites recover. Three-Phase Commit (3PC) is a non-blocking protocol under fail-stop assumptions. It splits the commit decision into three phases: Can-Commit, Pre-Commit, and Do-Commit. By introducing a 'Pre-Commit' state, it guarantees that no site can transition to the 'Commit' state until all sites have acknowledged they are prepared to commit (voted Yes). If the coordinator fails, a new coordinator can safely poll the remaining active sites: if any site is in the Pre-Commit state, it is safe to commit; if no site is in Pre-Commit or Can-Commit, it is safe to abort. This prevents blocking under single site failures.",
+    "interest": "Database Management",
+    "difficulty": "Hard",
+    "topics": [
+      "distributed-databases",
+      "two-phase-commit",
+      "three-phase-commit",
+      "blocking-problem"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "According to the PACELC theorem, which extends the CAP theorem, how does a distributed database like Amazon DynamoDB or Apache Cassandra behave under normal operating conditions when there is no network partition?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It guarantees Consistency (C) at the cost of Availability (A).",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It must choose between Latency (L) and Consistency (C).",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It must choose between Partition Tolerance (P) and Availability (A).",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It automatically switches to a single-node master execution to preserve serializability.",
+        "correct": false
+      }
+    ],
+    "explanation": "The PACELC theorem states: If there is a Partition (P), how does the system trade off Availability (A) and Consistency (C)? Else (E), when the system is running normally without partitions, how does the system trade off Latency (L) and Consistency (C)? Distributed systems like Cassandra or DynamoDB, which are designed for high performance, are classified as PA/EL systems. During partitions, they choose Availability over Consistency (PA). Under normal operations (Else), they choose Latency over Consistency (EL) by using asynchronous replication, allowing reads to return stale data quickly rather than waiting for synchronous coordination. Traditional ACID databases like Spanner are PC/EC, choosing Consistency under both partition and normal conditions.",
+    "interest": "Database Management",
+    "difficulty": "Expert",
+    "topics": [
+      "distributed-systems",
+      "pacelc-theorem",
+      "consistency-models"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a Log-Structured Merge-Tree (LSM-Tree) storage engine (such as RocksDB), what are 'Write Amplification' and 'Read Amplification', and how does Size-Tiered Compaction compare to Leveled Compaction in terms of these trade-offs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Write Amplification is the ratio of bytes written to the database to bytes written to physical storage; Size-Tiered Compaction has higher write amplification but lower read amplification than Leveled Compaction.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Write Amplification is the ratio of bytes written to disk to bytes written to the database; Leveled Compaction has higher write amplification but lower read amplification and space amplification than Size-Tiered Compaction.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Read Amplification is the ratio of read operations to page faults; Leveled Compaction requires scanning every level during writes, eliminating write amplification.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Write Amplification is solved by using an in-memory B+ Tree, which removes disk writes entirely.",
+        "correct": false
+      }
+    ],
+    "explanation": "In LSM-Trees, Write Amplification (WA) is the ratio of bytes written to underlying storage (due to WAL and compaction writes) compared to the logical bytes written by the user. Read Amplification (RA) is the number of disk reads required to satisfy a single logical read query. Space Amplification (SA) is the ratio of physical disk usage to logical data size (due to obsolete/deleted records waiting for compaction).\nSize-Tiered Compaction merges SSTables of similar sizes. It has low write amplification because tables are merged less frequently, but high read and space amplification because a key can reside in many unmerged tables across tiers.\nLeveled Compaction divides the database into distinct levels (L1, L2, etc.), where each level contains non-overlapping SSTables. When L1 fills up, its tables are merged with overlapping tables in L2. This requires extensive rewriting of data, leading to HIGH write amplification. However, because keys do not overlap within levels, a read query needs to check at most one SSTable per level, yielding extremely LOW read amplification and minimal space amplification. Thus, option B is correct.",
+    "interest": "Database Management",
+    "difficulty": "Expert",
+    "topics": [
+      "storage-engines",
+      "lsm-trees",
+      "compaction-strategies",
+      "write-amplification"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Google Spanner achieves external consistency (linearizability) for distributed transactions without locking reads. How does its TrueTime API utilize hardware to guarantee transaction ordering?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "TrueTime uses GPS and atomic clocks to synchronize physical clocks globally within a bounded uncertainty window [earliest, latest], and transactions must wait out this uncertainty interval (Commit Wait) before committing to ensure that a later transaction receives a strictly higher timestamp.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "TrueTime uses a centralized NTP server that forces all transaction nodes to pause execution until a heartbeat check succeeds.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "TrueTime forces transactions to acquire a logical vector clock on all nodes, resolving physical clock skew using Lamport's tie-breaker rules.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "TrueTime dynamically shifts the physical CPU clock speed on slower nodes to match the fastest node in the cluster.",
+        "correct": false
+      }
+    ],
+    "explanation": "Google Spanner achieves external consistency across geographically distributed nodes using its TrueTime API. TrueTime does not assume perfect clock synchronization; instead, it represents physical time as a bounded uncertainty window [t.earliest, t.latest], where the true time is guaranteed to be within the interval. The maximum error is bounded by epsilon (typically < 7 ms). To guarantee that transaction T2 starting after transaction T1 commits receives a timestamp s2 > s1, Spanner employs the 'Commit Wait' mechanism. When T1 commits, the coordinator assigns it a commit timestamp s1 equal to the current t.latest and forces the transaction to wait until the absolute physical time has definitely passed s1 (i.e., until t.earliest > s1). This 'waiting out the uncertainty' ensures that any transaction T2 starting later will get a timestamp s2 that is strictly greater than s1, preserving causal and linearizable order without locking or cross-node communication for reads.",
+    "interest": "Database Management",
+    "difficulty": "Expert",
+    "topics": [
+      "distributed-transactions",
+      "google-spanner",
+      "truetime-api",
+      "linearizability"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In modern analytical database engines (OLAP), how do columnar storage layouts and vectorized execution engines collaborate to achieve high-throughput query performance compared to traditional row-oriented (OLTP) engines?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Columnar layouts store each row continuously in memory, while vectorized engines compile the query into a single-threaded loop to process tuples one at a time.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Columnar layouts store data for each attribute contiguously on disk/RAM, allowing queries to load only the referenced columns; vectorized engines process arrays of these attributes in batches using tight loops that exploit CPU cache locality and SIMD (Single Instruction, Multiple Data) instructions.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Columnar storage uses B-Tree indexes on every column to perform fast row lookups, and vectorized engines execute the query using recursive function calls per column.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Columnar storage requires converting all data to JSON strings, allowing the database to execute queries using dynamic JavaScript engines.",
+        "correct": false
+      }
+    ],
+    "explanation": "Traditional OLTP engines use row-oriented storage (N-Ary Storage Model) and volcanic iterator models (where each operator calls next() to retrieve a single row/tuple at a time). This introduces significant instruction cache overhead, function call overhead, and poor CPU cache locality for analytical queries. Modern OLAP engines use:\n1. Columnar storage (Decomposition Storage Model): Stores each column's data contiguously. This dramatically reduces disk I/O because only the columns referenced in the query are loaded, and contiguous data compresses extremely well.\n2. Vectorized execution: Instead of processing one row at a time, execution operators process 'vectors' (arrays/batches of column data, e.g., 1024 values) at a time. The engine runs simple, non-branching loops over these arrays, which fits perfectly in CPU L1/L2 caches and allows the compiler to leverage SIMD (Single Instruction, Multiple Data) instructions to process multiple values per CPU clock cycle. This dramatically increases throughput and instruction execution efficiency.",
+    "interest": "Database Management",
+    "difficulty": "Expert",
+    "topics": [
+      "olap-databases",
+      "columnar-storage",
+      "vectorized-execution",
+      "simd"
+    ],
+    "bloomLevel": "Understand"
+  }
+]

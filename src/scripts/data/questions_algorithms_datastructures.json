@@ -1,0 +1,450 @@
+[
+  {
+    "text": "When searching for a target element in a sorted array of size $N$ using the standard binary search algorithm, what is the maximum number of comparison steps required in the worst case before determining if the element is present or absent?",
+    "choices": [
+      { "id": "a", "text": "$\\lfloor \\log_2 N \\rfloor$", "correct": false },
+      { "id": "b", "text": "$\\lfloor \\log_2 N \\rfloor + 1$", "correct": true },
+      { "id": "c", "text": "$\\lceil \\log_2 N \\rceil$", "correct": false },
+      { "id": "d", "text": "$2 \\lceil \\log_2 N \\rceil$", "correct": false }
+    ],
+    "explanation": "In each step of binary search, the search space of size $N$ is halved. In the worst case, the algorithm continues dividing until the search space contains a single element. The number of splits required to reduce $N$ elements down to 1 is given by $\\lfloor \\log_2 N \\rfloor$. One final comparison is performed on this remaining single element to verify if it matches the target. Thus, the total number of comparisons in the worst case is $\\lfloor \\log_2 N \\rfloor + 1$. For example, if $N = 4$, the worst-case number of comparisons is $\\lfloor \\log_2 4 \\rfloor + 1 = 2 + 1 = 3$.",
+    "interest": "Algorithms",
+    "difficulty": "Easy",
+    "topics": ["binary-search", "recursion", "complexity"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the following sorting algorithms is stable and achieves a best-case time complexity of $O(N)$ when the input array is already sorted?",
+    "choices": [
+      { "id": "a", "text": "Selection Sort", "correct": false },
+      { "id": "b", "text": "Merge Sort", "correct": false },
+      { "id": "c", "text": "Quick Sort (with random pivot)", "correct": false },
+      { "id": "d", "text": "Insertion Sort", "correct": true }
+    ],
+    "explanation": "Insertion Sort is stable because it only swaps adjacent elements when the left element is strictly greater than the right one, preserving the relative order of equal keys. When the input array is already sorted, Insertion Sort compares each element only once with its immediate left neighbor and finds it to be in the correct position without performing any shifts, resulting in a linear best-case time complexity of $O(N)$. Selection Sort always runs in $O(N^2)$ due to its double loops finding the minimum. Merge Sort consistently runs in $O(N \\log N)$. Quick Sort can be unstable and typically runs in $O(N \\log N)$ or worse.",
+    "interest": "Algorithms",
+    "difficulty": "Easy",
+    "topics": ["sorting", "stability", "complexity"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Why does the greedy choice strategy guarantee an optimal solution for the Fractional Knapsack problem, but fails to guarantee optimality for the 0/1 Knapsack problem?",
+    "choices": [
+      { "id": "a", "text": "Fractional Knapsack allows taking fractions of items to fully utilize the knapsack's capacity with the highest value-to-weight ratio items, whereas the indivisibility of items in 0/1 Knapsack can leave empty capacity that cannot be optimized using local choices.", "correct": true },
+      { "id": "b", "text": "The Fractional Knapsack problem possesses the optimal substructure property, whereas the 0/1 Knapsack problem lacks this property.", "correct": false },
+      { "id": "c", "text": "The greedy strategy for 0/1 Knapsack requires sorting items by absolute weight instead of value-to-weight density.", "correct": false },
+      { "id": "d", "text": "Fractional Knapsack can be modeled as a linear programming relaxation that always yields integer results, whereas 0/1 Knapsack is strictly NP-hard.", "correct": false }
+    ],
+    "explanation": "Both Fractional Knapsack and 0/1 Knapsack exhibit optimal substructure. However, only Fractional Knapsack possesses the greedy choice property. In Fractional Knapsack, we can take a fraction of the highest density (value/weight) item to completely fill the knapsack. In 0/1 Knapsack, because items are indivisible, choosing the item with the highest value-to-weight ratio might leave a large amount of unused capacity, which could have been better utilized by a combination of other items with lower ratios. Hence, the greedy choice fails for 0/1 Knapsack, which requires a dynamic programming approach.",
+    "interest": "Algorithms",
+    "difficulty": "Easy",
+    "topics": ["greedy", "knapsack", "dynamic-programming"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When using Breadth-First Search (BFS) to find the shortest path from a single source in an unweighted, connected graph, which design characteristic of BFS guarantees the shortest path is found?",
+    "choices": [
+      { "id": "a", "text": "BFS utilizes an auxiliary stack to backtrack immediately when a leaf node is encountered.", "correct": false },
+      { "id": "b", "text": "BFS explores vertices in strict, increasing order of their distance (number of edges) from the source vertex.", "correct": true },
+      { "id": "c", "text": "BFS dynamically adjusts edge weights based on vertex degrees to balance traversal speed.", "correct": false },
+      { "id": "d", "text": "BFS runs in $O(V \\log V)$ time, which is asymptotically faster than Depth-First Search (DFS).", "correct": false }
+    ],
+    "explanation": "BFS uses a First-In-First-Out (FIFO) queue to traverse a graph. It visits all vertices at distance $d$ from the source before visiting any vertices at distance $d+1$. Because of this level-order progression, the first time a vertex is visited during the traversal, the path taken to reach it must be the shortest path (minimum number of edges) from the source. DFS does not guarantee this because it explores as deep as possible along a branch before backtracking.",
+    "interest": "Algorithms",
+    "difficulty": "Easy",
+    "topics": ["graphs", "bfs", "shortest-path"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider a modified Merge Sort algorithm that splits the array into three equal parts instead of two, recursively sorts each part, and then merges the three sorted parts. What is the recurrence relation for the runtime $T(N)$ of this algorithm, and what is its overall asymptotic time complexity according to the Master Theorem?",
+    "choices": [
+      { "id": "a", "text": "$T(N) = 3T(N/3) + O(N)$, resulting in $O(N \\log N)$", "correct": true },
+      { "id": "b", "text": "$T(N) = 3T(N/3) + O(N^2)$, resulting in $O(N^2)$", "correct": false },
+      { "id": "c", "text": "$T(N) = T(N/3) + O(N)$, resulting in $O(N \\log N)$", "correct": false },
+      { "id": "d", "text": "$T(N) = 3T(N/3) + O(1)$, resulting in $O(N)$", "correct": false }
+    ],
+    "explanation": "Splitting the array into three equal parts requires solving three recursive subproblems of size $N/3$, which contributes $3T(N/3)$ to the recurrence. Merging three sorted arrays of size $N/3$ into a single sorted array of size $N$ takes linear time $O(N)$ because we compare the elements at the front of each of the three arrays and place the smallest in the output. The recurrence relation is therefore $T(N) = 3T(N/3) + O(N)$. Using the Master Theorem where $a=3, b=3$, and $f(N) = O(N)$, we find $N^{\\log_3 3} = N^1 = N$. Since $f(N) = \\Theta(N)$, we are in Case 2, giving $T(N) = \\Theta(N \\log N)$. The base of the logarithm does not affect the asymptotic $O(N \\log N)$ complexity.",
+    "interest": "Algorithms",
+    "difficulty": "Medium",
+    "topics": ["divide-and-conquer", "recurrence-relations", "master-theorem"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Let $X$ and $Y$ be two sequences of lengths $m$ and $n$, respectively. A standard dynamic programming algorithm computes the length of their Longest Common Subsequence (LCS) in $O(mn)$ time and $O(mn)$ space. If we only need to compute the LENGTH of the LCS and do not need to reconstruct the actual subsequence, what is the optimized auxiliary space complexity?",
+    "choices": [
+      { "id": "a", "text": "$O(1)$", "correct": false },
+      { "id": "b", "text": "$O(\\min(m, n))$", "correct": true },
+      { "id": "c", "text": "$O(m + n)$", "correct": false },
+      { "id": "d", "text": "$O(mn)$", "correct": false }
+    ],
+    "explanation": "In the standard LCS recurrence, the state $LCS[i][j]$ (representing the LCS length of prefixes $X[1\\dots i]$ and $Y[1\\dots j]$) depends only on three previously computed cells: $LCS[i-1][j-1]$, $LCS[i-1][j]$, and $LCS[i][j-1]$. Consequently, to compute the values of row $i$, we only require the values of row $i-1$ (the previous row) and the values of row $i$ currently being computed. By storing only two rows at any time, the space complexity is reduced to $O(n)$ where $n$ is the number of columns. To minimize this further, we can choose the shorter sequence to be represented as the columns, yielding an auxiliary space complexity of $O(\\min(m, n))$.",
+    "interest": "Algorithms",
+    "difficulty": "Medium",
+    "topics": ["dynamic-programming", "lcs", "space-optimization"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Under what condition will Dijkstra's algorithm fail to find the correct shortest path from a single source vertex to all other vertices in a directed graph?",
+    "choices": [
+      { "id": "a", "text": "The graph contains directed cycles with positive edge weights.", "correct": false },
+      { "id": "b", "text": "The graph is disconnected, causing some vertices to be unreachable.", "correct": false },
+      { "id": "c", "text": "The graph contains one or more negative edge weights, even if there are no negative weight cycles.", "correct": true },
+      { "id": "d", "text": "The graph contains multiple parallel edges between the same pair of vertices.", "correct": false }
+    ],
+    "explanation": "Dijkstra's algorithm uses a greedy approach, assuming that once a vertex is added to the closed/visited set, its shortest path from the source has been finalized and will not change. This assumption holds true only when all edge weights are non-negative. If there are negative edge weights, a longer path with a negative edge might yield a shorter overall path later, but Dijkstra's algorithm will have already locked in the sub-optimal path and will not re-evaluate it. Bellman-Ford or SPFA must be used instead to handle negative weights.",
+    "interest": "Algorithms",
+    "difficulty": "Medium",
+    "topics": ["graphs", "dijkstras-algorithm", "shortest-path"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the backtracking search for the $N$-Queens problem, what is the primary benefit of maintaining three boolean arrays representing columns, main diagonals, and anti-diagonals?",
+    "choices": [
+      { "id": "a", "text": "It reduces the worst-case asymptotic time complexity of the search from exponential to polynomial.", "correct": false },
+      { "id": "b", "text": "It enables $O(1)$ verification of whether a queen can be safely placed at a specific cell $(row, col)$, eliminating the need to scan the board.", "correct": true },
+      { "id": "c", "text": "It replaces recursion with iteration by dynamically updating the stack pointers.", "correct": false },
+      { "id": "d", "text": "It mathematically guarantees that a solution is found without any backtracking steps.", "correct": false }
+    ],
+    "explanation": "A cell $(r, c)$ on an $N \\times N$ chessboard is threatened by a previously placed queen if another queen is in the same column $c$, the same main diagonal (where $r - c$ is constant), or the same anti-diagonal (where $r + c$ is constant). By maintaining three boolean tracking arrays (or bitsets) of size $N$, $2N-1$, and $2N-1$, respectively, we can verify if a cell is threatened in $O(1)$ time. Without this optimization, we would have to scan the row, column, and diagonals, which takes $O(N)$ time per check, slowing down the recursive exploration.",
+    "interest": "Algorithms",
+    "difficulty": "Medium",
+    "topics": ["backtracking", "recursion", "constraint-satisfaction"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In the Knuth-Morris-Pratt (KMP) string matching algorithm, what does the value of the prefix function $\\pi[i]$ (also known as the LPS table value) represent for a pattern string $P[0 \\dots m-1]$?",
+    "choices": [
+      { "id": "a", "text": "The length of the longest proper prefix of the substring $P[0 \\dots i]$ that is also a suffix of $P[0 \\dots i]$.", "correct": true },
+      { "id": "b", "text": "The frequency of occurrence of the character $P[i]$ in the prefix $P[0 \\dots i]$.", "correct": false },
+      { "id": "c", "text": "The index of the next character in the text to compare if a mismatch occurs at pattern index $i$.", "correct": false },
+      { "id": "d", "text": "The length of the longest substring starting at $P[0]$ that matches a substring ending at $P[m-1]$.", "correct": false }
+    ],
+    "explanation": "The prefix function $\\pi[i]$ is defined as the length of the longest proper prefix of the substring $P[0 \\dots i]$ that is also a suffix of $P[0 \\dots i]$. A proper prefix of a string is a prefix that is not equal to the string itself. In KMP, this value allows the algorithm to bypass re-matching characters that have already been matched when a mismatch occurs by shifting the pattern using the precomputed LPS table.",
+    "interest": "Algorithms",
+    "difficulty": "Hard",
+    "topics": ["string-matching", "kmp", "prefix-function"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Edmonds-Karp algorithm is a specific implementation of the Ford-Fulkerson method for finding the maximum flow in a flow network. What traversal strategy does it use to select augmenting paths, and what is its worst-case time complexity?",
+    "choices": [
+      { "id": "a", "text": "It uses Depth-First Search (DFS) to find any path; time complexity is $O(V E^2)$.", "correct": false },
+      { "id": "b", "text": "It uses Breadth-First Search (BFS) to find the shortest path in terms of edge count; time complexity is $O(V E^2)$.", "correct": true },
+      { "id": "c", "text": "It uses Dijkstra's algorithm to find the path with maximum bottleneck capacity; time complexity is $O(E^2 \\log V)$.", "correct": false },
+      { "id": "d", "text": "It uses random walks to find paths; time complexity is $O(V^2 E)$.", "correct": false }
+    ],
+    "explanation": "The Edmonds-Karp algorithm specifies that the augmenting path in the residual network should be found using Breadth-First Search (BFS), selecting the shortest path in terms of the number of edges. This choice guarantees that the total number of flow augmentations is at most $O(V E)$. Since each BFS takes $O(E)$ time, the overall worst-case time complexity is bounded by $O(V E^2)$. This is a significant improvement over the basic Ford-Fulkerson algorithm, whose runtime depends on the maximum flow value and can be pseudo-polynomial.",
+    "interest": "Algorithms",
+    "difficulty": "Hard",
+    "topics": ["network-flow", "edmonds-karp", "complexity"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In the Matrix Chain Multiplication problem, we are given a sequence of matrices $A_1, A_2, \\dots, A_n$ where matrix $A_i$ has dimensions $p_{i-1} \\times p_i$. If $m[i, j]$ represents the minimum number of scalar multiplications to compute the product $A_i \\dots A_j$, what is the correct dynamic programming recurrence relation for $m[i, j]$ (for $i < j$)?",
+    "choices": [
+      { "id": "a", "text": "$m[i, j] = \\min_{i \\leq k < j} \\{ m[i, k] + m[k+1, j] + p_{i-1} p_k p_j \\}$", "correct": true },
+      { "id": "b", "text": "$m[i, j] = \\min_{i < k \\leq j} \\{ m[i, k-1] + m[k, j] + p_i p_{k-1} p_j \\}$", "correct": false },
+      { "id": "c", "text": "$m[i, j] = \\min_{i \\leq k < j} \\{ m[i, k] \\times m[k+1, j] + p_{i-1} p_k p_j \\}$", "correct": false },
+      { "id": "d", "text": "$m[i, j] = \\min_{i \\leq k < j} \\{ m[i, k] + m[k+1, j] + p_i p_k p_{j-1} \\}$", "correct": false }
+    ],
+    "explanation": "The minimum cost to multiply matrices $A_i \\dots A_j$ is found by splitting the product between $A_k$ and $A_{k+1}$ for some index $k$ in the range $i \\leq k < j$. The cost of computing $A_i \\dots A_k$ is $m[i, k]$, the cost of computing $A_{k+1} \\dots A_j$ is $m[k+1, j]$, and the cost of multiplying the two resulting matrices (which will have dimensions $p_{i-1} \\times p_k$ and $p_k \\times p_j$) is $p_{i-1} p_k p_j$. Summing these and finding the minimum over all possible values of $k$ gives the correct recurrence relation: $m[i, j] = \\min_{i \\leq k < j} \\{ m[i, k] + m[k+1, j] + p_{i-1} p_k p_j \\}$.",
+    "interest": "Algorithms",
+    "difficulty": "Hard",
+    "topics": ["dynamic-programming", "matrix-chain-multiplication", "recurrence-relations"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "The standard 2-approximation algorithm for the Vertex Cover problem finds a vertex cover by repeatedly selecting an arbitrary edge $(u, v)$ from the graph, adding both $u$ and $v$ to the cover, and removing all edges incident to either $u$ or $v$. Which of the following best explains why this algorithm is guaranteed to be a 2-approximation?",
+    "choices": [
+      { "id": "a", "text": "The set of selected edges forms a matching, and any valid vertex cover must contain at least one endpoint of each edge in a matching, meaning the optimal cover $C^*$ satisfies $|C^*| \\geq |A|$ where $A$ is the set of selected edges. Since the algorithm adds $2|A|$ vertices, the size is at most $2|C^*|$.", "correct": true },
+      { "id": "b", "text": "The algorithm uses a depth-first search to find a feedback vertex set, which always has an approximation ratio of exactly 2 in general graphs.", "correct": false },
+      { "id": "c", "text": "The graph is bipartite, and by Konig's theorem, the minimum vertex cover is always equal to the maximum matching.", "correct": false },
+      { "id": "d", "text": "The algorithm solves the linear programming relaxation of the vertex cover problem and rounds all fractional variables greater than or equal to 0.5 up to 1.", "correct": false }
+    ],
+    "explanation": "Let $A$ be the set of edges selected by the algorithm. By design, once an edge is selected, all edges incident to its endpoints are removed from consideration. This ensures that no two edges in $A$ share a vertex, meaning $A$ is a matching. Any valid vertex cover must cover all edges in the graph, including the edges in $A$. Since the edges in $A$ are disjoint, any valid vertex cover must select at least one unique vertex for each edge in $A$ to cover it. Thus, the size of the optimal vertex cover $|C^*|$ must be at least $|A|$ ($|C^*| \\geq |A|$). Since our algorithm selects both endpoints of each edge in $A$, the size of the generated vertex cover is exactly $2|A|$. Thus, the size of our cover is $2|A| \\leq 2|C^*|$, which mathematically guarantees a 2-approximation.",
+    "interest": "Algorithms",
+    "difficulty": "Hard",
+    "topics": ["approximation-algorithms", "vertex-cover", "matchings"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Consider a dynamic array that doubles its capacity when full. An insertion costs 1 if there is space, and $K + 1$ if the array of size $K$ is full (requiring copying $K$ elements to a new array and inserting the new element). Using the Potential Method of amortized analysis, which potential function $\\Phi$ correctly proves that the amortized cost of an insertion is $O(1)$? (Let $N$ be the current number of elements, and $S$ be the current capacity).",
+    "choices": [
+      { "id": "a", "text": "$\\Phi = 2N - S$", "correct": true },
+      { "id": "b", "text": "$\\Phi = S - N$", "correct": false },
+      { "id": "c", "text": "$\\Phi = 2(S - N)$", "correct": false },
+      { "id": "d", "text": "$\\Phi = N^2 - S^2$", "correct": false }
+    ],
+    "explanation": "Let us analyze $\\Phi = 2N - S$. When the array is half-full ($N = S/2$), the potential is $2(S/2) - S = 0$. When the array is completely full ($N = S$), the potential is $2S - S = S$. Just after doubling, the capacity becomes $2S$, and the number of elements is still $N = S$. The new potential is $2(S) - 2S = 0$. The change in potential during a doubling step is $\\Delta \\Phi = \\Phi_{after} - \\Phi_{before} = 0 - S = -S$. The actual cost of insertion when full is $N + 1 = S + 1$. The amortized cost is $Actual + \\Delta \\Phi = (S + 1) + (-S) = 1$, which is $O(1)$. For a regular insertion where no doubling occurs, the actual cost is 1, $N$ increases by 1, and $S$ remains constant. $\\Delta \\Phi = (2(N+1) - S) - (2N - S) = 2$. The amortized cost is $Actual + \\Delta \\Phi = 1 + 2 = 3$, which is also $O(1)$. Therefore, $\\Phi = 2N - S$ is the correct potential function.",
+    "interest": "Algorithms",
+    "difficulty": "Expert",
+    "topics": ["amortized-analysis", "potential-method", "dynamic-arrays"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "To prove that a new decision problem $Y$ is NP-complete, which of the following sequences of steps is mathematically correct and sufficient?",
+    "choices": [
+      { "id": "a", "text": "Prove that $Y \\in$ NP, select a known NP-complete problem $X$, and show that $Y$ can be reduced to $X$ in polynomial time ($Y \\leq_p X$).", "correct": false },
+      { "id": "b", "text": "Select a known NP-complete problem $X$, show that $X$ can be reduced to $Y$ in polynomial time ($X \\leq_p Y$), and then prove that $Y \\in$ NP.", "correct": true },
+      { "id": "c", "text": "Prove that $Y$ can be solved in $O(2^N)$ time, and show that a polynomial-time algorithm for $Y$ would solve the Halting Problem.", "correct": false },
+      { "id": "d", "text": "Show that $Y$ is in P, and reduce all problems in NP to $Y$ in exponential time.", "correct": false }
+    ],
+    "explanation": "To prove a problem $Y$ is NP-complete, we must satisfy two conditions: (1) $Y \\in$ NP (proving that a candidate solution can be verified in polynomial time), and (2) $Y$ is NP-hard (proving that every problem in NP can be reduced to $Y$ in polynomial time). To prove NP-hardness, we select a known NP-complete problem $X$ and reduce $X$ to $Y$ in polynomial time ($X \\leq_p Y$). This shows that if we could solve $Y$ in polynomial time, we could also solve $X$ in polynomial time, meaning $Y$ is at least as hard as $X$.",
+    "interest": "Algorithms",
+    "difficulty": "Expert",
+    "topics": ["computational-complexity", "np-completeness", "reductions"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In Tarjan's algorithm for finding Strongly Connected Components (SCCs) in a directed graph, we maintain two values for each vertex $v$: `v.index` (DFS discovery time) and `v.lowlink` (lowest index reachable from $v$ via back-edges). Under what condition do we identify that a vertex $u$ is the 'root' of an SCC, prompting us to pop all vertices of that SCC from the auxiliary stack?",
+    "choices": [
+      { "id": "a", "text": "`u.lowlink < u.index`", "correct": false },
+      { "id": "b", "text": "`u.lowlink == u.index`", "correct": true },
+      { "id": "c", "text": "`u.lowlink == 0`", "correct": false },
+      { "id": "d", "text": "`u.index == 0`", "correct": false }
+    ],
+    "explanation": "In Tarjan's Strongly Connected Components algorithm, a vertex $u$ is identified as the root of an SCC if and only if `u.lowlink == u.index`. This condition indicates that there is no path from $u$ or any of its descendants to any vertex discovered earlier than $u$. When this condition is met, all vertices currently on the auxiliary stack above and including $u$ belong to the same SCC and are popped together, with $u$ as the representative node.",
+    "interest": "Algorithms",
+    "difficulty": "Expert",
+    "topics": ["graphs", "strongly-connected-components", "tarjans-algorithm"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "The Miller-Rabin primality test is a randomized algorithm used to determine if a number $n$ is prime. If $n$ is an odd composite number, what is the tight upper bound on the probability that the Miller-Rabin test declares $n$ to be prime (a 'strong pseudoprime') for a single randomly chosen base $a \\in [2, n-2]$?",
+    "choices": [
+      { "id": "a", "text": "$1/2$", "correct": false },
+      { "id": "b", "text": "$1/4$", "correct": true },
+      { "id": "c", "text": "$3/4$", "correct": false },
+      { "id": "d", "text": "$1/2^k$, where $k$ is the number of prime factors of $n$", "correct": false }
+    ],
+    "explanation": "For any odd composite number $n$, the number of Miller-Rabin witnesses (bases $a$ that prove $n$ is composite) is at least $3/4$ of the candidate bases in the range $[2, n-2]$. Thus, the probability that a randomly chosen base will fail to detect that $n$ is composite (declaring it as a strong pseudoprime) is at most $1/4$. Repeating the test with $k$ independent random bases reduces the false positive probability to at most $(1/4)^k$.",
+    "interest": "Algorithms",
+    "difficulty": "Expert",
+    "topics": ["randomized-algorithms", "primality-testing", "number-theory"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "When iterating through a 2D array of size $N \\times N$ in a row-major programming language like C or C++, why is a nested loop that accesses elements as `arr[i][j]` (outer loop $i$, inner loop $j$) significantly faster than one that accesses elements as `arr[j][i]`?",
+    "choices": [
+      { "id": "a", "text": "Row-major order stores elements of the same row contiguously in memory, so `arr[i][j]` exploits spatial cache locality, loading entire cache lines containing subsequent elements into the L1/L2 cache.", "correct": true },
+      { "id": "b", "text": "Accessing `arr[j][i]` requires performing dynamic pointer dereferencing on every iteration.", "correct": false },
+      { "id": "c", "text": "The compiler can only vectorize loops that iterate in column-major order.", "correct": false },
+      { "id": "d", "text": "Array bounds checking is disabled automatically when iterating in row-major order.", "correct": false }
+    ],
+    "explanation": "In row-major languages like C and C++, consecutive elements of a row are stored in contiguous memory addresses. When `arr[i][j]` is accessed, the CPU loads a block of memory (a cache line, typically 64 bytes) containing the accessed element and several subsequent elements in the same row. This maximizes spatial locality and reduces cache misses. Accessing `arr[j][i]` jumps across memory addresses separated by the size of a row, resulting in frequent cache misses (stride of size $N$) because each access requires fetching a new cache line.",
+    "interest": "Data Structures",
+    "difficulty": "Easy",
+    "topics": ["arrays", "cache-locality", "memory-layout"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In Floyd's Cycle-Finding Algorithm (Tortoise and Hare), a slow pointer moves one step at a time while a fast pointer moves two steps. If a cycle of length $C$ exists in a singly linked list, why are the fast and slow pointers guaranteed to meet, and what is the maximum number of iterations after the slow pointer enters the cycle before they meet?",
+    "choices": [
+      { "id": "a", "text": "The distance between them decreases by 1 in each step once both are in the cycle, guaranteeing they meet in at most $C$ iterations.", "correct": true },
+      { "id": "b", "text": "The fast pointer travels at twice the speed of light in the list, forcing a collision in at most $2C$ steps.", "correct": false },
+      { "id": "c", "text": "The slow pointer eventually stops at the cycle's entry point, waiting at most $C/2$ steps for the fast pointer to catch up.", "correct": false },
+      { "id": "d", "text": "They are guaranteed to meet because the list has a finite number of nodes, and they must meet at the head of the list in exactly $C$ steps.", "correct": false }
+    ],
+    "explanation": "Once the slow pointer enters the cycle, the fast pointer is already in the cycle. In each step, the slow pointer moves 1 step and the fast pointer moves 2 steps. The relative distance between them in the direction of traversal decreases by $2 - 1 = 1$ node per iteration. Since the maximum distance between them is at most $C - 1$, they are guaranteed to meet in at most $C$ iterations (specifically, the remaining distance modulo $C$ steps).",
+    "interest": "Data Structures",
+    "difficulty": "Easy",
+    "topics": ["linked-lists", "cycle-detection", "pointers"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When implementing a Queue data structure using two stacks (Stack1 for enqueuing and Stack2 for dequeuing), what is the amortized time complexity of the `dequeue` operation?",
+    "choices": [
+      { "id": "a", "text": "$O(N)$", "correct": false },
+      { "id": "b", "text": "$O(\\log N)$", "correct": false },
+      { "id": "c", "text": "$O(1)$", "correct": true },
+      { "id": "d", "text": "$O(N^2)$", "correct": false }
+    ],
+    "explanation": "When `dequeue` is called, if Stack2 is not empty, we pop from Stack2, which takes $O(1)$ time. If Stack2 is empty, we must pop all $N$ elements from Stack1 and push them onto Stack2, which takes $O(N)$ time, and then pop the top of Stack2. Although an individual `dequeue` operation can take $O(N)$ time when Stack2 is empty, each element is pushed to Stack1 once, popped from Stack1 once, pushed to Stack2 once, and popped from Stack2 once. Thus, the total operations for $M$ queue operations is $O(M)$, leading to an amortized time complexity of $O(1)$ per operation.",
+    "interest": "Data Structures",
+    "difficulty": "Easy",
+    "topics": ["stacks", "queues", "amortized-analysis"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a hash table with open addressing, what is the primary disadvantage of linear probing compared to quadratic probing or double hashing?",
+    "choices": [
+      { "id": "a", "text": "Linear probing requires double the memory capacity.", "correct": false },
+      { "id": "b", "text": "Linear probing suffers from primary clustering, where long runs of occupied slots build up, increasing search and insertion times.", "correct": true },
+      { "id": "c", "text": "Linear probing cannot handle deletions safely.", "correct": false },
+      { "id": "d", "text": "Linear probing results in a higher number of cache misses due to non-contiguous memory access.", "correct": false }
+    ],
+    "explanation": "Linear probing searches for the next available slot sequentially ($i, i+1, i+2, \\dots$). This causes 'primary clustering,' where occupied slots tend to form long continuous blocks. Any hash collision in or near a cluster makes the cluster grow even longer, which drastically increases the average lookup and insertion time. Quadratic probing and double hashing use non-linear step sizes to distribute keys more evenly across the table, reducing clustering.",
+    "interest": "Data Structures",
+    "difficulty": "Easy",
+    "topics": ["hash-tables", "collision-resolution", "clustering"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Given the preorder traversal sequence `[A, B, D, E, C, F]` and the inorder traversal sequence `[D, B, E, A, F, C]` of a binary tree, what is the correct postorder traversal sequence of the tree?",
+    "choices": [
+      { "id": "a", "text": "`[D, E, B, F, C, A]`", "correct": true },
+      { "id": "b", "text": "`[D, E, B, C, F, A]`", "correct": false },
+      { "id": "c", "text": "`[E, D, B, F, C, A]`", "correct": false },
+      { "id": "d", "text": "`[D, B, E, F, C, A]`", "correct": false }
+    ],
+    "explanation": "Preorder traversal tells us that `A` is the root. In the inorder sequence, elements to the left of `A` (`[D, B, E]`) form the left subtree, and elements to the right (`[F, C]`) form the right subtree.\nFor the left subtree: Preorder is `[B, D, E]`, inorder is `[D, B, E]`. So `B` is the root, `D` is the left child, `E` is the right child.\nFor the right subtree: Preorder is `[C, F]`, inorder is `[F, C]`. So `C` is the root, `F` is the left child.\nThe reconstructed tree is:\n      A\n     / \\\n    B   C\n   / \\ /\n  D  E F\nTo find the postorder traversal (Left, Right, Root):\n- Left subtree of A: Postorder of B is `[D, E, B]`\n- Right subtree of A: Postorder of C is `[F, C]`\n- Root: `A`\nCombining these gives `[D, E, B, F, C, A]`.",
+    "interest": "Data Structures",
+    "difficulty": "Medium",
+    "topics": ["binary-trees", "traversals", "reconstruction"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "When building a binary max-heap from an unsorted array of size $N$ using the bottom-up `Min-Heapify` / `Max-Heapify` procedure (Floyd's algorithm), what is the tightest asymptotic upper bound on the time complexity?",
+    "choices": [
+      { "id": "a", "text": "$O(N \\log N)$", "correct": false },
+      { "id": "b", "text": "$O(N)$", "correct": true },
+      { "id": "c", "text": "$O(N^2)$", "correct": false },
+      { "id": "d", "text": "$O(\\log N)$", "correct": false }
+    ],
+    "explanation": "Floyd's heap construction algorithm runs in $O(N)$ time. We call `Max-Heapify` starting from the last non-leaf node (index $\\lfloor N/2 \\rfloor$) down to the root. The time complexity is proportional to the sum of the heights of all nodes. The sum is $\\sum_{h=0}^{\\log N} \\frac{N}{2^{h+1}} O(h) = O(N \\sum \\frac{h}{2^h}) = O(N)$, because the infinite series $\\sum \\frac{h}{2^h}$ converges to 2. This is faster than inserting elements one by one, which takes $O(N \\log N)$.",
+    "interest": "Data Structures",
+    "difficulty": "Medium",
+    "topics": ["heaps", "heapify", "complexity"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "When implementing the Disjoint Set Union (DSU) data structure, if we use both the 'union by rank' (or union by size) and 'path compression' heuristics, what is the amortized time complexity of a single `find` or `union` operation over a sequence of $M$ operations on $N$ elements?",
+    "choices": [
+      { "id": "a", "text": "$O(\\log N)$", "correct": false },
+      { "id": "b", "text": "$O(1)$", "correct": false },
+      { "id": "c", "text": "$O(\\alpha(N))$, where $\\alpha$ is the extremely slow-growing inverse Ackermann function.", "correct": true },
+      { "id": "d", "text": "$O(\\log^* N)$, where $\\log^*$ is the iterated logarithm.", "correct": false }
+    ],
+    "explanation": "The combination of union by rank (or size) and path compression ensures that the tree depth remains extremely shallow. The amortized cost of each find/union operation is $O(\\alpha(N))$, where $\\alpha(N)$ is the inverse Ackermann function. For all practical purposes in our physical universe, $\\alpha(N) \\le 4$, making it practically $O(1)$, but theoretically the bound is $O(\\alpha(N))$.",
+    "interest": "Data Structures",
+    "difficulty": "Medium",
+    "topics": ["disjoint-set", "path-compression", "complexity"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In a Trie (prefix tree) containing $W$ words with an average length of $L$ over an alphabet of size $\\Sigma$, what are the time complexities for inserting a word of length $K$ and searching for a prefix of length $P$, respectively?",
+    "choices": [
+      { "id": "a", "text": "$O(K \\cdot \\Sigma)$ and $O(P \\cdot \\Sigma)$ (using array-based child representation)", "correct": false },
+      { "id": "b", "text": "$O(K)$ and $O(P)$ (assuming $O(1)$ child pointer lookup)", "correct": true },
+      { "id": "c", "text": "$O(W \\cdot K)$ and $O(W \\cdot P)$", "correct": false },
+      { "id": "d", "text": "$O(\\log W + K)$ and $O(\\log W + P)$", "correct": false }
+    ],
+    "explanation": "Inserting a word of length $K$ requires traversing down $K$ nodes, creating them if necessary. At each node, lookup or insertion of the child character takes $O(1)$ time if we use a flat array of size $\\Sigma$ (or $O(\\log \\Sigma)$ if using a map). Thus, under standard assumptions, inserting takes $O(K)$ time and searching a prefix of length $P$ takes $O(P)$ time. The size of the dictionary $W$ does not affect these times, which is why Tries are highly efficient for prefix matching and auto-complete compared to Hash Maps or Balanced BSTs.",
+    "interest": "Data Structures",
+    "difficulty": "Medium",
+    "topics": ["tries", "strings", "complexity"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Both AVL trees and Red-Black trees are self-balancing binary search trees that guarantee $O(\\log N)$ search, insertion, and deletion times. What is a key structural difference between them that explains why AVL trees are generally preferred for search-intensive applications, while Red-Black trees are preferred for write-intensive applications?",
+    "choices": [
+      { "id": "a", "text": "AVL trees are more strictly balanced (maximum height difference of 1 between subtrees) leading to shorter search paths, whereas Red-Black trees are more loosely balanced (height can be up to $2 \\log_2(N+1)$) but require fewer rotations during insertions and deletions.", "correct": true },
+      { "id": "b", "text": "Red-Black trees only support integer keys, whereas AVL trees support generic keys.", "correct": false },
+      { "id": "c", "text": "AVL trees store balance factors that must be recalculated on every read operation, making them slower for lookups.", "correct": false },
+      { "id": "d", "text": "Red-Black trees do not support deletions, only insertions and search.", "correct": false }
+    ],
+    "explanation": "AVL trees maintain a strict balance factor: the heights of the two child subtrees of any node differ by at most 1. This guarantees a maximum height of approximately $1.44 \\log_2 N$. Red-Black trees are more loosely balanced: the longest path from root to leaf can be up to twice as long as the shortest path, leading to a maximum height of $2 \\log_2(N+1)$. Because AVL trees are flatter, search operations are faster. However, maintaining this strict balance requires more frequent rotations during insertions and deletions. Red-Black trees require at most 2 rotations for an insertion and at most 3 rotations for a deletion, making updates much faster.",
+    "interest": "Data Structures",
+    "difficulty": "Hard",
+    "topics": ["avl-trees", "red-black-trees", "balancing"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A Segment Tree is built over an array of size $N$ to answer range sum queries and support point updates. If we want to support range updates (e.g., adding a value $V$ to all elements in range $[L, R]$) in $O(\\log N)$ time, what technique must be integrated into the Segment Tree, and how does it achieve this complexity?",
+    "choices": [
+      { "id": "a", "text": "Fractional Cascading, by maintaining extra pointers to speed up binary search at each level.", "correct": false },
+      { "id": "b", "text": "Lazy Propagation, by deferring updates to children nodes until those children are explicitly visited or queried.", "correct": true },
+      { "id": "c", "text": "Centroid Decomposition, by splitting the segment tree into paths of size $O(\\log N)$.", "correct": false },
+      { "id": "d", "text": "Path Compression, by dynamically flattening the segment tree's height to 1.", "correct": false }
+    ],
+    "explanation": "Without modification, updating a range $[L, R]$ in a segment tree would require updating all leaf nodes in that range, taking $O(N)$ time. To achieve $O(\\log N)$ range updates, we use Lazy Propagation. When an update covers a segment completely, we update the value at the current segment node and store the update in a 'lazy' array or field for that node, without propagating it immediately to its children. The update is only pushed down to the children when we later traverse through that node during a subsequent query or update operation. This keeps the range update cost at $O(\\log N)$.",
+    "interest": "Data Structures",
+    "difficulty": "Hard",
+    "topics": ["segment-trees", "lazy-propagation", "range-queries"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In distributed caching systems like Memcached or DynamoDB, what is the primary problem that Consistent Hashing solves, and how does it handle node additions or removals?",
+    "choices": [
+      { "id": "a", "text": "It solves the problem of high latency by routing requests to the geographically nearest server.", "correct": false },
+      { "id": "b", "text": "It solves the problem of massive rehashing in standard modulo hashing ($hash(key) \\pmod N$) when the number of cache nodes $N$ changes. Under consistent hashing, only $K/N$ keys need to be remapped, where $K$ is the total number of keys.", "correct": true },
+      { "id": "c", "text": "It guarantees that all cache items are replicated across all nodes using a distributed consensus protocol like Paxos.", "correct": false },
+      { "id": "d", "text": "It automatically encrypts keys to prevent collision-based denial-of-service (DoS) attacks.", "correct": false }
+    ],
+    "explanation": "In a distributed hash table, standard modulo hashing ($hash(key) \\pmod N$) causes almost all keys to map to different nodes when the number of nodes $N$ changes (e.g., a node crashes or a new node is added). This completely invalidates the cache. Consistent hashing maps both the keys and the servers to a circular ring (hash space). A key is assigned to the next server appearing clockwise on the ring. When a server node is added or removed, only the keys that were mapped to that specific node need to be remapped to its neighbor, which is approximately $K/N$ keys, keeping the cache highly stable.",
+    "interest": "Data Structures",
+    "difficulty": "Hard",
+    "topics": ["consistent-hashing", "distributed-systems", "hash-tables"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A Fenwick Tree (Binary Indexed Tree) is a space-efficient data structure for prefix sums and point updates. If we want to find the parent or the next index to update/query in a 1-indexed Fenwick Tree at index `idx`, which bitwise operations are used to isolate the least significant set bit (LSB) to step through the tree?",
+    "choices": [
+      { "id": "a", "text": "`idx & (-idx)` to isolate the LSB; we add this to `idx` to propagate an update, and subtract it from `idx` to calculate a prefix sum.", "correct": true },
+      { "id": "b", "text": "`idx | (~idx)` to isolate the LSB; we shift right by this value to traverse.", "correct": false },
+      { "id": "c", "text": "`idx ^ (idx - 1)` to clear the LSB; we add this to `idx` for both query and update.", "correct": false },
+      { "id": "d", "text": "`~idx & (idx - 1)` to find the LSB; we XOR it with `idx` to traverse.", "correct": false }
+    ],
+    "explanation": "In a Fenwick Tree, the least significant set bit (LSB) of the index determines the range of elements that the node at that index stores. The LSB can be isolated using the bitwise trick `idx & (-idx)` (due to two's complement representation). To propagate an update at index `idx`, we must update all responsible parent nodes, which are found by repeatedly adding the LSB: `idx += (idx & -idx)`. To query the prefix sum up to `idx`, we sum up the values of disjoint intervals, found by repeatedly subtracting the LSB: `idx -= (idx & -idx)`.",
+    "interest": "Data Structures",
+    "difficulty": "Hard",
+    "topics": ["fenwick-tree", "bitwise-operations", "prefix-sums"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a Splay Tree, a self-adjusting binary search tree, every accessed node is moved to the root of the tree using a sequence of rotations called 'splaying'. Which of the following statements correctly describes the amortized time complexity and the structural properties of splaying?",
+    "choices": [
+      { "id": "a", "text": "Splay trees guarantee a strict $O(\\log N)$ worst-case time complexity for any single operation, because they maintain strict balance factors like AVL trees.", "correct": false },
+      { "id": "b", "text": "Splay trees have an amortized cost of $O(\\log N)$ per operation. The splaying steps (zig, zig-zig, zig-zag) not only bring the accessed node to the root but also roughly halve the depth of all nodes along the search path, preventing pathological unbalanced states over time.", "correct": true },
+      { "id": "c", "text": "Splay trees require $O(N)$ rotations per access to maintain balanced subtrees.", "correct": false },
+      { "id": "d", "text": "Splay trees only support splaying on insertion, whereas lookup is identical to a standard binary search tree without modifications.", "correct": false }
+    ],
+    "explanation": "Splay trees do not guarantee balanced structures at any single point in time, and a single operation can take $O(N)$ worst-case time (e.g., if we access elements in sequential order, creating a linear chain). However, using amortized analysis (specifically the potential method), we can prove that splaying has an amortized cost of $O(\\log N)$ per operation. Crucially, the zig-zig and zig-zag rotation steps fold the path in half, which restructures the tree and prevents it from staying in a degenerate shape, ensuring future operations are fast.",
+    "interest": "Data Structures",
+    "difficulty": "Expert",
+    "topics": ["splay-trees", "amortized-analysis", "self-adjusting-trees"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A Skip List is a probabilistic data structure that allows for fast search, insertion, and deletion within an ordered sequence of elements. What is the expected time complexity of search in a Skip List with $N$ elements, and what is its worst-case space complexity compared to its expected space complexity?",
+    "choices": [
+      { "id": "a", "text": "Expected search time is $O(\\sqrt{N})$; worst-case space complexity is $O(N \\log N)$ and expected space complexity is $O(N)$.", "correct": false },
+      { "id": "b", "text": "Expected search time is $O(\\log N)$; worst-case space complexity is $O(N \\log N)$ (or theoretically infinite, bounded by the max level $L$) while expected space complexity is $O(N)$ with a constant factor dependent on the promo probability $p$.", "correct": true },
+      { "id": "c", "text": "Expected search time is $O(1)$; worst-case space complexity is $O(N^2)$ and expected space is $O(N)$.", "correct": false },
+      { "id": "d", "text": "Expected search time is $O(\\log N)$; worst-case space complexity is $O(N^2)$ and expected space is $O(N \\log N)$.", "correct": false }
+    ],
+    "explanation": "Skip lists use a series of parallel linked lists of increasing sparsity. The probability of an element being promoted to the next level is $p$ (typically $0.5$ or $0.25$). The expected search, insertion, and deletion times are $O(\\log N)$ because the height of the skip list is bounded by $O(\\log N)$ with high probability. The expected number of pointers is $N \\sum_{i=0}^{\\infty} p^i = N / (1-p)$, which is $O(N)$. The worst-case space complexity arises if every single element gets promoted to the maximum level $L$, which would require $O(N \\log N)$ pointers (assuming a capped level height of $\\log N$), or theoretically unbounded if there is no level cap (though with vanishingly small probability).",
+    "interest": "Data Structures",
+    "difficulty": "Expert",
+    "topics": ["skip-lists", "probabilistic-data-structures", "complexity"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In a B-Tree of minimum degree $t \\geq 2$ (where each node except the root can have at most $2t - 1$ keys and must have at least $t - 1$ keys), why does the insertion algorithm split full nodes preemptively as it traverses down the search path from the root to the leaf, rather than splitting nodes post-traversal during backtracking?",
+    "choices": [
+      { "id": "a", "text": "Preemptive splitting prevents the need for a secondary upward backtracking pass, ensuring that the insertion can be completed in a single one-pass top-down traversal, which is highly efficient for disk-based storage where backtracking would require reloading parent nodes from disk.", "correct": true },
+      { "id": "b", "text": "Preemptive splitting guarantees that the height of the B-Tree never exceeds 3 levels.", "correct": false },
+      { "id": "c", "text": "If we do not split preemptively, we cannot maintain the sorted order of keys within a node.", "correct": false },
+      { "id": "d", "text": "Backtracking splitting causes the search to stall due to deadlock in concurrent database systems.", "correct": false }
+    ],
+    "explanation": "B-trees are typically used in disk-based storage systems (like filesystems and databases) where disk reads and writes are highly expensive. If we split nodes only during backtracking (bottom-up), a split at a leaf could propagate all the way up to the root, requiring us to reload parent nodes back into memory and write them back. By splitting full nodes preemptively on the way down, we guarantee that when we reach the target leaf node, its parent is guaranteed not to be full. This ensures that a split at the leaf node never propagates upward, enabling insertion to be completed in a single top-down pass.",
+    "interest": "Data Structures",
+    "difficulty": "Expert",
+    "topics": ["b-trees", "disk-based-storage", "insertion-algorithms"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A Bloom Filter is a space-efficient probabilistic data structure used to test set membership. If a Bloom filter uses $m$ bits and $k$ independent hash functions to store $n$ elements, what is the exact formula for the probability of a false positive, and under what condition is this probability minimized for a fixed $m$ and $n$?",
+    "choices": [
+      { "id": "a", "text": "$P \\approx (1 - e^{-kn/m})^k$; minimized when $k = \\frac{m}{n} \\ln 2$.", "correct": true },
+      { "id": "b", "text": "$P \\approx (e^{-kn/m})^k$; minimized when $k = \\frac{n}{m} \\ln 2$.", "correct": false },
+      { "id": "c", "text": "$P \\approx (1 - e^{-m/kn})^k$; minimized when $k = \\frac{m}{n}$.", "correct": false },
+      { "id": "d", "text": "$P \\approx (1 - (1 - 1/m)^{kn})^k$; minimized when $k = \\frac{m}{n} \\log_2 e$.", "correct": false }
+    ],
+    "explanation": "After inserting $n$ elements into a Bloom filter of size $m$ using $k$ hash functions, the probability that a specific bit is still 0 is $(1 - 1/m)^{kn} \\approx e^{-kn/m}$. The probability that a bit is 1 is therefore $1 - e^{-kn/m}$. For a false positive to occur, all $k$ hash values for a query element must point to bits that are already set to 1. Assuming independence, this false positive probability is $P \\approx (1 - e^{-kn/m})^k$. To find the value of $k$ that minimizes this probability for a fixed $m$ and $n$, we take the derivative with respect to $k$, which yields the optimal number of hash functions $k = \\frac{m}{n} \\ln 2$.",
+    "interest": "Data Structures",
+    "difficulty": "Expert",
+    "topics": ["bloom-filters", "probabilistic-data-structures", "false-positives"],
+    "bloomLevel": "Analyze"
+  }
+]

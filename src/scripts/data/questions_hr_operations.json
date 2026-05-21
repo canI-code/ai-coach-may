@@ -1,0 +1,450 @@
+[
+  {
+    "text": "Which of the following best describes the primary distinction between 'direct compensation' and 'indirect compensation' in a corporate reward system?",
+    "choices": [
+      { "id": "a", "text": "Direct compensation includes cash payments like base salary and commissions, whereas indirect compensation consists of non-cash benefits such as health insurance, retirement plans, and paid time off.", "correct": true },
+      { "id": "b", "text": "Direct compensation is paid directly by the immediate supervisor's budget, while indirect compensation is funded through corporate-level equity reserves.", "correct": false },
+      { "id": "c", "text": "Direct compensation refers strictly to legally mandated benefits, whereas indirect compensation includes discretionary bonuses and performance-based stock options.", "correct": false },
+      { "id": "d", "text": "Direct compensation varies dynamically based on daily operational throughput, whereas indirect compensation represents a fixed annual salary contract.", "correct": false }
+    ],
+    "explanation": "Direct compensation consists of financial rewards directly paid to the employee in cash, including base salary, hourly wages, bonuses, and commissions. Indirect compensation encompasses non-cash benefits that hold financial value but are not paid directly as cash wages, such as health insurance, employer-matched retirement contributions, paid time off, and tuition assistance. Option B is incorrect because funding sources do not define these terms. Option C is incorrect because both direct and indirect compensation can be either legally mandated (e.g., social security, minimum wage) or discretionary (e.g., health insurance, discretionary bonuses). Option D is incorrect because base salary (which is fixed) is a form of direct compensation, and variable pay can fall under either category depending on form.",
+    "interest": "Human Resources",
+    "difficulty": "Easy",
+    "topics": ["compensation", "benefits"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Under standard recruitment frameworks, what is the primary operational objective of 'sourcing' as distinct from 'selecting' candidates?",
+    "choices": [
+      { "id": "a", "text": "Sourcing focuses on generating a high-quality talent pool of active and passive applicants, while selecting focuses on evaluating those applicants to make hiring decisions.", "correct": true },
+      { "id": "b", "text": "Sourcing refers to the legal vetting of candidate credentials, whereas selecting refers to the final salary negotiation process.", "correct": false },
+      { "id": "c", "text": "Sourcing is conducted entirely by external agencies, whereas selecting is exclusively managed by the internal hiring manager.", "correct": false },
+      { "id": "d", "text": "Sourcing involves training new hires, whereas selecting is the process of defining job descriptions and competencies.", "correct": false }
+    ],
+    "explanation": "Sourcing is the proactive identification and engagement of potential candidates (both active seekers and passive talent) to build a robust pipeline. Selecting is the subsequent phase involving assessment, interviews, background checks, and decision-making to choose the best fit from that pool. Option B is incorrect because credential vetting is part of selection/background checks, not the definition of sourcing. Option C is incorrect because internal HR departments frequently perform sourcing. Option D is incorrect because training new hires is onboarding/L&D, and defining job descriptions is job analysis.",
+    "interest": "Human Resources",
+    "difficulty": "Easy",
+    "topics": ["recruitment", "sourcing"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "When an HR manager utilizes a 'Graphic Rating Scale' for performance appraisals, which of the following represents a major inherent limitation of this method?",
+    "choices": [
+      { "id": "a", "text": "It is highly susceptible to rater biases such as leniency, central tendency, and the halo effect due to subjective performance dimensions.", "correct": true },
+      { "id": "b", "text": "It requires extremely complex mathematical calculations that are difficult for managers to compute manually.", "correct": false },
+      { "id": "c", "text": "It cannot be legally defended under federal employment guidelines under any circumstances.", "correct": false },
+      { "id": "d", "text": "It is only applicable to hourly manufacturing employees and cannot be used for salaried professional roles.", "correct": false }
+    ],
+    "explanation": "A Graphic Rating Scale lists traits or behaviors (such as dependability, quality of work) and asks raters to mark where an employee falls on a scale (e.g., 1 to 5). Because the definitions of these traits and scale steps are often subjective, it is highly prone to cognitive biases like leniency (rating everyone high), central tendency (rating everyone average), and the halo/horn effect (allowing one trait to influence all others). Option B is incorrect because it is one of the simplest methods to compute. Option C is incorrect because while it is prone to bias, it can be legally defended if accompanied by clear behavior-based definitions and regular rater training. Option D is incorrect because graphic rating scales are used widely across all job tiers.",
+    "interest": "Human Resources",
+    "difficulty": "Easy",
+    "topics": ["performance-appraisal", "rating-bias"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "What is the primary strategic purpose of a structured onboarding process during the first 90 days of an employee's tenure?",
+    "choices": [
+      { "id": "a", "text": "To accelerate time-to-productivity and foster organizational socialization, leading to higher retention and alignment with corporate culture.", "correct": true },
+      { "id": "b", "text": "To administer mandatory cognitive aptitude tests to verify the accuracy of the employee's resume credentials.", "correct": false },
+      { "id": "c", "text": "To establish a legal basis for terminating the employee without notice by bypassing standard probationary laws.", "correct": false },
+      { "id": "d", "text": "To allow peer workers to rate the employee's performance for their initial annual bonus determination.", "correct": false }
+    ],
+    "explanation": "Structured onboarding goes beyond administrative paperwork; its strategic goal is to integrate the new hire culturally, socially, and operationally. Fostering socialization and role clarity significantly reduces early turnover and shortens the ramp-up time to full productivity. Option B is incorrect because cognitive tests are pre-hire selection tools, not onboarding tasks. Option C is incorrect because onboarding does not bypass or alter statutory employment laws or standard probationary contracts. Option D is incorrect because annual bonuses are rarely determined by peers during the initial 90-day onboarding period.",
+    "interest": "Human Resources",
+    "difficulty": "Easy",
+    "topics": ["onboarding", "retention"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An HR department wants to implement a 'Behaviorally Anchored Rating Scale' (BARS) performance appraisal system. What is the standard process for developing a BARS?",
+    "choices": [
+      { "id": "a", "text": "Generate critical incidents, convert these incidents into performance dimensions, retranslate the incidents, scale the incidents, and construct the final instrument.", "correct": true },
+      { "id": "b", "text": "Conduct a market wage survey, determine job grading levels, assign points via a factor-comparison matrix, and map scores to a graphic scale.", "correct": false },
+      { "id": "c", "text": "Draft generalized personality traits, distribute a Likert-scale questionnaire to peers, calculate the mathematical average, and assign a rank.", "correct": false },
+      { "id": "d", "text": "Analyze employee keystroke data, establish a statistical mean of productivity, and create a binary pass/fail performance threshold.", "correct": false }
+    ],
+    "explanation": "Developing a BARS system is a rigorous multi-step process: (1) Collect critical incidents of job performance from subject matter experts (SMEs). (2) Cluster these incidents into distinct performance dimensions. (3) Retranslate (cross-validate) the incidents with another group of SMEs to ensure agreement. (4) Scale the incidents, usually on a 1-to-9 or 1-to-5 scale, based on their level of effectiveness. (5) Assemble the final scale using the validated incidents as 'anchors' along the numerical scale. Option B describes job evaluation for compensation design, not BARS development. Option C describes subjective trait scales mixed with 360-degree feedback, which lacks the behavioral anchoring of BARS. Option D describes electronic performance monitoring (EPM), which is quantitative and unrelated to BARS development.",
+    "interest": "Human Resources",
+    "difficulty": "Medium",
+    "topics": ["performance-appraisal", "bars"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Under the U.S. Family and Medical Leave Act (FMLA), which of the following scenarios describes an employee who is legally eligible to take FMLA job-protected leave?",
+    "choices": [
+      { "id": "a", "text": "An employee who has worked for a covered private employer for 13 months, logging 1,300 hours of service, at a worksite with 55 employees within a 75-mile radius.", "correct": true },
+      { "id": "b", "text": "An employee who has worked for a covered employer for 8 months, logging 1,500 hours, at a worksite with 100 employees within a 10-mile radius.", "correct": false },
+      { "id": "c", "text": "An employee who has worked for a covered employer for 2 years, logging 900 hours, at a worksite with 60 employees within a 5-mile radius.", "correct": false },
+      { "id": "d", "text": "An employee who has worked for a startup with 15 employees for 18 months, logging 2,000 hours of service, at a single physical location.", "correct": false }
+    ],
+    "explanation": "To be eligible for FMLA leave, an employee must meet three core statutory criteria: (1) work for a covered employer (which includes private employers with 50 or more employees); (2) have worked for the employer for at least 12 months (not necessarily consecutive); (3) have accumulated at least 1,250 hours of service during the 12-month period immediately preceding the leave; and (4) work at a location where the employer has at least 50 employees within a 75-mile radius. Option A meets all criteria: 13 months (>12 months), 1,300 hours (>1,250 hours), and 55 employees within 75 miles. Option B fails the 12-month requirement (only 8 months). Option C fails the 1,250-hour requirement (only 900 hours). Option D fails because the employer only has 15 employees, which is below the 50-employee threshold for covered private employers.",
+    "interest": "Human Resources",
+    "difficulty": "Medium",
+    "topics": ["employment-law", "fmla"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When conducting a Job Analysis, what is the primary methodological difference between a Position Analysis Questionnaire (PAQ) and Functional Job Analysis (FJA)?",
+    "choices": [
+      { "id": "a", "text": "The PAQ is a highly structured, worker-oriented questionnaire containing standardized job elements, whereas FJA is a task-oriented approach focusing on how a job relates to Data, People, and Things.", "correct": true },
+      { "id": "b", "text": "The PAQ is used exclusively for executive and managerial positions, while FJA is restricted to entry-level unionized labor roles.", "correct": false },
+      { "id": "c", "text": "The PAQ measures only psychological stressors and emotional intelligence, whereas FJA measures physical strength and kinetic endurance.", "correct": false },
+      { "id": "d", "text": "The PAQ is completed solely by external management consultants, whereas FJA must be conducted by the employee's direct supervisor.", "correct": false }
+    ],
+    "explanation": "The PAQ is a standardized, worker-oriented job analysis instrument that uses 194 elements to analyze job behaviors, working conditions, and job characteristics. It focuses on how a worker gets work done rather than the specific tasks. FJA is a task-oriented methodology that defines a job by what the worker does in relation to three core domains: Data (cognitive), People (interpersonal), and Things (physical). Option B is incorrect because PAQ is actually less effective for managerial roles due to its focus on observable behaviors, and FJA can be used for any level of work. Option C is incorrect because neither is restricted to these narrow physiological or emotional metrics. Option D is incorrect because either method can be administered by internal HR analysts or external consultants.",
+    "interest": "Human Resources",
+    "difficulty": "Medium",
+    "topics": ["job-analysis", "methodology"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A corporate training program is evaluated using Kirkpatrick's Four Levels of Training Evaluation. If an HR analyst measures a statistically significant improvement in post-training job performance metrics compared to pre-training baselines, which level of evaluation is being assessed?",
+    "choices": [
+      { "id": "a", "text": "Level 1: Reaction", "correct": false },
+      { "id": "b", "text": "Level 2: Learning", "correct": false },
+      { "id": "c", "text": "Level 3: Behavior", "correct": true },
+      { "id": "d", "text": "Level 4: Results", "correct": false }
+    ],
+    "explanation": "Kirkpatrick's framework has four levels: Level 1 (Reaction) measures participant satisfaction and engagement; Level 2 (Learning) measures the acquisition of knowledge, skills, or attitudes (typically via pre/post tests); Level 3 (Behavior) evaluates the transfer of training to the actual job (how behavior or job performance changes on the job); and Level 4 (Results) measures organizational outcomes (e.g., profitability, cost reduction, quality). Measuring an increase in job performance metrics on the job directly represents Level 3 (Behavior/Transfer). Option A is incorrect because Reaction is subjective sentiment. Option B is incorrect because Learning is training-room achievement. Option D is incorrect because Results refers to high-level organizational impact, not individual behavioral transfer.",
+    "interest": "Human Resources",
+    "difficulty": "Medium",
+    "topics": ["training-evaluation", "kirkpatrick"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An HR strategist is using a Markov Analysis to forecast the internal supply of labor for key managerial roles. The transition probability matrix shows a 0.15 probability of promotion from Assistant Manager to Manager within one year, a 0.70 probability of staying in the current role, a 0.05 probability of lateral transfer, and a 0.10 probability of exit. If there are currently 120 Assistant Managers, how many are statistically projected to be promoted to Manager at the end of the year, assuming no personnel shifts occur during the period?",
+    "choices": [
+      { "id": "a", "text": "18", "correct": true },
+      { "id": "b", "text": "84", "correct": false },
+      { "id": "c", "text": "12", "correct": false },
+      { "id": "d", "text": "6", "correct": false }
+    ],
+    "explanation": "Markov Analysis uses historical transition probability matrices to forecast movement of employees across roles. To find the projected promotions from Assistant Manager to Manager, multiply the current headcount of Assistant Managers by the promotion transition probability: 120 * 0.15 = 18 Assistant Managers promoted. Let's look at other options to see why they are incorrect or represent different calculations: 84 is the number expected to remain in the role (120 * 0.70), 12 is the number expected to exit (120 * 0.10), and 6 is the number expected to transfer laterally (120 * 0.05).",
+    "interest": "Human Resources",
+    "difficulty": "Hard",
+    "topics": ["workforce-planning", "markov-analysis"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "During collective bargaining, what is the core strategic distinction between 'distributive bargaining' and 'integrative bargaining'?",
+    "choices": [
+      { "id": "a", "text": "Distributive bargaining is a zero-sum, win-lose approach focused on dividing a fixed pie of resources, whereas integrative bargaining is a collaborative, win-win approach aimed at expanding the pie through mutual gains.", "correct": true },
+      { "id": "b", "text": "Distributive bargaining focuses exclusively on non-monetary work rules, while integrative bargaining deals strictly with wages and health benefits.", "correct": false },
+      { "id": "c", "text": "Distributive bargaining is legally mandated under federal labor laws, while integrative bargaining is voluntary and unenforceable.", "correct": false },
+      { "id": "d", "text": "Distributive bargaining involves third-party arbitration, whereas integrative bargaining relies entirely on self-guided strikes and lockouts.", "correct": false }
+    ],
+    "explanation": "Distributive bargaining assumes a fixed-pie, competitive game where one party's gain is the other's loss (zero-sum, such as negotiating hourly wages). Integrative bargaining searches for creative options to establish joint gains (win-win, such as trading off flexible scheduling for productivity improvements). Option B is incorrect because wages can be part of integrative solutions, and work rules can be highly distributive. Option C is incorrect because both are valid, legal collective bargaining styles under labor law. Option D is incorrect because arbitration and strikes are dispute-resolution tools that can occur under either bargaining style, not defining characteristics.",
+    "interest": "Human Resources",
+    "difficulty": "Hard",
+    "topics": ["labor-relations", "collective-bargaining"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "According to the ANSI/SHRM standard for calculating 'Cost-per-Hire' (CPH), which of the following formulas correctly integrates internal costs (IC), external costs (EC), and total number of hires (H)?",
+    "choices": [
+      { "id": "a", "text": "CPH = (External Costs (EC) + Internal Costs (IC)) / Total Number of Hires (H)", "correct": true },
+      { "id": "b", "text": "CPH = ((External Costs (EC) - Internal Costs (IC)) / Total Number of Hires (H)) * 100", "correct": false },
+      { "id": "c", "text": "CPH = (Total Recruiting Budget / FTE Headcount) + Agency Fees", "correct": false },
+      { "id": "d", "text": "CPH = (Direct Referral Bonuses + Signing Bonuses) / Total Open Requisitions", "correct": false }
+    ],
+    "explanation": "The ANSI/SHRM standard for Cost-per-Hire defines the calculation as the sum of all external recruiting costs (e.g., agency fees, advertising, job boards, travel, technology) and internal recruiting costs (e.g., recruiter salaries, talent acquisition overhead, employee referral incentives) divided by the total number of hires in the specified period. Option A shows this precise formula: CPH = (EC + IC) / H. Options B, C, and D are mathematically incorrect and do not conform to the SHRM standard.",
+    "interest": "Human Resources",
+    "difficulty": "Hard",
+    "topics": ["talent-acquisition", "metrics"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "How does the Resource-Based View (RBV) of the firm apply to Strategic Human Resource Management (SHRM) in establishing a sustainable competitive advantage?",
+    "choices": [
+      { "id": "a", "text": "HR systems create competitive advantage by developing human capital resources that are Valuable, Rare, Inimitable, and Non-substitutable (VRIN).", "correct": true },
+      { "id": "b", "text": "HR systems achieve advantage by focusing solely on lowering transaction costs through outsourcing all high-risk HR activities.", "correct": false },
+      { "id": "c", "text": "HR systems match external industry forces by constantly restructuring the organization to follow the competitor's staffing ratios.", "correct": false },
+      { "id": "d", "text": "HR systems eliminate competitive pressure by standardizing all job roles so that employees are highly interchangeable commodities.", "correct": false }
+    ],
+    "explanation": "The Resource-Based View (RBV) asserts that competitive advantage stems from internal resources that meet the VRIN criteria. In SHRM, the firm's human resources (skills, knowledge, experience) and organizational practices (culture, HR policies) are leveraged as unique strategic assets that competitors cannot easily copy (inimitable) or substitute. Option B is incorrect because outsourcing does not build rare, inimitable internal resources. Option C describes a reactive, benchmark-oriented approach rather than building unique internal capabilities. Option D is incorrect because making employees interchangeable commodities reduces rarity and inimitability, destroying the basis of RBV-driven advantage.",
+    "interest": "Human Resources",
+    "difficulty": "Hard",
+    "topics": ["strategic-hr", "rbv"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A publicly traded enterprise is restructuring its executive compensation package to include a 'double-trigger' change-in-control provision for its golden parachute agreements. What is the precise operational trigger mechanism of this double-trigger clause?",
+    "choices": [
+      { "id": "a", "text": "The golden parachute is activated only if a change in corporate ownership occurs (first trigger) AND the executive is terminated without cause or resigns for good reason within a specified subsequent window (second trigger).", "correct": true },
+      { "id": "b", "text": "The package triggers only if the company's stock price falls below a specified moving average (first trigger) AND two consecutive quarterly earnings misses occur (second trigger).", "correct": false },
+      { "id": "c", "text": "The compensation is paid only if the CEO resigns (first trigger) AND the board of directors is completely replaced by a proxy vote (second trigger).", "correct": false },
+      { "id": "d", "text": "The parachute triggers only if the acquiring firm's credit rating drops (first trigger) AND the executive's stock options are re-priced at a premium (second trigger).", "correct": false }
+    ],
+    "explanation": "In executive compensation, a 'single-trigger' provision pays out a golden parachute immediately upon a change in corporate control. A 'double-trigger' provision is considered a stronger governance practice because it protects shareholders from paying massive payouts to executives who voluntarily choose to stay post-acquisition. It requires both: (1) a change in control (ownership acquisition), and (2) an involuntary termination of the executive without cause, or a constructive termination (resignation for 'good reason' due to a demotion, salary cut, or forced relocation) within a specified timeframe (typically 12 to 24 months). Options B, C, and D describe unrelated corporate finance or operational events that do not constitute the double-trigger executive compensation standard.",
+    "interest": "Human Resources",
+    "difficulty": "Expert",
+    "topics": ["executive-compensation", "governance"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "During an intensive post-merger integration (PMI) of two global organizations, an HR director must align the divergent corporate cultures and operating models. According to the McKinsey 7S framework, which structural alignment strategy represents the most critical path for preventing cultural rejection of the newly merged entity?",
+    "choices": [
+      { "id": "a", "text": "Targeting 'Superordinate Goals' (Shared Values) first to establish a unified mission, then systematically aligning 'Soft Ss' (Staff, Skills, Style) with the 'Hard Ss' (Strategy, Structure, Systems).", "correct": true },
+      { "id": "b", "text": "Mandating immediate, top-down changes to 'Structure' and 'Systems' while keeping the existing 'Staff' completely isolated from new 'Skills' training.", "correct": false },
+      { "id": "c", "text": "Abolishing all formal 'Strategy' documents to allow 'Style' and informal communication channels to organically dictate operational processes.", "correct": false },
+      { "id": "d", "text": "Freezing all 'Systems' changes and focusing exclusively on renegotiating executive-level stock option plans for the first two fiscal years.", "correct": false }
+    ],
+    "explanation": "The McKinsey 7S framework divides organizational elements into Hard Ss (Strategy, Structure, Systems) and Soft Ss (Shared Values, Style, Staff, Skills). In a merger, cultural integration failure is typically caused by ignoring the Soft Ss. The framework positions 'Shared Values' (Superordinate Goals) at the core. The HR director must first establish a unified, shared cultural and strategic identity, then ensure that soft elements (leadership style, staffing decisions, skill gaps) and hard elements (reporting lines, IT/HR systems, strategic objectives) are mutually reinforcing. Option B is incorrect because focusing solely on Hard Ss and isolating staff leads to high turnover and integration failure. Option C is incorrect because eliminating formal strategy creates paralyzing ambiguity. Option D is incorrect because freezing systems and focusing only on executive payouts ignores the broader organizational alignment needed for PMI success.",
+    "interest": "Human Resources",
+    "difficulty": "Expert",
+    "topics": ["organizational-development", "mckinsey-7s"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Under the Employee Retirement Income Security Act (ERISA) and IRS guidelines, what is the legal significance of a 'Safe Harbor' design for a corporate 401(k) plan?",
+    "choices": [
+      { "id": "a", "text": "It automatically satisfies the non-discrimination testing requirements (ADP and ACP tests) by committing the employer to making fully vested, non-elective or matching contributions on behalf of all eligible employees.", "correct": true },
+      { "id": "b", "text": "It legally shields the corporate plan sponsor from all fiduciary liability relating to investment losses incurred by plan participants.", "correct": false },
+      { "id": "c", "text": "It permits the employer to defer tax payments on corporate revenues by depositing unvested employee pension funds into offshore trusts.", "correct": false },
+      { "id": "d", "text": "It exempts the employer from reporting annual plan financial statements on IRS Form 5500.", "correct": false }
+    ],
+    "explanation": "Standard 401(k) plans must undergo rigorous annual non-discrimination testing: the ADP and ACP tests. These tests ensure that highly compensated employees (HCEs) do not benefit disproportionately compared to non-highly compensated employees (NHCEs). A 'Safe Harbor' 401(k) plan design bypasses these complex, administratively burdensome tests. In exchange, the employer must agree to make specific minimum contributions (either a matching contribution or a non-elective contribution of at least 3% of compensation for all eligible employees) that are 100% immediately vested. Option B is incorrect because Safe Harbor does not eliminate general fiduciary liabilities (such as duty of prudence in selecting investment options). Option C is illegal under ERISA and tax laws. Option D is incorrect because Safe Harbor plans are still required to file Form 5500 annually.",
+    "interest": "Human Resources",
+    "difficulty": "Expert",
+    "topics": ["compensation-benefits", "erisa"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An HR compensation executive identifies widespread 'salary compression' within the engineering department, where senior engineers are earning barely more than newly hired junior engineers due to rapidly rising market starting rates. Which structural remediation strategy provides the most sustainable balance between internal equity and budget constraints?",
+    "choices": [
+      { "id": "a", "text": "Recalibrate pay grades by widening salary bands, calculate individual comp-ratios, and apply equity adjustments to compressed mid-career performers using a phased, merit-weighted budget allocation.", "correct": true },
+      { "id": "b", "text": "Implement an immediate salary freeze for all new hires and reduce the pay of senior engineers to create a perfectly flat pay distribution.", "correct": false },
+      { "id": "c", "text": "Transition all engineering roles to a 100% variable commission model based on individual lines of code written to eliminate fixed salary grades entirely.", "correct": false },
+      { "id": "d", "text": "Outsource the entire senior engineering workforce and rehire them as independent contractors to bypass internal salary grade structures.", "correct": false }
+    ],
+    "explanation": "Salary compression is a common, challenging issue when starting salaries rise faster than internal merit increases. To resolve it sustainably: (1) Widening pay bands gives breathing room for salary adjustments. (2) Calculating the comp-ratio (employee salary divided by the midpoint of the pay band) helps identify exactly where compression is most severe. (3) Applying targeted, phased equity adjustments to affected mid-level/senior employees balances the budget impact, ensuring experienced staff are paid fairly relative to new hires (internal equity) while matching market trends (external competitiveness). Option B destroys talent acquisition (due to the freeze) and violates employee trust/retention (by cutting senior pay). Option C introduces poor metrics (lines of code) and high variable risk that is inappropriate for core engineering. Option D creates severe legal/tax risks regarding contractor misclassification and destroys institutional knowledge.",
+    "interest": "Human Resources",
+    "difficulty": "Expert",
+    "topics": ["compensation", "salary-compression"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Which of the following is a fundamental mathematical assumption of the classic Economic Order Quantity (EOQ) model for inventory management?",
+    "choices": [
+      { "id": "a", "text": "Demand rate is constant and known with certainty, lead time is constant, and there are no quantity discounts or stockouts.", "correct": true },
+      { "id": "b", "text": "Demand varies seasonally, lead time fluctuates randomly, and quantity discounts are applied progressively.", "correct": false },
+      { "id": "c", "text": "Holding costs are negligible, and ordering costs decrease linearly with the size of the order.", "correct": false },
+      { "id": "d", "text": "Inventory is replenished continuously over a prolonged manufacturing cycle rather than in instantaneous batches.", "correct": false }
+    ],
+    "explanation": "The classic EOQ model, developed by Ford W. Harris, rests on several simplifying assumptions to derive the optimal order quantity: (1) demand is known, constant, and continuous; (2) lead time is known and constant; (3) replenishment is instantaneous (the entire batch arrives at once); (4) stockouts are not permitted; and (5) unit price, ordering cost, and holding cost are constant (no quantity discounts). Option B describes real-world dynamics that violate basic EOQ assumptions. Option C is incorrect because holding costs are a key parameter of the model, and ordering costs are fixed per order. Option D describes the Economic Production Quantity (EPQ) or Production Order Quantity model, not the classic EOQ model.",
+    "interest": "Operations",
+    "difficulty": "Easy",
+    "topics": ["inventory-management", "eoq"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In Six Sigma quality management methodology, what is the maximum number of Defects Per Million Opportunities (DPMO) permitted for a process to achieve Six Sigma quality?",
+    "choices": [
+      { "id": "a", "text": "3.4 DPMO", "correct": true },
+      { "id": "b", "text": "233 DPMO", "correct": false },
+      { "id": "c", "text": "6,210 DPMO", "correct": false },
+      { "id": "d", "text": "66,807 DPMO", "correct": false }
+    ],
+    "explanation": "Under Six Sigma convention, a process operating at a Six Sigma level yields a process capability that tolerates a 1.5-sigma shift in the process mean over time. With this 1.5-sigma shift accounted for, the area under the normal curve outside the specification limits corresponds to exactly 3.4 defects per million opportunities (DPMO). Option B (233 DPMO) corresponds to Five Sigma. Option C (6,210 DPMO) corresponds to Four Sigma. Option D (66,807 DPMO) corresponds to Three Sigma.",
+    "interest": "Operations",
+    "difficulty": "Easy",
+    "topics": ["six-sigma", "quality-control"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In operations strategy, how are 'order qualifiers' distinguished from 'order winners'?",
+    "choices": [
+      { "id": "a", "text": "Order qualifiers are the minimum standards required for a product to be considered by a customer, whereas order winners are the criteria that actively differentiate the product to secure the sale.", "correct": true },
+      { "id": "b", "text": "Order qualifiers are legally mandated safety standards, while order winners are marketing slogans.", "correct": false },
+      { "id": "c", "text": "Order qualifiers are determined by external suppliers, whereas order winners are defined exclusively by the finance department.", "correct": false },
+      { "id": "d", "text": "Order qualifiers apply only to high-volume manufacturing, while order winners apply only to custom service operations.", "correct": false }
+    ],
+    "explanation": "Coined by Terry Hill, order qualifiers are the competitive dimensions (such as quality, price, or delivery speed) that a company must meet just to enter or remain in a market segment. Order winners are the specific dimensions that differentiate the company's product or service from competitors, causing the customer to choose it over others. Option B is incorrect because order winners represent real competitive advantages (like superior performance or lower cost), not just marketing slogans. Option C is incorrect because both are determined by market demands and customer expectations, not just specific internal departments. Option D is incorrect because both concepts apply across all manufacturing and service operations.",
+    "interest": "Operations",
+    "difficulty": "Easy",
+    "topics": ["operations-strategy", "competitive-dimensions"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the following best describes the 'Bullwhip Effect' in supply chain management?",
+    "choices": [
+      { "id": "a", "text": "The phenomenon where small fluctuations in retail demand trigger progressively larger fluctuations in demand amplification as orders move upstream in the supply chain.", "correct": true },
+      { "id": "b", "text": "The rapid deceleration of manufacturing throughput caused by a physical breakdown in primary transport systems.", "correct": false },
+      { "id": "c", "text": "The continuous price reduction of consumer goods caused by fierce competition among retail distributors.", "correct": false },
+      { "id": "d", "text": "The administrative delay that occurs when a purchase order requires multi-tier executive approval.", "correct": false }
+    ],
+    "explanation": "The Bullwhip Effect refers to the amplification of demand variability as one moves upstream in a supply chain (from retailer to distributor, wholesaler, manufacturer, and supplier). Minor variations in consumer demand at the retail level result in massive spikes and drops in orders placed upstream due to factors like lead-time delays, batch ordering, price fluctuations, and rationing/shortage gaming. Option B describes a physical bottleneck or logistics failure. Option C describes price wars or deflationary pressure. Option D describes administrative bottlenecking.",
+    "interest": "Operations",
+    "difficulty": "Easy",
+    "topics": ["supply-chain", "bullwhip-effect"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A manufacturing cell consists of three sequential operations. Operation A has a capacity of 40 units per hour, Operation B has a capacity of 25 units per hour, and Operation C has a capacity of 35 units per hour. What is the overall hourly capacity of the system, and which operation represents the bottleneck?",
+    "choices": [
+      { "id": "a", "text": "25 units per hour; Operation B is the bottleneck.", "correct": true },
+      { "id": "b", "text": "40 units per hour; Operation A is the bottleneck.", "correct": false },
+      { "id": "c", "text": "35 units per hour; Operation C is the bottleneck.", "correct": false },
+      { "id": "d", "text": "100 units per hour; there is no bottleneck because capacities sum to a surplus.", "correct": false }
+    ],
+    "explanation": "The throughput capacity of any sequential process is constrained by its slowest step, which is known as the bottleneck. In this system, Operation B has the lowest hourly capacity (25 units per hour). Therefore, even though Operation A can feed 40 units per hour and Operation C can process 35 units per hour, the system cannot output more than Operation B's limit of 25 units per hour. Option B is incorrect because Operation A has the highest capacity. Option C is incorrect because Operation C is not the slowest step. Option D is mathematically incorrect; capacity in a sequential line is not additive.",
+    "interest": "Operations",
+    "difficulty": "Medium",
+    "topics": ["process-capacity", "bottleneck"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A warehouse experiences a constant daily demand of 80 units for a specific product. The lead time for replenishment from the supplier is exactly 5 days. To guard against demand spikes and lead-time delays, the operations manager maintains a safety stock of 150 units. What is the correct Reorder Point (ROP) for this product?",
+    "choices": [
+      { "id": "a", "text": "550 units", "correct": true },
+      { "id": "b", "text": "400 units", "correct": false },
+      { "id": "c", "text": "250 units", "correct": false },
+      { "id": "d", "text": "950 units", "correct": false }
+    ],
+    "explanation": "The Reorder Point (ROP) with safety stock is calculated using the formula: ROP = (Daily Demand * Lead Time in Days) + Safety Stock. Given: Daily Demand = 80 units, Lead Time = 5 days, and Safety Stock = 150 units. Plugging in the values: ROP = (80 * 5) + 150 = 400 + 150 = 550 units. Therefore, the manager should place a new order when inventory levels drop to 550 units. Option B is incorrect because it omits safety stock (80 * 5 = 400). Option C is incorrect because it subtracts safety stock (400 - 150 = 250). Option D is mathematically incorrect.",
+    "interest": "Operations",
+    "difficulty": "Medium",
+    "topics": ["inventory-control", "reorder-point"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following best describes the structural usage of an Ishikawa (Cause-and-Effect) diagram during a Total Quality Management (TQM) root-cause analysis?",
+    "choices": [
+      { "id": "a", "text": "It visually categorizes potential causes of a problem into standard branches (typically the 6 Ms: Manpower, Machine, Material, Method, Measurement, Mother Nature) to identify the root source of quality variation.", "correct": true },
+      { "id": "b", "text": "It plots cumulative defect frequencies in descending order to isolate the 20% of causes that account for 80% of quality issues.", "correct": false },
+      { "id": "c", "text": "It maps process steps chronologically to highlight value-adding vs non-value-adding activity times.", "correct": false },
+      { "id": "d", "text": "It uses statistical control limits (UCL and LCL) to determine whether a process is operating under common-cause variation.", "correct": false }
+    ],
+    "explanation": "An Ishikawa diagram (also known as a fishbone or cause-and-effect diagram) is a graphical tool used in brainstorming to map out the potential inputs or causes that lead to a specific effect or quality defect. It groups potential sources of error into logical categories (the '6 Ms' in manufacturing or '4 Ps' in service) to systematically uncover root causes. Option B describes a Pareto Chart. Option C describes a Value Stream Map or Process Flowchart. Option D describes a Statistical Process Control (SPC) Chart.",
+    "interest": "Operations",
+    "difficulty": "Medium",
+    "topics": ["quality-tools", "ishikawa"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An operations project manager is mapping a project schedule. Activity X is on the critical path, with an early start (ES) of day 12, early finish (EF) of day 18, and late finish (LF) of day 18. Activity Y is a non-critical activity with an ES of day 8, EF of day 12, and LF of day 17. What is the total slack (float) for Activity X and Activity Y respectively?",
+    "choices": [
+      { "id": "a", "text": "Activity X has 0 days of slack; Activity Y has 5 days of slack.", "correct": true },
+      { "id": "b", "text": "Activity X has 6 days of slack; Activity Y has 4 days of slack.", "correct": false },
+      { "id": "c", "text": "Activity X has 0 days of slack; Activity Y has 1 day of slack.", "correct": false },
+      { "id": "d", "text": "Activity X has 18 days of slack; Activity Y has 17 days of slack.", "correct": false }
+    ],
+    "explanation": "Total slack (or float) is the amount of time an activity can be delayed without delaying the project completion date. It is calculated as: LS - ES or LF - EF. For Activity X: Since it is on the critical path, its slack must be 0 (specifically: LF - EF = 18 - 18 = 0). For Activity Y: Slack = LF - EF = 17 - 12 = 5 days. Option A correctly states 0 days for X and 5 days for Y. Option B is incorrect because Activity X has zero slack, and 6 is its duration (18 - 12). Option C is incorrect because it miscalculates Y's slack as 1 (17 - 12 - 4). Option D uses the late finish values directly instead of calculating slack.",
+    "interest": "Operations",
+    "difficulty": "Medium",
+    "topics": ["project-management", "cpm"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An assembly line manager is sizing a Kanban loop for an engine component. The daily demand for the component is 480 units, and the lead time to replenish a container is exactly 0.25 days. Each standard container holds 30 components. Due to potential equipment variance, the manager applies a safety factor of 10% (0.10). Using the standard Kanban sizing equation, how many Kanban cards (containers) are required for this loop?",
+    "choices": [
+      { "id": "a", "text": "5", "correct": true },
+      { "id": "b", "text": "4", "correct": false },
+      { "id": "c", "text": "44", "correct": false },
+      { "id": "d", "text": "16", "correct": false }
+    ],
+    "explanation": "The standard Kanban sizing equation is: N = (D * L * (1 + S)) / C, where N is the number of Kanban cards (containers), D is the demand rate per unit time, L is the lead time for replenishment, S is the safety factor (expressed as a decimal), and C is the container capacity. Given: D = 480 units/day, L = 0.25 days, S = 0.10, and C = 30 units/container. Calculate the numerator: 480 * 0.25 * (1 + 0.10) = 120 * 1.10 = 132. Divide by C: N = 132 / 30 = 4.4. Since you cannot have a fraction of a Kanban card and must round up to ensure demand is met without shortage, the required number of cards is 5. Option B (4) is incorrect because rounding down would leave the system short of safety requirements. Options C and D are mathematically incorrect.",
+    "interest": "Operations",
+    "difficulty": "Hard",
+    "topics": ["lean-operations", "kanban"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Under what operational conditions is a 'Revenue-Sharing' contract superior to a standard wholesale price contract for coordinating a decentralized supply chain?",
+    "choices": [
+      { "id": "a", "text": "When double marginalization causes the retailer to order less than the system-optimal quantity; the supplier lowers the wholesale price below marginal cost and reclaims profit by taking a percentage of the retailer's sales revenue.", "correct": true },
+      { "id": "b", "text": "When the supplier's production capacity is infinite and holding costs at the retail level are zero, rendering wholesale price pricing irrelevant.", "correct": false },
+      { "id": "c", "text": "When the retailer operates as a pure monopoly and can unilaterally pass all cost increases to the consumer without affecting demand volume.", "correct": false },
+      { "id": "d", "text": "When freight transportation costs represent more than 90% of the total cost of goods sold, forcing a shared-carrier model.", "correct": false }
+    ],
+    "explanation": "In a decentralized supply chain, double marginalization occurs because both the supplier and the retailer add profit margins, leading to a retail price that is too high and an order quantity that is lower than what would maximize total supply chain profit (the coordinated system benchmark). A revenue-sharing contract solves this by having the supplier sell the product to the retailer at a very low wholesale price (often near or below marginal cost). This reduces the retailer's risk of overstocking, prompting them to order a larger, system-optimal quantity. The supplier is then compensated by receiving a negotiated share of the retailer's revenues. Option B is incorrect because infinite capacity and zero holding costs do not eliminate double marginalization. Option C is incorrect because monopolistic power does not solve vertical coordination issues. Option D is incorrect because transportation costs alone do not define the mechanism of revenue-sharing coordination.",
+    "interest": "Operations",
+    "difficulty": "Hard",
+    "topics": ["supply-chain-contracts", "coordination"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A manufacturing plant has a design capacity of 200 units per shift. The effective capacity of the line, accounting for scheduled maintenance and product changeovers, is 160 units per shift. During a recent high-demand week, the line actually produced 144 units per shift. What are the plant's utilization and efficiency rates for this week?",
+    "choices": [
+      { "id": "a", "text": "Utilization is 72.0%; Efficiency is 90.0%.", "correct": true },
+      { "id": "b", "text": "Utilization is 90.0%; Efficiency is 72.0%.", "correct": false },
+      { "id": "c", "text": "Utilization is 80.0%; Efficiency is 90.0%.", "correct": false },
+      { "id": "d", "text": "Utilization is 72.0%; Efficiency is 80.0%.", "correct": false }
+    ],
+    "explanation": "Utilization is defined as the ratio of actual output to design capacity: Utilization = Actual Output / Design Capacity = 144 / 200 = 0.720 or 72.0%. Efficiency is defined as the ratio of actual output to effective capacity: Efficiency = Actual Output / Effective Capacity = 144 / 160 = 0.900 or 90.0%. Option A correctly pairs these calculations. Option B reverses the two metrics. Option C uses effective capacity divided by design capacity (80.0%) as the utilization rate. Option D miscalculates efficiency using the ratio of effective capacity to design capacity (80.0%).",
+    "interest": "Operations",
+    "difficulty": "Hard",
+    "topics": ["capacity-planning", "capacity-metrics"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An operations planner must select between a 'Chase Strategy' and a 'Level Strategy' for aggregate production planning. Under which demand and cost structure is a pure Level Strategy mathematically and operationally preferred?",
+    "choices": [
+      { "id": "a", "text": "When demand is highly seasonal, inventory holding costs are exceptionally low, and the costs associated with hiring, firing, and training workers are extremely high.", "correct": true },
+      { "id": "b", "text": "When inventory holding costs are extremely high, shelf life is very short, and labor is highly flexible with zero hiring or firing costs.", "correct": false },
+      { "id": "c", "text": "When demand is perfectly flat and constant throughout the year, making workforce adjustments completely irrelevant.", "correct": false },
+      { "id": "d", "text": "When the supplier dictates a continuous daily adjustment of component specifications, requiring highly customized, batch-of-one assemblies.", "correct": false }
+    ],
+    "explanation": "A Level Strategy maintains a constant production rate and workforce level. When demand fluctuates, inventory is accumulated during low-demand periods and depleted during high-demand periods. This is highly effective when inventory holding costs are low (cheap to store) and workforce adjustment costs (hiring, firing, training, subcontracting) are very high. A Chase Strategy matches production exactly to demand by adjusting workforce levels; this is preferred when holding costs are high (e.g., perishable goods) and labor is highly flexible. Option B describes conditions that favor a Chase Strategy. Option C is incorrect because if demand is perfectly flat, both strategies collapse into the same plan, making selection trivial. Option D describes mass customization, which requires agile/flexible scheduling rather than classic aggregate level planning.",
+    "interest": "Operations",
+    "difficulty": "Hard",
+    "topics": ["aggregate-planning", "production-strategy"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A single-server customer service desk operates as an M/M/1 queuing system. Customers arrive at an average rate of 12 per hour (Poisson distributed), and the representative can serve an average of 15 customers per hour (exponentially distributed). What are the average number of customers in the system (L) and the average time a customer spends waiting in the queue (W_q)?",
+    "choices": [
+      { "id": "a", "text": "L = 4.0 customers; W_q = 0.27 hours (16 minutes)", "correct": true },
+      { "id": "b", "text": "L = 0.8 customers; W_q = 0.05 hours (3 minutes)", "correct": false },
+      { "id": "c", "text": "L = 5.0 customers; W_q = 0.33 hours (20 minutes)", "correct": false },
+      { "id": "d", "text": "L = 1.2 customers; W_q = 0.10 hours (6 minutes)", "correct": false }
+    ],
+    "explanation": "In an M/M/1 queue, let the arrival rate lambda = 12 customers/hour and the service rate mu = 15 customers/hour. System utilization is rho = lambda / mu = 12 / 15 = 0.80. The average number of customers in the system (L) is calculated as: L = lambda / (mu - lambda) = 12 / (15 - 12) = 12 / 3 = 4.0 customers. The average time a customer spends waiting in the queue (W_q) is calculated using Little's Law or the M/M/1 queue formula: W_q = lambda / (mu * (mu - lambda)) = 12 / (15 * (15 - 12)) = 12 / 45 = 0.2667 hours, which rounds to 0.27 hours (or exactly 16 minutes, since 0.2667 * 60 = 16). Option A correctly matches these precise calculations. Options B, C, and D are mathematically incorrect.",
+    "interest": "Operations",
+    "difficulty": "Expert",
+    "topics": ["queuing-theory", "mm1-model"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A specialty retail store sells a highly perishable holiday item. The item costs $12 to purchase from the supplier and sells for $30. If any units are unsold at the end of the holiday, they can be liquidated at a salvage value of $4 per unit. Demand is normally distributed with a mean of 500 units and a standard deviation of 80 units. Using the Newsvendor model, what is the optimal service level (critical ratio) and the corresponding optimal order quantity?",
+    "choices": [
+      { "id": "a", "text": "Critical Ratio is 0.692; Optimal Order Quantity is 540 units.", "correct": true },
+      { "id": "b", "text": "Critical Ratio is 0.400; Optimal Order Quantity is 468 units.", "correct": false },
+      { "id": "c", "text": "Critical Ratio is 0.800; Optimal Order Quantity is 567 units.", "correct": false },
+      { "id": "d", "text": "Critical Ratio is 0.600; Optimal Order Quantity is 520 units.", "correct": false }
+    ],
+    "explanation": "Under the Newsvendor model, the optimal service level (critical ratio, CR) is given by the formula: CR = C_u / (C_u + C_o), where C_u is the cost of underage (marginal profit of underordering) and C_o is the cost of overage (marginal loss of overordering). Given: Selling Price P = 30, Cost C = 12, Salvage Value V = 4. C_u = P - C = 30 - 12 = 18. C_o = C - V = 12 - 4 = 8. CR = 18 / (18 + 8) = 18 / 26 = 0.6923 (or 69.2%). To find the optimal order quantity (Q*), we locate the z-score corresponding to a cumulative probability of 0.6923 in the standard normal distribution. Using standard normal tables, a probability of 0.6923 corresponds to a z-score of approximately 0.50. The optimal order quantity is: Q* = mean + z * standard_deviation = 500 + 0.50 * 80 = 500 + 40 = 540 units. Option A correctly matches this exact calculation. Options B, C, and D represent incorrect cost definitions or mathematical steps.",
+    "interest": "Operations",
+    "difficulty": "Expert",
+    "topics": ["inventory-models", "newsvendor"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A precision CNC machining process has a double-sided specification limit for a critical shaft diameter of 25.000 mm +/- 0.015 mm. Statistical process monitoring indicates the process mean is currently centered at 25.003 mm with a process standard deviation of 0.003 mm. What are the calculated Process Capability Indices C_p and C_pk for this process?",
+    "choices": [
+      { "id": "a", "text": "C_p = 1.67; C_pk = 1.33.", "correct": true },
+      { "id": "b", "text": "C_p = 1.33; C_pk = 1.67.", "correct": false },
+      { "id": "c", "text": "C_p = 1.00; C_pk = 0.80.", "correct": false },
+      { "id": "d", "text": "C_p = 2.00; C_pk = 1.00.", "correct": false }
+    ],
+    "explanation": "Process capability indices measure the ability of a process to produce output within specification limits. The Upper Specification Limit (USL) is 25.000 + 0.015 = 25.015 mm and the Lower Specification Limit (LSL) is 25.000 - 0.015 = 24.985 mm. Given: mean = 25.003, std_dev = 0.003. C_p measures potential capability: C_p = (USL - LSL) / (6 * std_dev) = (25.015 - 24.985) / (6 * 0.003) = 0.030 / 0.018 = 1.667 (rounds to 1.67). C_pk measures actual capability: C_pk = min((USL - mean)/(3 * std_dev), (mean - LSL)/(3 * std_dev)). Calculate Upper Index (CPU): CPU = (25.015 - 25.003) / (3 * 0.003) = 0.012 / 0.009 = 1.333. Calculate Lower Index (CPL): CPL = (25.003 - 24.985) / (3 * 0.003) = 0.018 / 0.009 = 2.000. C_pk = min(1.333, 2.000) = 1.333. Option A correctly matches these calculated values. Option B reverses the indices. Option C and D represent incorrect applications of the capability formulas.",
+    "interest": "Operations",
+    "difficulty": "Expert",
+    "topics": ["six-sigma", "process-capability"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Goldratt's Theory of Constraints (TOC), how is the 'Drum-Buffer-Rope' (DBR) system operationally implemented to synchronize a multi-stage production line?",
+    "choices": [
+      { "id": "a", "text": "The 'Drum' represents the bottleneck's production pace; the 'Buffer' is a time safeguard placed before the bottleneck to prevent starvation; and the 'Rope' is a communication signal that releases raw materials into the line based on the bottleneck's throughput.", "correct": true },
+      { "id": "b", "text": "The 'Drum' represents the high-frequency sorting machinery; the 'Buffer' is safety stock placed at the final shipping dock; and the 'Rope' is a physical pull cord used to halt the line when a defect occurs.", "correct": false },
+      { "id": "c", "text": "The 'Drum' is the corporate quarterly financial target; the 'Buffer' is the excess cash reserve; and the 'Rope' is the strategic plan linking suppliers to customer accounts.", "correct": false },
+      { "id": "d", "text": "The 'Drum' represents the daily standup meeting; the 'Buffer' is a slack window built into administrative tasks; and the 'Rope' is the direct reporting line from operator to VP.", "correct": false }
+    ],
+    "explanation": "In TOC, Drum-Buffer-Rope is the scheduling and control system designed to manage process bottlenecks: (1) The Drum represents the constraint (bottleneck) which dictates the optimal production pace for the entire plant. (2) The Buffer is expressed in terms of time and is placed immediately in front of the bottleneck to protect it from upstream disruptions, ensuring the constraint never goes idle ('starved'). (3) The Rope is the information feedback mechanism (or pull signal) that regulates the release of raw materials at the very beginning of the line, keeping it locked to the bottleneck's processing rate to prevent work-in-process (WIP) accumulation. Option B mixes up general lean concepts (like the Toyota andon cord). Options C and D are metaphorical and incorrect in the context of standard operations management.",
+    "interest": "Operations",
+    "difficulty": "Expert",
+    "topics": ["theory-of-constraints", "drum-buffer-rope"],
+    "bloomLevel": "Analyze"
+  }
+]

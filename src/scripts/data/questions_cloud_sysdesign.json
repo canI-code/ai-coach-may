@@ -1,0 +1,1103 @@
+[
+  {
+    "text": "Under the AWS Shared Responsibility Model, which of the following is a security responsibility that belongs solely to the customer when deploying an application on Amazon EC2 instances?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Physical security of the data centers hosting the virtualized hardware.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Patch management and updates of the host operating system and virtualization software.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Configuring the guest operating system's firewall (security groups) and applying application patches.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Disposal of decommissioned physical storage devices containing customer data.",
+        "correct": false
+      }
+    ],
+    "explanation": "Under the Shared Responsibility Model, AWS is responsible for security 'of' the cloud, which includes the physical infrastructure, virtualization hypervisor, hardware disposal, and host OS patching. The customer is responsible for security 'in' the cloud. This includes guest operating system configuration, client-side encryption, network traffic protection (security groups and network ACLs), and application patching. Thus, option C is correct, while options A, B, and D are AWS responsibilities.",
+    "interest": "Cloud Computing",
+    "difficulty": "Easy",
+    "topics": [
+      "Shared Responsibility Model",
+      "EC2",
+      "Security Groups"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which cloud deployment model is characterized by sharing infrastructure among several organizations that have common concerns (such as security requirements, compliance, and jurisdiction), and may be managed by the organizations themselves or a third party?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Private Cloud",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Public Cloud",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Hybrid Cloud",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Community Cloud",
+        "correct": true
+      }
+    ],
+    "explanation": "A Community Cloud is shared by organizations that have shared concerns (mission, security requirements, policy, and compliance considerations). Private Cloud is dedicated to a single organization. Public Cloud makes resources available to the general public over the internet. Hybrid Cloud is a composition of two or more distinct cloud deployment models (private, community, or public) that remain unique entities but are bound together by standardized technology.",
+    "interest": "Cloud Computing",
+    "difficulty": "Easy",
+    "topics": [
+      "Cloud Deployment Models",
+      "NIST Definitions"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "According to the NIST definition of Cloud Computing, which of the following is one of the five essential characteristics of a cloud service?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Monolithic software architecture",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Rapid elasticity",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Manual resource allocation by provider administrators",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Fixed pricing model regardless of usage",
+        "correct": false
+      }
+    ],
+    "explanation": "The five essential characteristics defined by NIST are: 1. On-demand self-service, 2. Broad network access, 3. Resource pooling, 4. Rapid elasticity, and 5. Measured service. Rapid elasticity allows capabilities to be elastically provisioned and released, sometimes automatically, to scale rapidly outward and inward commensurate with demand. Monolithic architecture is not a cloud characteristic; manual resource allocation is the opposite of on-demand self-service; and cloud models typically rely on measured service (pay-as-you-go) rather than fixed pricing.",
+    "interest": "Cloud Computing",
+    "difficulty": "Easy",
+    "topics": [
+      "NIST Definitions",
+      "Cloud Characteristics"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "A company needs to store data that is accessed infrequently but must be immediately available when needed. Which Amazon S3 storage class is optimized for this requirement at the lowest storage cost?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Amazon S3 Standard",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Amazon S3 Standard-Infrequent Access (S3 Standard-IA)",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA)",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Amazon S3 Glacier Flexible Retrieval",
+        "correct": false
+      }
+    ],
+    "explanation": "S3 Standard-IA is designed for data that is accessed less frequently but requires rapid access when needed. S3 Standard is too expensive for infrequent access. S3 One Zone-IA is cheaper but does not offer multi-AZ resilience, making Standard-IA the optimal resilient choice for immediate availability. Glacier classes require minutes to hours for retrieval, which fails the immediate availability requirement.",
+    "interest": "Cloud Computing",
+    "difficulty": "Easy",
+    "topics": [
+      "S3",
+      "Storage Classes",
+      "Cost Optimization"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "You have two AWS VPCs (VPC A and VPC B) connected via a VPC Peering connection. VPC A is also connected to your corporate on-premises network via an AWS Site-to-Site VPN. Clients on the on-premises network are unable to reach resources in VPC B through VPC A. What is the root cause of this routing failure?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "VPC Peering does not support edge routing, which prevents transit routing through VPC A.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "The MTU size of the VPC Peering connection is restricted to 1500 bytes, dropping VPN traffic.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "AWS Site-to-Site VPNs can only route traffic to a single destination CIDR block.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The route table for the VPN gateway lacks an explicit path to the VPC B CIDR block.",
+        "correct": false
+      }
+    ],
+    "explanation": "AWS VPC Peering does not support transitive routing (edge to edge routing). Traffic cannot transit through a peered VPC to reach another network destination, such as a VPN connection or an AWS Direct Connect gateway. To achieve this hybrid transit topology, AWS Transit Gateway must be used. While routing tables must also be configured, even with correct routing, VPC Peering explicitly blocks transit traffic. MTU size differences do not completely block routing capability. VPNs support multiple destination CIDRs.",
+    "interest": "Cloud Computing",
+    "difficulty": "Medium",
+    "topics": [
+      "VPC Peering",
+      "VPC Routing",
+      "Transitive Routing"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An IAM user has two attached policies. Policy 1 grants 's3:GetObject' on 'arn:aws:s3:::my-bucket/*'. Policy 2 contains an explicit Deny for 's3:*' on all resources ('*'), but has a Condition block that evaluates 'aws:PrincipalTag/Department' to not equal 'Engineering'. If the user's Principal Tag 'Department' is set to 'Engineering', what is the resulting authorization when they attempt to download an object from my-bucket?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Access is Denied because the explicit Deny in Policy 2 overrides the Allow in Policy 1 regardless of conditions.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Access is Allowed because Policy 1 explicitly allows the action and the Deny condition in Policy 2 is not met.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Access is Denied because IAM evaluation defaults to implicit deny unless all policies explicitly allow the action.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Access is Allowed because user-defined PrincipalTags are only evaluated during cross-account role assumption.",
+        "correct": false
+      }
+    ],
+    "explanation": "IAM policy evaluation follows a strict logic: by default, all requests are denied. An explicit allow overrides this default. An explicit deny overrides any allows. However, the explicit deny in Policy 2 is conditional. The Deny only applies if 'Department' is NOT 'Engineering'. Since the user's 'Department' tag IS 'Engineering', the Condition for the Deny is false, meaning the Deny does not apply. Thus, only the explicit Allow in Policy 1 applies, resulting in an Allowed request. PrincipalTags are evaluated locally for any identity-based or resource-based policy.",
+    "interest": "Cloud Computing",
+    "difficulty": "Medium",
+    "topics": [
+      "IAM",
+      "Policy Evaluation",
+      "ABAC"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A financial services application requires a Disaster Recovery (DR) strategy with a Recovery Time Objective (RTO) of less than 15 minutes and a Recovery Point Objective (RPO) of less than 2 minutes. Which DR strategy offers the most cost-effective balance that meets these requirements?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Backup and Restore (nightly backups shipped to a secondary region)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Pilot Light (database replicated continuously, other core resources configured but stopped/scaled down)",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Warm Standby (scaled-down version of a fully functional environment running in a secondary region)",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Multi-Site Active-Active (fully redundant, active systems running in both regions with real-time routing)",
+        "correct": false
+      }
+    ],
+    "explanation": "Continuous database replication with a Warm Standby allows an RTO of under 15 minutes because scaled-down resources can be quickly scaled up to handle production traffic. Pilot light has a low RPO (due to database replication) but might take more than 15 minutes (higher RTO) to provision and configure the application servers. Multi-Site Active-Active meets both easily but is extremely expensive and not the most cost-effective balance. Backup and Restore has RTO/RPO in hours/days. Therefore, Warm Standby is the most cost-effective solution satisfying the strict RTO/RPO limits.",
+    "interest": "Cloud Computing",
+    "difficulty": "Medium",
+    "topics": [
+      "Disaster Recovery",
+      "RTO",
+      "RPO",
+      "Resilience"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An application requires high-performance, POSIX-compliant shared file storage that can be concurrently mounted by hundreds of Amazon EC2 instances running Linux. The storage must automatically scale up to petabytes as files are added, without manual intervention or volume resizing. Which storage service should you choose?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Amazon Elastic Block Store (EBS) with Provisioned IOPS SSD (io2 Block Express)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Amazon Elastic File System (EFS)",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Amazon Simple Storage Service (S3) accessed via S3 Fuse",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Amazon FSx for Windows File Server",
+        "correct": false
+      }
+    ],
+    "explanation": "Amazon EFS is a serverless, POSIX-compliant shared file storage service that scales automatically and can be mounted by thousands of EC2 instances simultaneously over NFS. Amazon EBS is a block storage service, and even with Multi-Attach, it is limited to a small number of instances (typically 16) and is not designed for concurrent file system synchronization out of the box. Amazon S3 is an object store, not POSIX-compliant, and using S3 Fuse mounts lacks performance and file locking capabilities. FSx for Windows is optimized for SMB protocols and Windows Server workloads, not native high-performance Linux shared storage.",
+    "interest": "Cloud Computing",
+    "difficulty": "Medium",
+    "topics": [
+      "EFS",
+      "EBS",
+      "Cloud Storage Comparison"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Your application VPC has an internal subnet containing private database servers and an external subnet containing a NAT Gateway. As the database workload increases, you notice that some outbound data transfer to external payment APIs is failing with packet drops, and AWS metrics indicate that your NAT Gateway is hitting a scaling ceiling or port limits. Which of the following strategies will resolve this NAT Gateway bottleneck with minimal architectural disruption?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Configure multiple NAT Gateways in different Availability Zones, and split the database subnet across those AZs to balance route tables.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Replace the NAT Gateway with a NAT Instance running on a micro-sized EC2 instance and enable source/destination checks.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Implement an Interface VPC Endpoint for the external payment APIs and route database traffic through it.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Attach an Internet Gateway directly to the database subnet and configure security groups to block all ingress traffic.",
+        "correct": false
+      }
+    ],
+    "explanation": "Each NAT Gateway supports up to 55,000 concurrent connections to a single destination IP/port combination. If an application scales out massively, it can exhaust these source port allocation limits (SNAT port exhaustion). The standard solution is to split workloads across multiple Availability Zones, deploying a NAT Gateway in each AZ, and modifying route tables so each private subnet directs its internet-bound traffic through its respective zonal NAT Gateway. Replacing it with a micro-sized NAT instance would degrade performance. External APIs are third-party and cannot be reached via Interface VPC Endpoints unless they are exposed via PrivateLink (which the payment API may not be, and VPC endpoints are for internal AWS services or custom endpoints). Attaching an IGW directly to the database subnet requires giving databases public IP addresses, which violates the private database architecture requirement.",
+    "interest": "Cloud Computing",
+    "difficulty": "Hard",
+    "topics": [
+      "VPC Networking",
+      "NAT Gateway",
+      "SNAT Port Exhaustion"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In AWS Key Management Service (KMS), which step occurs first on the client side when using KMS Envelope Encryption with a KMS Customer Managed Key (CMK) to encrypt a large payload locally using the AWS Encryption SDK?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The client sends the entire raw payload to AWS KMS for encryption, which returns the cipher text.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The client calls KMS GenerateDataKey, receives a plaintext data key and an encrypted data key, encrypts the payload locally using the plaintext data key, and then discards the plaintext data key.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "The client encrypts the payload using its local public key, and then calls KMS Encrypt to secure the private key.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The client sends the CMK to its local hardware security module (HSM) to generate a symmetric session cipher.",
+        "correct": false
+      }
+    ],
+    "explanation": "With envelope encryption, KMS keys (CMKs) are not used to encrypt large payloads directly because KMS has a size limit of 4 KB for direct encryption. Instead, the client requests a data key from KMS by calling GenerateDataKey. KMS returns a plaintext data key (used to encrypt the payload locally) and an encrypted data key (packaged with the cipher text). Once the client encrypts the data locally, it MUST discard the plaintext data key from memory for security, leaving only the encrypted data key alongside the encrypted payload. The CMK never leaves AWS KMS.",
+    "interest": "Cloud Computing",
+    "difficulty": "Hard",
+    "topics": [
+      "KMS",
+      "Envelope Encryption",
+      "Security"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A serverless application uses Amazon API Gateway integrated with AWS Lambda. During peak load, client requests fail with '504 Gateway Timeout' errors. CloudWatch logs show the Lambda execution times are within 2 seconds, but API Gateway integration latency metrics are high. Which of the following is the most likely root cause of these timeouts?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The Lambda function is hitting concurrent execution limits, causing API Gateway to wait in a retry queue until it times out.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "API Gateway has a hard timeout limit of 29 seconds, which is being exceeded due to network latency in the Lambda integration invoke path.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "The Lambda function is experiencing cold starts because provisioned concurrency is exhausted, causing the initial setup latency to exceed API Gateway's integration timeout configuration.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "The database connection pool of the Lambda function is exhausted, causing the Lambda runtime container to freeze.",
+        "correct": false
+      }
+    ],
+    "explanation": "A 504 Gateway Timeout indicates API Gateway did not receive a response from the backend integration within its maximum integration timeout window (default/max is 29 seconds for API Gateway, but custom integrations can be configured lower, e.g. 5 or 10 seconds). If Lambda execution times are recorded as 2 seconds inside CloudWatch, this measurement only captures active execution after the container initialization. If provisioned concurrency is exhausted, a massive cold start (including VPC ENI attachment, runtime startup, and database connection setup) can delay the invocation start. The time spent in cold start initialization is not fully captured in Lambda execution metrics but is counted by API Gateway as integration latency, leading to a 504. Concurrent execution limit hits return a 429 (Too Many Requests), not a 504.",
+    "interest": "Cloud Computing",
+    "difficulty": "Hard",
+    "topics": [
+      "API Gateway",
+      "AWS Lambda",
+      "Cold Starts",
+      "Integration Latency"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A multinational corporation has a hybrid cloud architecture utilizing AWS Direct Connect to link their on-premises data center to an AWS Transit Gateway. To secure all transit data at layer 3, the security team mandates IPSec VPN encryption over this Direct Connect connection. Which configuration satisfies this security mandate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Enable MACsec encryption at the Direct Connect port level and terminate the connection on a Transit Gateway.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Create a public virtual interface (VIF) on the Direct Connect connection, establish an IPSec VPN tunnel between the customer gateway and an AWS Virtual Private Gateway, and associate it with the Transit Gateway.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Configure a private VIF and enable default TLS 1.3 encryption on the Direct Connect gateway routing rules.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Deploy AWS Client VPN on all EC2 instances to establish individual SSL tunnels over the Transit Gateway peering connection.",
+        "correct": false
+      }
+    ],
+    "explanation": "To run IPSec VPN over a Direct Connect connection for encrypted hybrid transit routing, you must create a public virtual interface (VIF) on the Direct Connect connection. Using this public VIF, you can establish an IPSec VPN connection between your on-premises router and an AWS Virtual Private Gateway or AWS Transit Gateway. MACsec (Option A) provides layer-2 encryption between the customer's router and the AWS Direct Connect location, not layer-3 IPSec VPN over the transit path. Private VIFs do not support native default TLS 1.3 encapsulation at the routing layer (Option C). Client VPN (Option D) is an client-to-site SSL VPN, not site-to-site IPSec VPN over Direct Connect.",
+    "interest": "Cloud Computing",
+    "difficulty": "Hard",
+    "topics": [
+      "Direct Connect",
+      "IPSec VPN",
+      "Transit Gateway",
+      "Hybrid Architecture"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A financial transactions platform operates on Amazon DynamoDB Global Tables across three AWS regions (us-east-1, eu-west-1, ap-southeast-1). During a rare network partition event where us-east-1 is isolated from the other two regions, writes continue to be accepted in all regions. How does DynamoDB Global Tables resolve write conflicts when the partition heals, and what are the implications on data consistency?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "DynamoDB uses a Paxos consensus algorithm to elect a master region, rolling back writes in isolated regions to maintain serializability.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "DynamoDB uses a 'Last-Write-Wins' (LWW) resolution mechanism based on physical timestamps; writes with the latest timestamp overwrite others, potentially causing lost updates.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "DynamoDB pauses all writes during partitions and uses Vector Clocks to merge divergent histories once connectivity is restored.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "DynamoDB employs Conflict-Free Replicated Data Types (CRDTs) to merge write payloads, guaranteeing that no data is discarded.",
+        "correct": false
+      }
+    ],
+    "explanation": "Amazon DynamoDB Global Tables are active-active multi-region databases. They are fully masterless and accept writes in any region. When resolving write conflicts across regions, DynamoDB uses a Last-Write-Wins (LWW) resolution mechanism based on physical timestamps (system clock). If a partition occurs, writes continue to be accepted. When the partition heals, the write with the highest timestamp value wins, and conflicting updates are overwritten. This means LWW can result in lost updates (concurrent writes to the same item are not merged; the last physical timestamp wins, discarding the earlier one). It does not use Paxos for cross-region resolution (Paxos is used within a single region's replication group), nor does it natively merge custom payloads using CRDTs or Vector Clocks unless specifically handled by application logic on top of DynamoDB.",
+    "interest": "Cloud Computing",
+    "difficulty": "Expert",
+    "topics": [
+      "DynamoDB Global Tables",
+      "Consistency Models",
+      "Distributed Systems",
+      "Conflict Resolution"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A company is designing a cross-account data ingestion pipeline. In Account A, an application running on Amazon ECS (Fargate) needs to write objects to an Amazon S3 bucket located in Account B. The security team forbids hardcoded credentials and mandates that the principle of least privilege be strictly enforced. What is the most secure method to configure access?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Create an IAM role in Account B with write permissions to the S3 bucket, configure Account B's role to trust the ECS task role in Account A, and configure the ECS application to assume this cross-account role using AWS STS.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Configure a bucket policy in Account B that permits 's3:PutObject' for all users, but restrict access to the VPC CIDR block of Account A using network conditions.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Generate an IAM user in Account B with S3 write access, export the access keys to AWS Secrets Manager in Account A, and allow the ECS task to read and use those credentials.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Establish an AWS VPC Peering connection between Account A and Account B, and mount the S3 bucket as an NFS mount directly inside the Fargate task definition.",
+        "correct": false
+      }
+    ],
+    "explanation": "The most secure, credential-less pattern for cross-account access is to use cross-account IAM role assumption via the Security Token Service (STS). An IAM role is created in Account B with a trust policy that allows the specific ECS Task Role in Account A to assume it. The ECS task role then calls 'sts:AssumeRole' to obtain temporary credentials to write to S3. Restricting bucket access by CIDR (Option B) is insecure and prone to IP spoofing or collision. Generating IAM user keys and storing them in Secrets Manager (Option C) introduces long-lived credentials, violating the mandate. S3 cannot be mounted as an NFS share over VPC Peering natively (Option D).",
+    "interest": "Cloud Computing",
+    "difficulty": "Expert",
+    "topics": [
+      "Cross-Account Access",
+      "IAM Roles",
+      "ECS Fargate",
+      "S3 security"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "You are designing a high-availability, cloud-native application on a Kubernetes cluster hosted in AWS (EKS) across three Availability Zones. The application requires stateful workloads that mount a persistent volume (PV) using an EBS CSI driver. How must you configure the storage class, Pod Disruption Budgets (PDB), and topology spread constraints to prevent service interruption during a zonal outage or node drain?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use an EBS storage class configured with 'volumeBindingMode: WaitForFirstConsumer' and define a Topology Spread Constraint with 'topologyKey: topology.kubernetes.io/zone' and 'whenUnsatisfiable: DoNotSchedule' along with a PDB allowing at least 1 unavailable pod.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Create a multi-attach EBS volume class and schedule all stateful pods with 'whenUnsatisfiable: ScheduleAnyway' to bypass zonal boundaries.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Use EFS instead of EBS, configure PDBs to 'maxUnavailable: 100%', and disable topology constraints to allow Kubernetes to co-locate all replicas.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Configure a static PV bound to a specific node's instance ID, and set the PDB's 'minAvailable' to match the total replica count.",
+        "correct": false
+      }
+    ],
+    "explanation": "EBS volumes are zonal resources; an EBS volume created in AZ us-east-1a cannot be attached to a pod running in us-east-1b. By using 'volumeBindingMode: WaitForFirstConsumer', Kubernetes delays the creation of the EBS volume until the pod is scheduled, ensuring the volume is created in the same AZ where the pod is scheduled. The Topology Spread Constraint ensures that pods are evenly distributed across Availability Zones ('topologyKey: topology.kubernetes.io/zone'), and 'whenUnsatisfiable: DoNotSchedule' enforces strict distribution. A Pod Disruption Budget (PDB) allows at least 1 unavailable pod (e.g., 'maxUnavailable: 1') to permit controlled rolling upgrades and node drains without taking down the entire service. Option B is incorrect because EBS multi-attach does not solve the zonal restriction. Option C switches to EFS, which might not meet the performance/type requirement of the question. Option D sets static PVs to a specific node, which destroys high availability.",
+    "interest": "Cloud Computing",
+    "difficulty": "Expert",
+    "topics": [
+      "Kubernetes",
+      "EKS",
+      "EBS CSI Driver",
+      "Topology Spread Constraints",
+      "StatefulSets"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "An enterprise uses AWS Organizations with multiple accounts. An administrator has attached a Service Control Policy (SCP) at the Root level that denies 's3:DeleteBucket' for all resources. In a member account, a user with AdministratorAccess role seeks to delete an S3 bucket. At the same time, an IAM Permission Boundary attached to the user restricts their permissions to 's3:*' but excludes 's3:Delete*'. Finally, the user attempts the deletion during an active session authorized by a Session Policy that permits 's3:DeleteBucket'. What is the outcome of the evaluation logic?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Allowed, because the Session Policy explicitly permits the action and overrides the Permission Boundary.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Denied, because the Root-level SCP acts as a guardrail that overrides all local permissions, resulting in an explicit deny.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Allowed, because the AdministratorAccess role has full permissions which bypass permission boundaries.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Denied, because Session Policies can only restrict permissions and cannot grant actions not allowed by the Permission Boundary.",
+        "correct": false
+      }
+    ],
+    "explanation": "AWS IAM evaluation logic combines multiple authorization boundaries. For an action to be allowed, it must be allowed at every layer, and must NOT be explicitly denied at any layer. The Root-level SCP denies 's3:DeleteBucket'. An SCP deny acts as an explicit deny across the entire organization hierarchy, immediately overriding any local IAM allows (including AdministratorAccess, Session Policies, or Permission Boundaries). Thus, the action is denied due to the SCP. Note that even without the SCP, the local Permission Boundary excludes 's3:Delete*', which acts as an implicit deny for that action, and a Session Policy cannot grant permissions that are not already permitted by the identity's permission boundary and IAM policy.",
+    "interest": "Cloud Computing",
+    "difficulty": "Expert",
+    "topics": [
+      "IAM Evaluation Logic",
+      "SCP",
+      "Permission Boundaries",
+      "Session Policies"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A heavy-traffic blog experiences load issues on its database due to a massive number of read queries. You want to scale the system horizontally by introducing a caching layer. What is a key architectural trade-off that you must accept when adding a cache to improve read performance?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Increased database write latency because the database must wait for cache synchronization.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Risk of stale data reads and increased application architectural complexity.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Inability to support horizontal database scaling through replication.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Complete loss of ACID properties in the primary database system.",
+        "correct": false
+      }
+    ],
+    "explanation": "Introducing a cache (such as Redis or Memcached) improves read latency and reduces database load. However, the key trade-off is eventual consistency or stale data: data updated in the database might not be immediately reflected in the cache unless complex invalidation strategies are implemented. It also increases architectural complexity because the application must manage cache invalidation, cache misses, and cache stampedes. It does not negatively affect database write latency (unless using write-through cache with strict synchronization, which is optional), and it does not affect the primary database's ACID properties or replication capabilities.",
+    "interest": "System Design",
+    "difficulty": "Easy",
+    "topics": [
+      "Caching",
+      "Scalability",
+      "Architectural Trade-offs"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which type of load balancer operates at Layer 4 (Transport Layer) of the OSI model and routes traffic based solely on protocol, IP address, and port number, without inspecting the payload content?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Application Load Balancer (ALB)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Network Load Balancer (NLB)",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Reverse Proxy Load Balancer",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Gateway Load Balancer (GWLB)",
+        "correct": false
+      }
+    ],
+    "explanation": "Layer 4 load balancing is handled by Network Load Balancers (NLB), which route traffic based on TCP/UDP protocol data, IP addresses, and ports. They are extremely fast, capable of handling millions of requests per second with ultra-low latency because they do not decrypt or inspect the application layer payload. Application Load Balancers (ALB) operate at Layer 7 (Application Layer) and inspect HTTP/HTTPS headers, cookies, and paths. Gateway Load Balancers operate at Layer 3 (Network Layer) and are used to route traffic through virtual appliances.",
+    "interest": "System Design",
+    "difficulty": "Easy",
+    "topics": [
+      "Load Balancing",
+      "OSI Model",
+      "Networking"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "You are designing an in-memory cache for a service that retrieves user profiles. Due to memory limits, the cache must evict items when it becomes full. You decide to evict the items that have not been accessed for the longest duration of time. Which cache eviction policy fits this description?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "First-In, First-Out (FIFO)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Least Frequently Used (LFU)",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Least Recently Used (LRU)",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Random Replacement (RR)",
+        "correct": false
+      }
+    ],
+    "explanation": "Least Recently Used (LRU) evicts the item that has not been accessed for the longest period of time (most distant last access timestamp). FIFO evicts the oldest item inserted first, regardless of access frequency or recency. LFU evicts items with the lowest access count. Random Replacement selects an item at random to discard.",
+    "interest": "System Design",
+    "difficulty": "Easy",
+    "topics": [
+      "Caching",
+      "Cache Eviction",
+      "LRU"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "An application needs to store financial transaction records. Each record must strictly adhere to a pre-defined schema, and transactions must guarantee ACID properties (Atomicity, Consistency, Isolation, Durability) to ensure data integrity. Which type of database is best suited for this requirement?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Key-Value NoSQL Database (e.g., Amazon DynamoDB)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Relational Database Management System (RDBMS, e.g., PostgreSQL)",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Wide-Column Store (e.g., Apache Cassandra)",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Document Database (e.g., MongoDB)",
+        "correct": false
+      }
+    ],
+    "explanation": "Relational Database Management Systems (RDBMS) like PostgreSQL or MySQL are optimized for structured data schemas, complex relations via foreign keys, and absolute compliance with ACID transactions. While some NoSQL databases (like DynamoDB or MongoDB) have added multi-document ACID transaction support, RDBMS remain the industry standard for strict schema enforcement, normalized modeling, and robust transactional consistency out of the box.",
+    "interest": "System Design",
+    "difficulty": "Easy",
+    "topics": [
+      "Databases",
+      "RDBMS vs NoSQL",
+      "ACID"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A system uses a single master database for writes and three read replicas for scaling read operations. As the system handles more concurrent traffic, users report that immediately after updating their profiles, the changes do not appear on their profile dashboard. What is this phenomenon called, and how can it be mitigated?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Split-brain scenario; mitigate by implementing a Raft consensus cluster for reads.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Replication lag; mitigate by routing critical read requests (like profile edits) to the master database instead of read replicas for a short duration.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Deadlock; mitigate by introducing optimistic locking columns in the profile table.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Cache stampede; mitigate by using mutex locks during database updates.",
+        "correct": false
+      }
+    ],
+    "explanation": "In a Master-Slave replication setup, writes go to the master and are asynchronously replicated to read replicas. The delay between a write to the master and its propagation to replicas is called 'replication lag'. If a user reads from a replica before replication is complete, they see stale data. To mitigate this 'read-your-own-writes' consistency issue, the application should route critical reads (e.g., immediate page refreshes after a profile update) to the master database, or use session tokens to track write state and force master reads until replicas catch up. Split-brain refers to partition scenarios where multiple masters are elected. Deadlocks are locking conflicts. Cache stampedes are caching anomalies under heavy concurrent load.",
+    "interest": "System Design",
+    "difficulty": "Medium",
+    "topics": [
+      "Replication Lag",
+      "Master-Slave Architecture",
+      "Consistency Models"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In a distributed system, you use Consistent Hashing to distribute cached user sessions across five cache servers. When you scale out the system by adding a sixth cache server, what is the primary benefit of Consistent Hashing compared to a standard modulo hashing algorithm (hash(key) % N)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It guarantees that all servers will always have an exactly equal number of keys without using virtual nodes.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It only requires remapping a small fraction of the keys (approximately K/N keys, where K is total keys and N is total servers).",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It encrypts the cache keys to protect user sessions from interception.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It eliminates the need for any caching server metadata by storing the routing table on the client side.",
+        "correct": false
+      }
+    ],
+    "explanation": "In a traditional modulo hashing scheme (hash(key) % N), changing the number of servers N forces almost all keys to map to different servers, resulting in a massive cache miss storm. Consistent Hashing maps keys and servers to a circular ring. When a server is added or removed, only the keys adjacent to the added/removed server need to be re-routed. The fraction of keys remapped is roughly K/N, minimizing cache invalidation and preventing performance degradation during scaling events.",
+    "interest": "System Design",
+    "difficulty": "Medium",
+    "topics": [
+      "Consistent Hashing",
+      "Sharding",
+      "Scalability"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "You are designing an asynchronous task processing system. The system must process high volumes of user-uploaded videos. Some video encodings take hours, while others take seconds. You need a messaging system that ensures workers pull tasks only when they have capacity, supports message acknowledgments, and avoids overloading slow workers. Which message processing pattern is most appropriate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A pull-based message queue (e.g., SQS or RabbitMQ with manual ack and prefetch limits).",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "A push-based event broker (e.g., AWS SNS) broadcasting to all workers simultaneously.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "A log-centric partition stream (e.g., Apache Kafka) where partitions are assigned to specific workers.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "An in-memory publish-subscribe channel (e.g., Redis Pub/Sub) without persistence.",
+        "correct": false
+      }
+    ],
+    "explanation": "For workloads with highly variable processing times (like video encoding), a pull-based queue (like RabbitMQ or SQS) is ideal. By configuring worker prefetch limits (e.g., prefetch count = 1), a worker will pull only one video task at a time. It will not receive another task until it sends an acknowledgment that the current task is complete. This avoids overloading a single worker while other workers sit idle. A push-based system (SNS) or pub-sub (Redis) pushes messages aggressively without respect to worker capacity, leading to memory exhaustion or dropped tasks. Kafka's partition-based assignment binds specific partitions to specific workers, meaning a slow video on one partition would block all subsequent videos on that partition, creating head-of-line blocking.",
+    "interest": "System Design",
+    "difficulty": "Medium",
+    "topics": [
+      "Message Queues",
+      "Asynchronous Processing",
+      "RabbitMQ",
+      "Kafka"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An application uses a Cache-Aside (Lazy Loading) pattern. What sequence of operations should the application perform when a write (update) request is received to prevent stale data in the cache while minimizing race conditions?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Update the cache first, then write to the database.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Write to the database first, then update the cache value.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Write to the database first, then delete (invalidate) the cache entry.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Delete the cache entry first, then write to the database.",
+        "correct": false
+      }
+    ],
+    "explanation": "In the Cache-Aside pattern, the standard best practice for updates is to write to the database first, then delete the cache entry. Deleting the cache entry is safer than updating it because concurrent updates could lead to race conditions where the cache holds stale data if writes complete out of order. Additionally, deleting first (Option D) is prone to a race condition where a concurrent read retrieves the old database value (before the write finishes) and repopulates the cache with that stale value. Writing to the database first and then deleting the cache minimizes the window for this race condition to an extremely small fraction of a second.",
+    "interest": "System Design",
+    "difficulty": "Medium",
+    "topics": [
+      "Caching Strategies",
+      "Cache-Aside",
+      "Consistency"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In distributed consensus, the Raft algorithm ensures that a cluster of nodes agrees on a shared state machine. During a leader election in Raft, how does the protocol guarantee that a newly elected leader contains all committed entries from previous terms?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The new leader contacts the old leader to sync its log prior to accepting new client writes.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Raft only allows a candidate to win an election if its log is at least as up-to-date as any other node in the majority voting quorum.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Followers send their missing log entries to the leader immediately after the election completes.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The cluster uses a centralized coordinator to merge divergent logs using logical clocks.",
+        "correct": false
+      }
+    ],
+    "explanation": "Raft uses a simple and elegant mechanism to ensure log completeness: during leader elections, a candidate must gather votes from a majority of the cluster. A voter will deny its vote if the candidate's log is less up-to-date than the voter's own log (evaluated by comparing the index and term of the last log entries). Since any committed entry must exist on at least a majority of nodes, and a candidate must get votes from a majority, the electing majority must contain at least one node that holds the committed entry. Because that node will not vote for a candidate with a less up-to-date log, the elected leader is guaranteed to contain all committed entries. This avoids having to sync or merge logs from followers after election.",
+    "interest": "System Design",
+    "difficulty": "Hard",
+    "topics": [
+      "Consensus Algorithms",
+      "Raft",
+      "Distributed Systems"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "You are designing a database sharding strategy for a globally scalable SaaS platform. You choose Hash-Based Sharding over Range-Based Sharding. What is the major architectural disadvantage of Hash-Based Sharding that you must resolve at the application layer?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "High susceptibility to hot-spotting on a single shard when keys are sequentially generated.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Inability to perform efficient range queries (e.g., fetching all users created between two timestamps) without querying every single shard.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Increased risk of write lock escalation under heavy transaction volume.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Requirement for a centralized look-up directory service to route every write query.",
+        "correct": false
+      }
+    ],
+    "explanation": "Hash-based sharding uses a hash function on the shard key to distribute data uniformly across shards. While this prevents hot-spotting (unlike range-based sharding, where sequential keys cluster on the same shard), it destroys the physical ordering of keys. Consequently, range queries cannot be localized to a single shard; the application must broadcast the query to all shards (scatter-gather), collect the results, and merge/sort them, which is highly inefficient. Directory-based sharding requires a lookup service, not hash-based. Lock escalation is a local database engine behavior, not a direct sharding routing characteristic.",
+    "interest": "System Design",
+    "difficulty": "Hard",
+    "topics": [
+      "Database Sharding",
+      "Hash Sharding",
+      "Range Queries"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "You need to implement a rate limiter for an API endpoint that is highly sensitive to memory usage. The rate limiter must support bursts of traffic but strictly smooth out the requests over time, ensuring no spikes exceed a set threshold. Which rate-limiting algorithm provides a constant outbound request rate while maintaining a fixed-size queue?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Token Bucket",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Leaky Bucket",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Sliding Window Log",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Sliding Window Counter",
+        "correct": false
+      }
+    ],
+    "explanation": "The Leaky Bucket algorithm processes requests at a constant, smooth rate by placing them in a queue (the bucket) that leaks at a fixed speed. If the queue fills up, new requests are discarded or delayed. This is ideal for smoothing out traffic spikes and enforcing a strict, constant egress rate. The Token Bucket algorithm allows bursts of traffic (if tokens have accumulated, all can be spent instantly), which does not strictly smooth outbound flow. Sliding Window Log consumes a lot of memory because it stores timestamps for every single request. Sliding Window Counter uses fixed memory but does not queue and smooth egress rate directly like Leaky Bucket does.",
+    "interest": "System Design",
+    "difficulty": "Hard",
+    "topics": [
+      "Rate Limiting",
+      "Algorithms",
+      "System Reliability"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When designing communication between microservices, under which condition is gRPC (using Protocol Buffers over HTTP/2) significantly more advantageous than a standard REST API (using JSON over HTTP/1.1)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "When client applications are simple web browsers that need direct, native integration without proxies.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "When services require bidirectional streaming, low serialization overhead, and multiplexed requests over a single TCP connection.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "When human-readability of transit payloads is a strict compliance requirement.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "When the architecture relies entirely on static, cached edge responses via Content Delivery Networks (CDNs).",
+        "correct": false
+      }
+    ],
+    "explanation": "gRPC leverages HTTP/2, which supports multiplexing (sending multiple requests and responses concurrently over a single TCP connection, eliminating head-of-line blocking at the connection layer) and bidirectional streaming. Furthermore, Protocol Buffers are a binary serialization format, which is much faster and smaller than JSON text serialization. REST over HTTP/1.1 is better for simple browser integrations (browsers cannot natively make gRPC requests without a gRPC-web proxy), human-readable payloads (JSON is text, Protobuf is binary), and static edge caching (which is highly optimized for standard HTTP GET requests, whereas gRPC uses HTTP POST).",
+    "interest": "System Design",
+    "difficulty": "Hard",
+    "topics": [
+      "gRPC",
+      "Protobuf",
+      "Microservices",
+      "Network Protocols"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "You are designing a high-dimensional vector search engine for a recommendation system with millions of dense vector embeddings. You must choose between an HNSW (Hierarchical Navigable Small World) index and an IVF-PQ (Inverted File with Product Quantization) index. Which trade-off analysis correctly guides your decision?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "HNSW has extremely fast index build times and low memory usage, whereas IVF-PQ has higher memory requirements but faster query times.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "HNSW offers very high search recall and faster query latency at the expense of massive RAM consumption; IVF-PQ significantly compresses vectors using quantization, offering low RAM usage at the expense of longer index training time and slightly lower recall.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "HNSW is optimized for low-dimensional sparse vectors, while IVF-PQ is strictly designed for high-dimensional text-only searches.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "HNSW requires a GPU cluster to perform graph traversal, while IVF-PQ runs solely on standard CPU architectures with zero recall loss.",
+        "correct": false
+      }
+    ],
+    "explanation": "HNSW is a graph-based vector index that builds a multi-layer graph. It provides excellent search speed (sub-millisecond) and high recall, but it keeps the entire graph structure and all vectors in memory (RAM), which is extremely expensive for millions of high-dimensional vectors. IVF-PQ (Inverted File with Product Quantization) uses clustering (Inverted File) to narrow the search space and Product Quantization to compress vectors (representing high-dimensional floating-point vectors as small byte codes). This drastically reduces RAM usage (often by 90% or more), but requires a training phase, slightly reduces recall, and has a trade-off in query latency due to distance calculation decompression steps. Both are run on CPUs or GPUs.",
+    "interest": "System Design",
+    "difficulty": "Expert",
+    "topics": [
+      "Vector Search",
+      "HNSW",
+      "Product Quantization",
+      "Machine Learning Systems"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a distributed financial system, you are designing a highly available, idempotent payment processing endpoint. To prevent double-spending, the client sends a unique 'idempotency_key' with every request. How should you design the backing store and locking mechanism to ensure safety under concurrent retries across multiple server nodes?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use a distributed lock (e.g., Redis Redlock) with a lease time; verify if the key exists in a relational database unique index; if not, acquire the lock, insert a 'PENDING' record, execute the payment, update the record to 'COMPLETED' with the response payload, and release the lock; serve cached responses for subsequent hits.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Store the idempotency keys in an in-memory thread-safe HashMap on the application server, and use local mutex locks to synchronize payment calls.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Rely entirely on the client-side to poll a status endpoint prior to retrying, and use a standard HTTP 302 redirect to route duplicate requests to a null route.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Configure an eventually consistent NoSQL database to store the key; allow writes to succeed concurrently and resolve conflicts later via background CRDT reconciliation.",
+        "correct": false
+      }
+    ],
+    "explanation": "Robust idempotency in distributed financial systems requires three layers of protection: 1. A distributed lock with a lease (to prevent concurrent identical requests from executing simultaneously across different server nodes), 2. A persistent transactional state store (like a relational database with a UNIQUE constraint on the idempotency key) to record the 'PENDING' and 'COMPLETED' states along with the actual transaction response, and 3. Returning the stored completed response for any duplicate requests. In-memory local Maps (Option B) fail because they are localized to a single server node, failing when a client retry hits a different server. Relying on client polling (Option C) is highly fragile. Eventually consistent NoSQL with background reconciliation (Option D) allows double spend windows during the consistency lag.",
+    "interest": "System Design",
+    "difficulty": "Expert",
+    "topics": [
+      "Idempotency",
+      "Distributed Locks",
+      "Financial Systems",
+      "High Availability"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "According to the PACELC theorem (an extension of the CAP theorem), how does a system like Apache Cassandra behave during normal operation (E - Else) compared to a system like Google Spanner, under the trade-off between Consistency (C) and Latency (L)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Cassandra is categorized as PA/EL (Partition-tolerant/Active, Else/Low-latency), while Google Spanner is PC/EC (Partition-tolerant/Consistent, Else/Consistent).",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Cassandra is PC/EC, while Google Spanner is PA/EL.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Both databases are categorized as PA/EC, prioritizing latency during partitions and consistency during normal operations.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "PACELC does not apply to Google Spanner because Spanner utilizes physical TrueTime atomic clocks to bypass partition boundaries.",
+        "correct": false
+      }
+    ],
+    "explanation": "The PACELC theorem states: If there is a Partition (P), trade off Availability (A) and Consistency (C); Else (E), trade off Latency (L) and Consistency (C). Apache Cassandra is PA/EL: during a partition, it chooses Availability (A) over Consistency (C) using hinted handoff and eventual consistency; under normal operation (Else), it chooses Latency (L) over Consistency (C) by default (unless configured with serial/quorum reads and writes). Google Spanner is PC/EC: during partitions, it chooses Consistency (C) over Availability (A) (it is a CP system in CAP terms); under normal operation (Else), it chooses Consistency (C) over Latency (L), enforcing strict serializability through its TrueTime API and physical atomic/GPS clocks. TrueTime helps maintain strict consistency efficiently but does not violate PACELC/CAP limits under network partitions.",
+    "interest": "System Design",
+    "difficulty": "Expert",
+    "topics": [
+      "PACELC Theorem",
+      "CAP Theorem",
+      "Distributed Databases",
+      "Cassandra",
+      "Spanner"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "You are designing a real-time analytics system utilizing Apache Flink to process IoT sensor events. The events can arrive out of order due to network jitter. You must compute average temperatures over 10-minute windows sliding every 2 minutes. To handle late-arriving data accurately without unbounded memory usage, which windowing and watermark strategy is most appropriate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use Processing Time windowing, and discard any events that do not match the current server system clock.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Use Event Time windowing with a Bounded-Out-Of-Orderness Watermark generator (e.g., 30-second delay), a Sliding Event-Time Window (10-minute duration, 2-minute slide), and configure 'allowedLateness' to direct extremely late data to a side output.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Use Tumbling Windows based on Ingestion Time, and set a global mutex lock on the stream to block writes until all partitions sync.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Implement a Session Window with a gap of 10 minutes, and rely on an eventual consistency model to re-write historical records in a relational database.",
+        "correct": false
+      }
+    ],
+    "explanation": "To handle out-of-order data in stream processing, you must use Event Time (the time the event actually occurred at the source sensor, embedded in the payload). A Bounded-Out-Of-Orderness Watermark generator allows the system to wait for late events (e.g., up to 30 seconds behind the maximum observed event timestamp) before advancing the event-time clock and triggering the window computation. The sliding window size is 10 minutes with a 2-minute slide. 'allowedLateness' allows windows to be updated/re-evaluated when moderately late events arrive, and setting a 'side output' catches extremely late events (arriving after the lateness horizon) so they can be processed or audited without keeping the window state in memory indefinitely. Processing time (Option A) ignores when the event occurred, introducing errors. Tumbling/Session windows (Options C and D) do not match the required sliding calculation pattern.",
+    "interest": "System Design",
+    "difficulty": "Expert",
+    "topics": [
+      "Stream Processing",
+      "Watermarks",
+      "Sliding Windows",
+      "Apache Flink"
+    ],
+    "bloomLevel": "Apply"
+  }
+]

@@ -1,0 +1,450 @@
+[
+  {
+    "text": "Minimise the following Boolean function using a Karnaugh Map:\nF(A, B, C, D) = \\sum m(0, 2, 5, 7, 8, 10, 13, 15)",
+    "choices": [
+      { "id": "a", "text": "F = B'D' + BD", "correct": true },
+      { "id": "b", "text": "F = B'D + BD'", "correct": false },
+      { "id": "c", "text": "F = A'C' + AC", "correct": false },
+      { "id": "d", "text": "F = A'D + AD'", "correct": false }
+    ],
+    "explanation": "To minimize the given Boolean function, we map the minterms onto a 4-variable K-map with rows labeled AB (00, 01, 11, 10) and columns labeled CD (00, 01, 11, 10).\n\n1. Plot the minterms in the K-map:\n   - Row 00 (A'B'): cells 0 (0000) and 2 (0010)\n   - Row 01 (A'B): cells 5 (0101) and 7 (0111)\n   - Row 11 (AB): cells 13 (1101) and 15 (1111)\n   - Row 10 (AB'): cells 8 (1000) and 10 (1010)\n\n2. Group the cells:\n   - Group 1 (Corner terms): The four corner cells m(0, 2, 8, 10) form a quad. The rows are 00 (A'B') and 10 (AB'), which share B' (B=0). The columns are 00 (C'D') and 10 (CD'), which share D' (D=0). The simplified term is B'D'.\n   - Group 2 (Middle columns): The four cells in columns 01 and 11, specifically m(5, 7, 13, 15), form another quad. The rows are 01 (A'B) and 11 (AB), which share B (B=1). The columns are 01 (C'D) and 11 (CD), which share D (D=1). The simplified term is BD.\n\n3. Combine terms:\n   F = B'D' + BD (which is the logical equivalence or XNOR operation, B \\odot D).\n\nDistractor Analysis:\n- Option b (B'D + BD') represents the XOR operation, which corresponds to minterms m(1, 3, 4, 6, 9, 11, 12, 14).\n- Option c (A'C' + AC) uses incorrect variable groupings.\n- Option d (A'D + AD') is incorrect as it does not cover the plotted minterm locations.",
+    "interest": "Digital Electronics",
+    "difficulty": "Easy",
+    "topics": ["Karnaugh Map", "Boolean Minimization", "Combinational Logic"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In digital logic families, which of the following statements correctly compares TTL (Transistor-Transistor Logic) and CMOS (Complementary Metal-Oxide-Semiconductor) technologies?",
+    "choices": [
+      { "id": "a", "text": "TTL has lower static power consumption and higher noise margin compared to CMOS.", "correct": false },
+      { "id": "b", "text": "CMOS has virtually zero static power consumption and higher input impedance compared to TTL.", "correct": true },
+      { "id": "c", "text": "TTL circuits are highly sensitive to electrostatic discharge (ESD) compared to CMOS.", "correct": false },
+      { "id": "d", "text": "CMOS devices are current-controlled, whereas TTL devices are voltage-controlled.", "correct": false }
+    ],
+    "explanation": "CMOS and TTL represent the two major classic logic families with fundamentally different characteristics:\n\n- Static Power Consumption: CMOS logic uses complementary pairs of pMOS and nMOS transistors. In any steady state, one transistor of the pair is always OFF, presenting an extremely high resistance. Thus, static power dissipation is virtually zero (nanowatts). TTL uses bipolar junction transistors (BJTs) that require a continuous base drive current to stay in conduction, resulting in significant static power dissipation.\n- Input Impedance: CMOS gates have an SiO2 insulation layer at the input, resulting in extremely high input impedance (typically 10^12 ohms). TTL inputs are BJT emitters/bases, which draw current and exhibit relatively low input impedance.\n- ESD Sensitivity: Because of the thin SiO2 layer, CMOS devices are highly susceptible to electrostatic discharge (ESD) which can rupture the oxide. TTL devices are much more robust against ESD.\n- Control mechanism: BJTs are current-controlled, so TTL is current-controlled. MOSFETs are voltage-controlled, so CMOS is voltage-controlled.\n\nDistractor Analysis:\n- Option a is incorrect because CMOS, not TTL, has lower static power consumption and generally superior noise margins.\n- Option c is incorrect because CMOS is highly sensitive to ESD, while TTL is highly robust.\n- Option d is incorrect because CMOS is voltage-controlled and TTL is current-controlled.",
+    "interest": "Digital Electronics",
+    "difficulty": "Easy",
+    "topics": ["Logic Families", "CMOS", "TTL", "Electronics Basics"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "A 4-bit binary number is represented in 2's complement format. If the bits are b_3 b_2 b_1 b_0 (where b_3 is the sign bit), what is the range of decimal integers that can be represented, and what is the decimal value of the binary pattern 1011?",
+    "choices": [
+      { "id": "a", "text": "Range: -8 to +7; Value of 1011 = -5", "correct": true },
+      { "id": "b", "text": "Range: -7 to +8; Value of 1011 = -5", "correct": false },
+      { "id": "c", "text": "Range: -8 to +7; Value of 1011 = -3", "correct": false },
+      { "id": "d", "text": "Range: -7 to +7; Value of 1011 = -3", "correct": false }
+    ],
+    "explanation": "1. Range of n-bit 2's complement numbers:\n   The minimum and maximum values representable using n bits in signed 2's complement are from -2^(n-1) to +(2^(n-1) - 1).\n   For n = 4:\n   - Minimum: -2^(4-1) = -2^3 = -8\n   - Maximum: +(2^(4-1) - 1) = +(2^3 - 1) = +7\n   So the range is -8 to +7.\n\n2. Decimal value of binary pattern 1011:\n   Since the MSB (b_3) is 1, the number is negative. We can evaluate its decimal value directly using positional weights:\n   Value = (-b_3 * 2^3) + (b_2 * 2^2) + (b_1 * 2^1) + (b_0 * 2^0)\n   Value = (-1 * 8) + (0 * 4) + (1 * 2) + (1 * 1) = -8 + 0 + 2 + 1 = -5.\n   Alternatively, to find the magnitude, take the 2's complement of 1011:\n   - Invert bits: 0100\n   - Add 1: 0100 + 1 = 0101 (which is 5 in decimal).\n   - Since the original MSB was 1, the value is -5.\n\nDistractor Analysis:\n- Option b is incorrect because the positive limit of 2's complement is 2^(n-1)-1, which is +7, not +8.\n- Option c is incorrect because 1011 translates to -5, not -3 (which would be 1101).\n- Option d is incorrect because -7 to +7 is the range for signed magnitude or 1's complement, not 2's complement.",
+    "interest": "Digital Electronics",
+    "difficulty": "Easy",
+    "topics": ["Number Systems", "2's Complement", "Signed Binary Arithmetic"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Assuming only the true inputs A and B (along with logic constants 0 and 1) are available, how many 2-to-1 multiplexers (with no external gates) are required to implement a 2-input XOR gate (Y = A \\oplus B)?",
+    "choices": [
+      { "id": "a", "text": "1", "correct": false },
+      { "id": "b", "text": "2", "correct": true },
+      { "id": "c", "text": "3", "correct": false },
+      { "id": "d", "text": "4", "correct": false }
+    ],
+    "explanation": "A 2-to-1 multiplexer with select input S, and data inputs I_0 and I_1 implements the Boolean function: Y = S'I_0 + SI_1.\nTo implement a 2-input XOR gate (Y = A'B + AB') using 2-to-1 multiplexers:\n\n1. Let us choose variable A as the select input (S = A). Then the expression becomes:\n   Y = A'I_0 + AI_1\n2. Comparing this with the XOR expression Y = A'B + AB', we find that we need:\n   - I_0 = B\n   - I_1 = B'\n3. Since we do not have an external inverter to generate B', we must use another 2-to-1 multiplexer to act as an inverter for B:\n   - MUX 1 (Inverter): Select input S = B, data inputs I_0 = 1, I_1 = 0.\n     Output of MUX 1 = B'(1) + B(0) = B'.\n4. Now, feed the output of MUX 1 (B') into data input I_1 of MUX 2, and feed the true input B into I_0 of MUX 2:\n   - MUX 2 (XOR): Select input S = A, data inputs I_0 = B, I_1 = B'.\n     Output of MUX 2 = A'B + AB' = A \\oplus B.\n\nThus, exactly 2 multiplexers are required.\n\nDistractor Analysis:\n- Option a is incorrect because a single MUX cannot implement XOR if only true variables are provided; we need at least one inverter which requires a second MUX.\n- Options c and d are incorrect because they represent redundant, non-optimal implementations.",
+    "interest": "Digital Electronics",
+    "difficulty": "Easy",
+    "topics": ["Multiplexer", "XOR Gate", "Combinational Synthesis"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "You are asked to convert an edge-triggered D Flip-Flop into a JK Flip-Flop. What is the correct excitation logic that must be connected to the D input of the Flip-Flop, and what does it represent?",
+    "choices": [
+      { "id": "a", "text": "D = JQ + K'Q'; represents the next-state equation of the JK Flip-Flop.", "correct": false },
+      { "id": "b", "text": "D = JQ' + K'Q; represents the characteristic equation of the JK Flip-Flop.", "correct": true },
+      { "id": "c", "text": "D = J'Q' + KQ; represents the excitation table transition logic.", "correct": false },
+      { "id": "d", "text": "D = JQ' + KQ; represents the clock-gated logic.", "correct": false }
+    ],
+    "explanation": "To convert one flip-flop to another, we determine the excitation logic of the destination flip-flop in terms of its current state and inputs. For a D Flip-Flop, the next state Q_next is directly determined by its input D (i.e., Q_next = D).\n\n1. Write the state transition (characteristic) table for the JK Flip-Flop:\n   - J=0, K=0: Hold state -> Q_next = Q\n   - J=0, K=1: Reset state -> Q_next = 0\n   - J=1, K=0: Set state -> Q_next = 1\n   - J=1, K=1: Toggle state -> Q_next = Q'\n\n2. Express Q_next in terms of J, K, and Q using a K-map:\n   - Q_next = JQ' + K'Q.\n\n3. Since D must equal Q_next, the excitation logic is:\n   D = JQ' + K'Q.\n   This represents the characteristic equation of the JK Flip-Flop.\n\nDistractor Analysis:\n- Option a is incorrect because it uses the wrong boolean expression JQ + K'Q'.\n- Option c is incorrect because it has the wrong terms (J'Q' + KQ).\n- Option d is incorrect because the term K is not inverted (should be K'Q, not KQ) and it mislabels it as clock-gated logic.",
+    "interest": "Digital Electronics",
+    "difficulty": "Medium",
+    "topics": ["Flip-Flop Conversion", "JK Flip-Flop", "Sequential Logic"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A synchronous sequential circuit is designed to detect the sequence 101 using a Mealy FSM. Overlapping sequences are allowed. What is the minimum number of states required to implement this Mealy sequence detector, and how many states would a Moore FSM require for the same?",
+    "choices": [
+      { "id": "a", "text": "Mealy: 3 states; Moore: 3 states", "correct": false },
+      { "id": "b", "text": "Mealy: 3 states; Moore: 4 states", "correct": true },
+      { "id": "c", "text": "Mealy: 2 states; Moore: 3 states", "correct": false },
+      { "id": "d", "text": "Mealy: 4 states; Moore: 5 states", "correct": false }
+    ],
+    "explanation": "Let's analyze the state requirements for the sequence detector:\n\n1. Mealy FSM:\n   - The output is a function of both the current state and the current input. This allows the output to be asserted on the final transition itself.\n   - State S_0: Initial/Reset state (no matching bits detected).\n   - State S_1: Represents '1' detected.\n   - State S_2: Represents '10' detected.\n   - When in S_2, if the input is 1, the sequence '101' is complete. The output becomes 1 immediately on the active clock edge, and the FSM transitions back to S_1 (since overlapping is allowed, the last '1' is the start of the next sequence). This requires exactly 3 states.\n\n2. Moore FSM:\n   - The output is a function of the current state only. This requires a dedicated state to assert the high output after the sequence is detected.\n   - State S_0: Initial/Reset state (Output = 0).\n   - State S_1: '1' detected (Output = 0).\n   - State S_2: '10' detected (Output = 0).\n   - State S_3: '101' detected (Output = 1).\n   - When in S_3, if the input is 0, it transitions to S_2 (overlapping '10'). If the input is 1, it transitions to S_1 (overlapping '1'). This requires exactly 4 states.\n\nThus, Mealy needs 3 states and Moore needs 4 states.\n\nDistractor Analysis:\n- Option a is incorrect because Moore FSM requires an extra state compared to Mealy to latch the output independently of inputs.\n- Option c is incorrect because 2 states are insufficient to represent the tracking of '1' and '10'.\n- Option d is incorrect because they are not the minimal number of states.",
+    "interest": "Digital Electronics",
+    "difficulty": "Medium",
+    "topics": ["Finite State Machines", "Mealy vs Moore", "Sequence Detectors"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Consider the Boolean expression Y = AB + A'C. What type of hazard exists in a two-level sum-of-products (AND-OR) realization of this expression when the inputs change from A=1, B=1, C=1 to A=0, B=1, C=1, and how can it be eliminated?",
+    "choices": [
+      { "id": "a", "text": "Static-1 hazard; eliminated by adding the consensus term BC.", "correct": true },
+      { "id": "b", "text": "Static-0 hazard; eliminated by adding the consensus term BC.", "correct": false },
+      { "id": "c", "text": "Dynamic hazard; eliminated by adding the consensus term A'B.", "correct": false },
+      { "id": "d", "text": "Static-1 hazard; eliminated by adding the consensus term AB'.", "correct": false }
+    ],
+    "explanation": "A static hazard occurs when a single input variable transitions, and the output momentarily changes when it should have remained constant.\n\n1. Analyze the transition:\n   - Initial state: A=1, B=1, C=1. Here, AB = 1 and A'C = 0, so Y = 1.\n   - Final state: A=0, B=1, C=1. Here, AB = 0 and A'C = 1, so Y = 1.\n   - Since the output Y is 1 in both stable states, the output should remain continuously at 1. However, during the transition of A from 1 to 0, there is a delay in the inverter generating A'. The AND gate computing AB may turn off (0) before the AND gate computing A'C turns on (1). This causes a brief period where both AND gates output 0, leading to a momentary 1-to-0-to-1 drop on Y. This is a Static-1 hazard.\n\n2. Eliminate the hazard:\n   - In K-map terms, hazards occur when adjacent 1-cells are not covered by a single product term. Minterm ABC (111) is covered by AB, and A'BC (011) is covered by A'C. These two loops are adjacent but not overlapped.\n   - To eliminate the hazard, we add a redundant loop covering the transition: BC (the consensus term of AB and A'C).\n   - The hazard-free expression is Y = AB + A'C + BC.\n   - Since B=1 and C=1, the term BC remains at 1 throughout the transition, preventing the output from dropping.\n\nDistractor Analysis:\n- Option b is incorrect because a static-0 hazard occurs when the output is supposed to remain at 0 but momentarily spikes to 1.\n- Option c is incorrect because dynamic hazards involve multiple output transitions (e.g., 1-0-1-0).\n- Option d is incorrect because AB' is not the correct consensus term.",
+    "interest": "Digital Electronics",
+    "difficulty": "Medium",
+    "topics": ["Hazards", "Consensus Theorem", "Combinational Logic Hazards"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A 4-bit asynchronous binary ripple counter is constructed using negative edge-triggered T Flip-Flops (with T=1). If the propagation delay of each flip-flop is t_pd = 15 ns, what is the maximum clock frequency (f_max) at which the counter can operate reliably without causing decoding errors?",
+    "choices": [
+      { "id": "a", "text": "66.67 MHz", "correct": false },
+      { "id": "b", "text": "16.67 MHz", "correct": true },
+      { "id": "c", "text": "33.33 MHz", "correct": false },
+      { "id": "d", "text": "8.33 MHz", "correct": false }
+    ],
+    "explanation": "In an asynchronous ripple counter, the clock for each stage (except the first) is driven by the output of the preceding stage. Therefore, propagation delays accumulate through the chain.\n\n1. Worst-Case Delay:\n   The worst-case propagation delay occurs when a transition must ripple through all N stages (such as transitioning from 1111 to 0000). The total delay is:\n   t_total = N * t_pd\n   For a 4-bit counter (N = 4) and t_pd = 15 ns:\n   t_total = 4 * 15 ns = 60 ns.\n\n2. Maximum Operating Frequency:\n   To operate reliably and ensure all state changes settle before the next clock pulse, the clock period T_clk must be greater than or equal to the total delay:\n   T_clk >= t_total = 60 ns.\n   The maximum clock frequency is:\n   f_max = 1 / T_clk = 1 / 60 ns = 16.67 MHz.\n\nDistractor Analysis:\n- Option a (66.67 MHz) assumes only a single stage delay (1 / 15 ns = 66.67 MHz), which is only valid for synchronous counters.\n- Option c (33.33 MHz) assumes only 2 stages of delay.\n- Option d (8.33 MHz) is incorrect.",
+    "interest": "Digital Electronics",
+    "difficulty": "Medium",
+    "topics": ["Ripple Counter", "Propagation Delay", "Maximum Clock Frequency"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a synchronous digital circuit, the parameters of the edge-triggered flip-flops are: Setup time t_su = 3 ns, Hold time t_h = 2 ns, Clock-to-Q delay t_c-q = 4 ns (maximum) and t_c-q = 1 ns (minimum). The combinational logic delay between two flip-flops ranges from t_pd,max = 10 ns to t_pd,min = 2 ns. Clock skew is t_skew = 1.5 ns (where clock arrives at the destination flip-flop later than the source flip-flop). Under these conditions, what is the minimum clock period (T_min) to avoid setup violations, and is there a hold time violation?",
+    "choices": [
+      { "id": "a", "text": "T_min = 15.5 ns; Yes, hold violation exists.", "correct": true },
+      { "id": "b", "text": "T_min = 15.5 ns; No hold violation.", "correct": false },
+      { "id": "c", "text": "T_min = 18.5 ns; Yes, hold violation exists.", "correct": false },
+      { "id": "d", "text": "T_min = 18.5 ns; No hold violation.", "correct": false }
+    ],
+    "explanation": "Let's perform a rigorous timing analysis with the given parameters:\n\n1. Setup Constraint:\n   The data must arrive at the destination flip-flop (FF2) at least t_su before the launching clock edge plus the clock period T, taking clock skew into account. Since clock skew is positive (t_skew = T_clk2 - T_clk1 = 1.5 ns):\n   T >= t_c-q,max + t_pd,max + t_su - t_skew\n   T >= 4 ns + 10 ns + 3 ns - 1.5 ns = 15.5 ns.\n   Thus, the minimum clock period to avoid setup violations is T_min = 15.5 ns.\n\n2. Hold Constraint:\n   The data must remain stable at the destination input for at least t_h after the destination clock edge. The earliest the new data can arrive at FF2 is:\n   t_arrival,min = t_c-q,min + t_pd,min\n   For no hold violation, this arrival time must be greater than or equal to the clock skew plus the hold time requirement:\n   t_c-q,min + t_pd,min >= t_skew + t_h\n   LHS: 1 ns + 2 ns = 3 ns.\n   RHS: 1.5 ns + 2 ns = 3.5 ns.\n   Since 3 ns < 3.5 ns, the hold time constraint is violated. A hold violation exists (by 0.5 ns), meaning the data changes too early, potentially causing corruption.\n\nDistractor Analysis:\n- Option b is incorrect because a hold violation does exist (skew hurts hold margins).\n- Options c and d are incorrect because they subtract skew instead of adding it, or vice-versa, resulting in an incorrect T_min of 18.5 ns.",
+    "interest": "Digital Electronics",
+    "difficulty": "Hard",
+    "topics": ["Setup and Hold Time", "Clock Skew", "Static Timing Analysis"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Domino CMOS Logic circuits, what is the primary purpose of adding a weak p-channel MOSFET (called a 'keeper' transistor) in parallel with the precharge pMOS transistor, and how does it affect circuit operation?",
+    "choices": [
+      { "id": "a", "text": "It prevents the charge-sharing problem during the evaluation phase by actively driving the dynamic node.", "correct": false },
+      { "id": "b", "text": "It counters dynamic node charge leakage during the evaluation phase, improving noise immunity at the cost of a slight increase in evaluation delay.", "correct": true },
+      { "id": "c", "text": "It speeds up the precharge phase by providing an additional current path from the supply voltage V_DD.", "correct": false },
+      { "id": "d", "text": "It eliminates the need for an inverter at the output of the domino gate, allowing direct cascading of dynamic gates.", "correct": false }
+    ],
+    "explanation": "Domino CMOS logic consists of a dynamic logic stage followed by a static inverter. The dynamic node is precharged to V_DD during the precharge phase (CLK=0) and either discharged to GND or left floating high during the evaluation phase (CLK=1).\n\n- Leakage and Noise Problems: When the dynamic node floats high, it is highly susceptible to subthreshold leakage of the pulldown nMOS network, charge sharing with internal parasitic nodes, and capacitive coupling noise. This can cause the dynamic node voltage to drop, leading to false output transitions.\n- Role of the Keeper: A weak pMOS transistor is added in parallel with the precharge transistor. Its gate is driven by the output of the static inverter. When the dynamic node is high, the inverter output is low, turning the keeper ON. The keeper actively supplies current to offset any leakage and holds the dynamic node stable at V_DD.\n- Operational Trade-off: When the pulldown network tries to discharge the dynamic node during evaluation, it must fight against the weak keeper which is supplying current from V_DD. This contention continues until the dynamic node drops low enough for the inverter output to go high and turn the keeper off. This contention slightly increases the evaluation delay.\n\nDistractor Analysis:\n- Option a is incorrect because charge sharing is typically solved by precharging internal nodes of the nMOS tree; the keeper's main role is countering leakage/noise.\n- Option c is incorrect because the keeper is a weak (highly resistive) transistor that does not significantly speed up the precharge compared to the large precharge transistor.\n- Option d is incorrect because domino logic strictly requires the output inverter to prevent race conditions during cascading; the keeper does not eliminate this.",
+    "interest": "Digital Electronics",
+    "difficulty": "Hard",
+    "topics": ["Domino Logic", "Dynamic CMOS Logic", "Keeper Transistor", "VLSI Design"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A 4-bit Carry Look-Ahead (CLA) Adder is implemented. Let G_i = A_i B_i and P_i = A_i \\oplus B_i be the generate and propagate signals for stage i, respectively. If the propagation delay of a 2-input AND gate is \\tau, a 2-input XOR gate is 2\\tau, and a multi-input AND or OR gate (within the CLA generator logic) is 1.5\\tau, what is the total propagation delay to produce the final carry-out C_4 from inputs A_i, B_i and C_0?",
+    "choices": [
+      { "id": "a", "text": "3.5\\tau", "correct": false },
+      { "id": "b", "text": "5.0\\tau", "correct": true },
+      { "id": "c", "text": "5.5\\tau", "correct": false },
+      { "id": "d", "text": "6.0\\tau", "correct": false }
+    ],
+    "explanation": "Let's trace the signal propagation path in a Carry Look-Ahead Adder to compute the final carry C_4:\n\n1. Generate G_i and P_i signals:\n   - G_i = A_i B_i (delay of AND gate = \\tau)\n   - P_i = A_i \\oplus B_i (delay of XOR gate = 2\\tau)\n   Therefore, the P_i signals are ready at time t = 2\\tau, and G_i signals are ready at t = \\tau.\n\n2. Carry Generator Logic:\n   The CLA carry generator computes C_4 directly using a two-level sum-of-products logic expression:\n   C_4 = G_3 + P_3 G_2 + P_3 P_2 G_1 + P_3 P_2 P_1 G_0 + P_3 P_2 P_1 P_0 C_0\n   - Level 1 (AND Level): Consists of multi-input AND gates. The inputs are P_i and G_i. The latest input (P_3, P_2, etc.) arrives at t = 2\\tau.\n     Since the delay of the multi-input AND gate is 1.5\\tau, the outputs of the AND level are stable at:\n     t = 2\\tau + 1.5\\tau = 3.5\\tau.\n   - Level 2 (OR Level): Consists of a multi-input OR gate that takes the AND outputs and G_3. The latest input to the OR gate (from the AND gates) arrives at t = 3.5\\tau.\n     Since the delay of the multi-input OR gate is 1.5\\tau, the output C_4 is stable at:\n     t = 3.5\\tau + 1.5\\tau = 5.0\\tau.\n\nThus, the total propagation delay to generate C_4 is 5.0\\tau.\n\nDistractor Analysis:\n- Option a (3.5\\tau) is incorrect because it neglects the delay of one of the stages (AND or OR) or assumes P_i is generated using a simple OR gate (delay \\tau).\n- Options c and d are incorrect due to miscalculations of the critical path arrival times.",
+    "interest": "Digital Electronics",
+    "difficulty": "Hard",
+    "topics": ["Carry Look-Ahead Adder", "Propagation Delay", "Digital Arithmetic"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a standard 6T SRAM cell, which of the following transistor sizing ratio constraints is crucial to ensure that a 'Read' operation does not accidentally overwrite the stored data (Read Stability) and a 'Write' operation can successfully overwrite it (Write Ability)?",
+    "choices": [
+      { "id": "a", "text": "Cell Ratio (CR) must be greater than 1.2 to prevent Read disturb; Pull-up Ratio (PR) must be less than 1.0 to ensure Writability.", "correct": true },
+      { "id": "b", "text": "Cell Ratio (CR) must be less than 0.5 to prevent Read disturb; Pull-up Ratio (PR) must be greater than 2.0 to ensure Writability.", "correct": false },
+      { "id": "c", "text": "Cell Ratio (CR) must be greater than 1.2 to ensure Writability; Pull-up Ratio (PR) must be less than 1.0 to prevent Read disturb.", "correct": false },
+      { "id": "d", "text": "Both Cell Ratio (CR) and Pull-up Ratio (PR) must be equal to 1.0 to maintain symmetric Static Noise Margins (SNM).", "correct": false }
+    ],
+    "explanation": "A 6T SRAM cell consists of two cross-coupled CMOS inverters and two access transistors connected to the bitlines (BL and BLB).\n\n1. Read Stability (Preventing Read Disturb):\n   - During a read, BL and BLB are precharged to V_DD, and the Word Line (WL) is activated.\n   - Assume Q=0 and QB=V_DD. The node Q is pulled up through the access transistor and down through the pulldown nMOS. This forms a voltage divider.\n   - The voltage at Q (V_Q) must not rise above the threshold voltage of the opposite inverter's pulldown nMOS (otherwise the state flips).\n   - This requires the pulldown nMOS to be stronger than the access transistor.\n   - Cell Ratio (CR) = (W_pulldown / L_pulldown) / (W_access / L_access) > 1.2.\n\n2. Write Ability (Writability):\n   - To write a 0 to Q (which is currently 1), we pull BL to 0 and assert WL. The access transistor must pull Q down below the trip point of the opposite inverter against the pullup pMOS.\n   - This requires the access transistor to be stronger than the pullup pMOS.\n   - Pull-up Ratio (PR) = (W_pullup / L_pullup) / (W_access / L_access) < 1.0.\n\nDistractor Analysis:\n- Option b is incorrect because a small CR (<0.5) would mean the access transistor is much stronger than the pulldown nMOS, leading to an immediate read disturb.\n- Option c is incorrect because it swaps the definitions and constraints of CR and PR.\n- Option d is incorrect because symmetric sizing is highly detrimental to read and write stability in dynamic operation.",
+    "interest": "Digital Electronics",
+    "difficulty": "Hard",
+    "topics": ["6T SRAM", "Read Stability", "Write Ability", "Cell Ratio", "VLSI Design"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In high-speed Digital System Design, Clock Domain Crossing (CDC) between two asynchronous clock domains can cause metastability. If a two-stage flip-flop synchronizer is used, the Mean Time Between Failures (MTBF) is given by: MTBF = e^(t_MET / \\tau) / (T_0 * f_clk * f_data). Given receiving clock frequency f_clk = 500 MHz, data transition rate f_data = 50 MHz, synchronizer parameters \\tau = 0.05 ns, T_0 = 100 ps, and the time available for metastability resolution t_MET = 1.78 ns, calculate the MTBF of the synchronizer.",
+    "choices": [
+      { "id": "a", "text": "1.16 \\times 10^3 seconds", "correct": false },
+      { "id": "b", "text": "2.32 \\times 10^5 seconds", "correct": false },
+      { "id": "c", "text": "1.16 \\times 10^9 seconds", "correct": true },
+      { "id": "d", "text": "2.32 \\times 10^7 seconds", "correct": false }
+    ],
+    "explanation": "Let's perform the MTBF calculation step-by-step:\n\n1. Define the given variables in consistent base units:\n   - f_clk = 500 MHz = 5 * 10^8 Hz\n   - f_data = 50 MHz = 5 * 10^7 Hz\n   - \\tau = 0.05 ns = 5 * 10^(-11) seconds\n   - T_0 = 100 ps = 1 * 10^(-10) seconds\n   - t_MET = 1.78 ns = 1.78 * 10^(-9) seconds\n\n2. Compute the exponent term:\n   t_MET / \\tau = 1.78 ns / 0.05 ns = 35.6\n   e^35.6 \\approx 2.8948 * 10^15\n\n3. Compute the denominator term:\n   Denominator = T_0 * f_clk * f_data\n   Denominator = (1 * 10^(-10) s) * (5 * 10^8 s^-1) * (5 * 10^7 s^-1)\n   Denominator = 10^(-10) * 2.5 * 10^16 = 2.5 * 10^6 s^-1\n\n4. Calculate MTBF:\n   MTBF = e^35.6 / (2.5 * 10^6)\n   MTBF = 2.8948 * 10^15 / (2.5 * 10^6) \\approx 1.1579 * 10^9 seconds.\n   Rounding yields 1.16 * 10^9 seconds.\n\nDistractor Analysis:\n- Options a, b, and d are incorrect calculations that result from misapplying units (such as not converting picoseconds/nanoseconds to seconds) or using incorrect exponent values.",
+    "interest": "Digital Electronics",
+    "difficulty": "Expert",
+    "topics": ["Clock Domain Crossing", "Metastability", "MTBF Calculation", "VLSI Design"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In an Asynchronous Sequential Circuit designed under the fundamental mode of operation, a race condition occurs when multiple state variables change in response to an input change. Which of the following statements precisely describes the conditions and consequences of 'Critical' and 'Non-Critical' races, and how they are resolved?",
+    "choices": [
+      { "id": "a", "text": "A race is critical if the final stable state reached depends on the order in which state variables change; resolved by ensuring only one state variable changes at a time (e.g., using adjacent state assignments).", "correct": true },
+      { "id": "b", "text": "A race is critical if the circuit enters a transient loop and never reaches a stable state; resolved by adding redundant delay elements in the feedback path.", "correct": false },
+      { "id": "c", "text": "A race is non-critical if the final stable state depends on the order of transition but is resolved by using clock gating.", "correct": false },
+      { "id": "d", "text": "A race is critical if the final state is independent of the transition order; resolved by utilizing Gray-code state encoding.", "correct": false }
+    ],
+    "explanation": "In asynchronous fundamental-mode circuits, no global clock is present, and state transitions are dictated by feedback delay propagation.\n\n- Non-Critical Race: Occurs when multiple state variables change simultaneously, but the circuit eventually settles into the same correct stable state regardless of the order of individual variable changes (e.g., whether state transitions via 00 -> 01 -> 11 or 00 -> 10 -> 11).\n- Critical Race: Occurs when the final stable state reached by the circuit depends on the transient order in which the variables change. For instance, if one variable transitions faster, it might land the circuit in state S_A, while if the other transitions faster, it lands in S_B. This is a severe logic failure.\n- Resolution: Critical races must be completely avoided by ensuring only a single state variable changes during any transition. This is achieved by adjacent state assignment in the transition flow table, often using 2-out-of-4 state assignments, Gray-code assignments, or adding intermediate cycle states.\n\nDistractor Analysis:\n- Option b is incorrect because a transient loop that never reaches a stable state is a 'cycle' or 'oscillation' condition, not the definition of a critical race itself.\n- Option c is incorrect because asynchronous circuits do not contain clocks, making clock gating irrelevant. Also, non-critical races do not depend on the transition order for the final state.\n- Option d is incorrect because it swaps the definitions of critical and non-critical races.",
+    "interest": "Digital Electronics",
+    "difficulty": "Expert",
+    "topics": ["Asynchronous Sequential Circuits", "Race Conditions", "Flow Tables", "State Assignment"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Design for Testability (DFT) uses Linear Feedback Shift Registers (LFSRs) to generate pseudo-random test patterns in Built-In Self-Test (BIST) structures. If a 4-bit LFSR has the characteristic feedback polynomial P(x) = x^4 + x + 1, starting with the initial seed state Q_3 Q_2 Q_1 Q_0 = 1000, what is the sequence of states generated, what is the cycle length (period) before it repeats, and what type of LFSR is this?",
+    "choices": [
+      { "id": "a", "text": "Period = 15; Type = Maximum-length LFSR; Sequence: 1000 -> 0100 -> 0010 -> 0001 -> 1000...", "correct": false },
+      { "id": "b", "text": "Period = 7; Type = Non-maximum-length LFSR; Sequence: 1000 -> 1100 -> 1110 -> 1111 -> 0111...", "correct": false },
+      { "id": "c", "text": "Period = 15; Type = Maximum-length LFSR (m-sequence); Sequence: 1000 -> 0100 -> 0010 -> 1001 -> 1100 -> 0110 -> 1011 -> 0101 -> 1010 -> 1101 -> 1110 -> 1111 -> 0111 -> 0011 -> 0001 -> 1000...", "correct": true },
+      { "id": "d", "text": "Period = 16; Type = Complete LFSR; Sequence: 1000 -> 0100 -> 0010 -> 0001 -> 0000 -> 1000...", "correct": false }
+    ],
+    "explanation": "A 4-bit LFSR with the polynomial P(x) = x^4 + x + 1 is analyzed as follows:\n\n1. Polynomial Properties:\n   The polynomial x^4 + x + 1 is a primitive polynomial of degree 4. A primitive polynomial of degree n always generates a maximum-length sequence (m-sequence) of period 2^n - 1.\n   For n = 4, the period is 2^4 - 1 = 15 states. The all-zero state (0000) is excluded because it is a lock-up state (the feedback would remain 0 forever).\n\n2. State Sequence Trace:\n   The feedback function is Q_3^+ = Q_1 \\oplus Q_0. The shift direction is right: Q_2^+ = Q_3, Q_1^+ = Q_2, Q_0^+ = Q_1.\n   - State 0: 1000 -> Feedback F = 0 \\oplus 0 = 0 -> Next: 0100\n   - State 1: 0100 -> Feedback F = 0 \\oplus 0 = 0 -> Next: 0010\n   - State 2: 0010 -> Feedback F = 1 \\oplus 0 = 1 -> Next: 1001\n   - State 3: 1001 -> Feedback F = 0 \\oplus 1 = 1 -> Next: 1100\n   - State 4: 1100 -> Feedback F = 0 \\oplus 0 = 0 -> Next: 0110\n   - State 5: 0110 -> Feedback F = 1 \\oplus 0 = 1 -> Next: 1011\n   - State 6: 1011 -> Feedback F = 1 \\oplus 1 = 0 -> Next: 0101\n   - State 7: 0101 -> Feedback F = 0 \\oplus 1 = 1 -> Next: 1010\n   - State 8: 1010 -> Feedback F = 1 \\oplus 0 = 1 -> Next: 1101\n   - State 9: 1101 -> Feedback F = 0 \\oplus 1 = 1 -> Next: 1110\n   - State 10: 1110 -> Feedback F = 1 \\oplus 0 = 1 -> Next: 1111\n   - State 11: 1111 -> Feedback F = 1 \\oplus 1 = 0 -> Next: 0111\n   - State 12: 0111 -> Feedback F = 1 \\oplus 1 = 0 -> Next: 0011\n   - State 13: 0011 -> Feedback F = 1 \\oplus 1 = 0 -> Next: 0001\n   - State 14: 0001 -> Feedback F = 0 \\oplus 1 = 1 -> Next: 1000 (repeats!)\n\nThis matches the maximal length sequence of 15 states in Option c.\n\nDistractor Analysis:\n- Option a is incorrect because the sequence shown has a period of only 4, which is not maximum-length.\n- Option b is incorrect because it uses a incorrect feedback path resulting in a period of 7.\n- Option d is incorrect because standard LFSRs cannot have a period of 16 as the all-zero state is excluded.",
+    "interest": "Digital Electronics",
+    "difficulty": "Expert",
+    "topics": ["DFT", "LFSR", "BIST", "Primitive Polynomials", "VLSI Testing"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Static Timing Analysis (STA), a designer encounters a 'Timing Borrowing' scenario in a latch-based pipeline design. Which of the following statements rigorously defines the concept of timing borrowing and describes how it differentiates latch-based designs from flip-flop-based designs?",
+    "choices": [
+      { "id": "a", "text": "Timing borrowing allows a logic path terminating at an active-high latch to exceed the clock cycle boundary, taking time from the subsequent cycle during which the latch remains transparent, provided the total delay across both stages does not exceed two clock cycles.", "correct": true },
+      { "id": "b", "text": "Timing borrowing is a technique where clock skew is deliberately introduced to increase the setup margin of a critical path, applicable only to edge-triggered flip-flops.", "correct": false },
+      { "id": "c", "text": "Timing borrowing allows latch-based designs to run at higher frequencies by reducing the hold time requirement to a negative value during the transparent phase.", "correct": false },
+      { "id": "d", "text": "Timing borrowing is the process of borrowing time from the precharge phase in dynamic logic styles to extend the evaluation phase.", "correct": false }
+    ],
+    "explanation": "In sequential timing analysis, latch-based designs offer timing flexibility that edge-triggered flip-flop designs do not.\n\n- Flip-Flop designs: The timing boundaries are rigid. Logic must complete and satisfy setup requirements before the capturing clock edge. If a path takes longer than a single clock period, it results in a setup violation.\n- Latch-based designs: A latch is transparent during an entire half-cycle of the clock (assuming a 50% duty cycle). If a logic path from a preceding stage is slow and does not arrive before the opening edge of the destination latch, it does not cause a failure as long as the data arrives while the latch is transparent (before the closing edge).\n- Timing Borrowing: When the data arrives late at the latch, it immediately propagates through the transparent latch. It has effectively 'borrowed' time from the next cycle. However, this leaves less time for the subsequent logic stage to complete its computation. The total delay across two adjacent stages must still fit within the sum of the two clock cycles.\n\nDistractor Analysis:\n- Option b is incorrect because using clock skew to improve timing is called 'Useful Skew' scheduling, which is distinct from timing borrowing.\n- Option c is incorrect because timing borrowing does not physically alter the hold time requirements of the latch.\n- Option d is incorrect because dynamic logic phases (precharge/evaluation) are governed by clock phase distribution and charge retention, not latch timing borrowing.",
+    "interest": "Digital Electronics",
+    "difficulty": "Expert",
+    "topics": ["Static Timing Analysis", "Latch-based Design", "Timing Borrowing", "VLSI Timing"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the architecture of the Intel 8085 microprocessor, which of the following registers are 16-bit registers, and what are their primary functions?",
+    "choices": [
+      { "id": "a", "text": "Accumulator (A) and Flag Register; used for arithmetic operations and status reporting.", "correct": false },
+      { "id": "b", "text": "Program Counter (PC) and Stack Pointer (SP); PC holds the memory address of the next instruction to be executed, while SP holds the address of the stack top.", "correct": true },
+      { "id": "c", "text": "B-C and D-E Register Pairs; used exclusively for 16-bit memory addressing.", "correct": false },
+      { "id": "d", "text": "Temporary Register and Instruction Register; used for internal micro-operations.", "correct": false }
+    ],
+    "explanation": "The Intel 8085 has a specific register structure consisting of both 8-bit and 16-bit registers:\n\n- 16-bit Registers:\n  1. Program Counter (PC): A 16-bit register that stores the memory address of the next instruction to be fetched and executed. Because the 8085 has a 16-bit address bus, it requires a 16-bit PC to address up to 64 KB of memory.\n  2. Stack Pointer (SP): A 16-bit register that holds the memory address of the current top of the stack, which is a LIFO data structure located in read/write memory.\n- 8-bit Registers: Accumulator (A), B, C, D, E, H, L, Flag Register, Temporary Register (W/Z), and Instruction Register.\n\nDistractor Analysis:\n- Option a is incorrect because both the Accumulator and Flag Register are 8-bit registers.\n- Option c is incorrect because BC and DE are register pairs made by combining two independent 8-bit registers; they are not dedicated 16-bit registers. Furthermore, they are general-purpose and not used 'exclusively' for 16-bit addressing.\n- Option d is incorrect because the Temporary and Instruction registers are internal 8-bit registers.",
+    "interest": "Microprocessors",
+    "difficulty": "Easy",
+    "topics": ["8085 Architecture", "Registers", "PC and SP"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Which of the following addressing modes is used in the 8085 instruction 'MOV A, M', and where is the operand located?",
+    "choices": [
+      { "id": "a", "text": "Direct addressing mode; operand is located in the memory location whose address is specified directly in the instruction.", "correct": false },
+      { "id": "b", "text": "Register addressing mode; operand is located in one of the general-purpose registers.", "correct": false },
+      { "id": "c", "text": "Register Indirect addressing mode; operand is located in the memory location whose 16-bit address is stored in the H-L register pair.", "correct": true },
+      { "id": "d", "text": "Immediate addressing mode; operand is a constant value specified directly within the instruction itself.", "correct": false }
+    ],
+    "explanation": "In the Intel 8085 instruction set, the symbol 'M' represents a memory location whose address is not directly specified inside the opcode. Instead, the 16-bit address of this memory location is stored in the H-L register pair.\n\n- Instruction 'MOV A, M' copies the byte from the memory location pointed to by H-L into the Accumulator (A).\n- Since a register pair (H-L) acts as a pointer to the memory location of the operand, this mode is called Register Indirect Addressing Mode.\n\nDistractor Analysis:\n- Option a is incorrect because Direct addressing (e.g., LDA 2000H) specifies the address explicitly within the instruction.\n- Option b is incorrect because Register addressing (e.g., MOV A, B) transfers data purely between CPU registers.\n- Option d is incorrect because Immediate addressing (e.g., MVI A, 45H) contains the raw operand value within the instruction.",
+    "interest": "Microprocessors",
+    "difficulty": "Easy",
+    "topics": ["Addressing Modes", "8085 Instruction Set", "Register Indirect"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "What is the correct priority order (from highest to lowest) of the hardware interrupts in the Intel 8085 microprocessor, and which of these interrupts is non-maskable?",
+    "choices": [
+      { "id": "a", "text": "TRAP > RST 7.5 > RST 6.5 > RST 5.5 > INTR; TRAP is non-maskable.", "correct": true },
+      { "id": "b", "text": "INTR > TRAP > RST 7.5 > RST 6.5 > RST 5.5; INTR is non-maskable.", "correct": false },
+      { "id": "c", "text": "TRAP > RST 5.5 > RST 6.5 > RST 7.5 > INTR; RST 7.5 is non-maskable.", "correct": false },
+      { "id": "d", "text": "RST 7.5 > RST 6.5 > RST 5.5 > TRAP > INTR; TRAP is non-maskable.", "correct": false }
+    ],
+    "explanation": "The Intel 8085 has five hardware interrupt pins, which are prioritized to prevent conflicts when multiple interrupt signals arrive simultaneously:\n\n1. Priority Order (Highest to Lowest):\n   - TRAP (Highest Priority - active on edge and level)\n   - RST 7.5 (Second Priority - active on rising edge)\n   - RST 6.5 (Third Priority - active on high level)\n   - RST 5.5 (Fourth Priority - active on high level)\n   - INTR (Lowest Priority - active on high level)\n\n2. Maskability:\n   - TRAP is the only non-maskable interrupt (NMI). It cannot be disabled by using software instructions (like DI) or by a system reset. It is reserved for critical events like power failure or system emergencies.\n   - RST 7.5, RST 6.5, RST 5.5, and INTR are maskable interrupts and can be enabled/disabled using software (EI/DI instructions and SIM register mask bits).\n\nDistractor Analysis:\n- Options b, c, and d represent incorrect priority sequences and/or misidentify the non-maskable interrupt.",
+    "interest": "Microprocessors",
+    "difficulty": "Easy",
+    "topics": ["8085 Interrupts", "Interrupt Priority", "Non-Maskable Interrupts"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Consider the following sequence of 8085 assembly instructions:\nMVI A, 8F H\nADI 72 H\nAfter executing these instructions, what will be the content of the Accumulator and the status of the Carry (CY) and Zero (Z) flags?",
+    "choices": [
+      { "id": "a", "text": "Accumulator = 01 H, CY = 1, Z = 0", "correct": true },
+      { "id": "b", "text": "Accumulator = 01 H, CY = 1, Z = 1", "correct": false },
+      { "id": "c", "text": "Accumulator = 01 H, CY = 0, Z = 0", "correct": false },
+      { "id": "d", "text": "Accumulator = 101 H, CY = 1, Z = 0", "correct": false }
+    ],
+    "explanation": "Let's trace the execution of the instructions:\n\n1. MVI A, 8FH loads the 8-bit Accumulator with the value 8FH (1000 1111 in binary).\n\n2. ADI 72H adds the immediate value 72H (0111 0010 in binary) to the current accumulator value:\n   ```\n     1000 1111  (8F H)\n   + 0111 0010  (72 H)\n   -----------\n    10000 0001  (Sum = 101 H)\n   ```\n\n3. Determine the final state of registers and flags:\n   - Accumulator (8-bit): The accumulator can only hold 8 bits. Thus, it stores the lower 8 bits of the sum, which is 01H (0000 0001 binary).\n   - Carry Flag (CY): Since the addition generated a carry-out from the MSB (the 9th bit is 1), the Carry flag is set (CY = 1).\n   - Zero Flag (Z): The 8-bit result stored in the accumulator is 01H. Since this value is non-zero, the Zero flag is cleared (Z = 0).\n\nDistractor Analysis:\n- Option b is incorrect because the Zero flag is set to 1, which only happens if the 8-bit result is 00H.\n- Option c is incorrect because it shows Carry flag as 0, whereas a carry was generated.\n- Option d is incorrect because the accumulator is an 8-bit register and cannot hold the 9-bit value 101H.",
+    "interest": "Microprocessors",
+    "difficulty": "Easy",
+    "topics": ["8085 Assembly", "Flag Status", "Arithmetic Instructions"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In the Intel 8086 microprocessor, memory is organized as segmented memory. If the Segment Register contains C000 H and the Offset (IP or Pointer Register) contains A800 H, what is the calculated 20-bit Physical Address, and what is the range of this particular memory segment?",
+    "choices": [
+      { "id": "a", "text": "Physical Address = CA800 H; Range: C0000 H to CFFFF H", "correct": true },
+      { "id": "b", "text": "Physical Address = CA800 H; Range: C0000 H to D0000 H", "correct": false },
+      { "id": "c", "text": "Physical Address = CA800 H; Range: C0000 H to DFFFF H", "correct": false },
+      { "id": "d", "text": "Physical Address = C0A80 H; Range: C0000 H to DFFFF H", "correct": false }
+    ],
+    "explanation": "Let's perform the physical address calculation for the Intel 8086 segmented architecture:\n\n1. Physical Address Calculation:\n   The 8086 has a 20-bit physical address space, but uses 16-bit segment and offset registers. The physical address is derived by shifting the segment address left by 4 bits (multiplying by 10H) and adding the 16-bit offset:\n   Physical Address = (Segment Address * 10H) + Offset Address\n   Segment = C000H -> Segment * 10H = C0000H\n   Offset = A800H\n   ```\n     C0000 H\n   +  A800 H\n   ---------\n     CA800 H\n   ```\n   Thus, the 20-bit Physical Address is CA800H.\n\n2. Segment Range:\n   A segment in the 8086 has a fixed size of 64 KB (65,536 bytes), corresponding to the range of a 16-bit offset register (from 0000H to FFFFH).\n   - Start of segment: Offset = 0000H -> Physical Address = C0000H + 0000H = C0000H\n   - End of segment: Offset = FFFFH -> Physical Address = C0000H + FFFFH = CFFFFH\n   So the range of the segment is C0000H to CFFFFH.\n\nDistractor Analysis:\n- Option b is incorrect because the end address of a 64KB segment starting at C0000H is CFFFFH, not D0000H.\n- Option c is incorrect because a segment size is 64KB, not 128KB.\n- Option d shows an incorrect shifting and addition calculation resulting in C0A80H.",
+    "interest": "Microprocessors",
+    "difficulty": "Medium",
+    "topics": ["8086 Memory Segmentation", "Physical Address Calculation", "Segment Range"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "During the execution of a machine cycle in the Intel 8085 microprocessor, what is the role of the Address Latch Enable (ALE) signal, and which specific clock cycle(s) is it active?",
+    "choices": [
+      { "id": "a", "text": "ALE is used to demultiplex the lower-order address/data bus (AD7-AD0) by latching the address bits onto an external latch; it is active high during the first clock cycle (T_1) of every machine cycle.", "correct": true },
+      { "id": "b", "text": "ALE is used to latch the data bus value during memory read/write operations; it remains active low throughout T_2 and T_3 states.", "correct": false },
+      { "id": "c", "text": "ALE is used to signal the external memory that a valid data byte is present on the bus; it is active during the entire Instruction Fetch machine cycle.", "correct": false },
+      { "id": "d", "text": "ALE is used to arbitrate the system bus between the CPU and the DMA controller; it is active high during the T_4 state.", "correct": false }
+    ],
+    "explanation": "To optimize pin count, the Intel 8085 multiplexes the lower 8 bits of the address bus with the data bus on pins AD7-AD0.\n\n- Purpose of ALE: During the first clock cycle (T_1) of any machine cycle, the CPU places the lower 8 bits of the address on the multiplexed AD7-AD0 lines. At the same time, it asserts the Address Latch Enable (ALE) signal as a high-going pulse. This pulse triggers an external latch (such as the 74LS373) to store the address bits.\n- Bus Demultiplexing: During states T_2 and T_3, ALE goes low, and the CPU uses the AD7-AD0 lines to transfer data, while the external latch maintains a stable lower-order address for memory and I/O devices.\n- Active timing: ALE is active high and is asserted strictly during the T_1 state of every machine cycle.\n\nDistractor Analysis:\n- Option b is incorrect because ALE does not latch data; it latches address bits, and it is active high during T_1 (not low during T_2/T_3).\n- Option c is incorrect because the read/write control lines (RD'/WR') are used to signal memory read/write, not ALE.\n- Option d is incorrect because bus arbitration for DMA is handled by the HOLD/HLDA pins.",
+    "interest": "Microprocessors",
+    "difficulty": "Medium",
+    "topics": ["8085 Timing Diagrams", "ALE Signal", "Bus Demultiplexing"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Consider the following 8085 assembly subroutine starting at memory address 2000 H:\n2000 H: LXI SP, 2700 H\n2003 H: LXI H, 5000 H\n2006 H: PUSH H\n2007 H: CALL 20A0 H\n200A H: POP B\n200B H: HLT\nIf the instruction at 2007 H calls the subroutine at 20A0 H, what will be the contents of the Stack Pointer (SP) and the top two bytes of the stack immediately after entering the subroutine at 20A0 H (before executing any instructions inside the subroutine)?",
+    "choices": [
+      { "id": "a", "text": "SP = 26FC H; Top bytes: 0A H (at SP), 20 H (at SP+1)", "correct": true },
+      { "id": "b", "text": "SP = 26FC H; Top bytes: 50 H (at SP), 00 H (at SP+1)", "correct": false },
+      { "id": "c", "text": "SP = 26FE H; Top bytes: 00 H (at SP), 50 H (at SP+1)", "correct": false },
+      { "id": "d", "text": "SP = 26FD H; Top bytes: 20 H (at SP), 0A H (at SP+1)", "correct": false }
+    ],
+    "explanation": "Let's trace the stack pointer operations and memory contents step-by-step:\n\n1. LXI SP, 2700H initializes the Stack Pointer to SP = 2700H.\n\n2. LXI H, 5000H loads register pair HL with 5000H (H = 50H, L = 00H).\n\n3. PUSH H pushes HL onto the stack:\n   - SP decrements to 26FFH; H (50H) is stored at memory location 26FFH.\n   - SP decrements to 26FEH; L (00H) is stored at memory location 26FEH.\n   - Current state: SP = 26FEH.\n\n4. CALL 20A0H calls the subroutine. The CALL instruction (starting at 2007H) is a 3-byte instruction, so the return address is the address of the next instruction POP B, which is 200AH (PCH = 20H, PCL = 0AH).\n   During CALL, the CPU automatically pushes the return address (200AH) onto the stack:\n   - SP decrements to 26FDH; PCH (20H) is stored at memory location 26FDH.\n   - SP decrements to 26FCH; PCL (0AH) is stored at memory location 26FCH.\n   - Current state: SP = 26FCH.\n\n5. Stack top contents:\n   - The byte at SP (26FCH) is 0AH.\n   - The byte at SP+1 (26FDH) is 20H.\n\nThis perfectly matches Option a.\n\nDistractor Analysis:\n- Option b is incorrect because it shows the HL contents at the top of the stack, but the return address was pushed after HL, burying it.\n- Option c is incorrect because it represents the stack state before the CALL instruction executes.\n- Option d represents incorrect SP calculations and order.",
+    "interest": "Microprocessors",
+    "difficulty": "Medium",
+    "topics": ["Stack Operations", "Subroutines", "8085 Assembly", "CALL Instruction"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In memory-mapped I/O systems compared to I/O-mapped I/O (isolated I/O) systems in microprocessor interfacing, which of the following statements is correct regarding instruction set utilization and address space consumption?",
+    "choices": [
+      { "id": "a", "text": "I/O-mapped I/O allows the use of all memory-reference instructions for I/O ports, whereas Memory-mapped I/O is limited to IN and OUT instructions.", "correct": false },
+      { "id": "b", "text": "Memory-mapped I/O requires a separate control signal like IO/M' to distinguish between memory and I/O accesses.", "correct": false },
+      { "id": "c", "text": "Memory-mapped I/O restricts the total available memory space because I/O devices share the same address space; I/O-mapped I/O does not reduce the usable memory space.", "correct": true },
+      { "id": "d", "text": "I/O-mapped I/O is faster than memory-mapped I/O because it requires fewer address lines to be decoded by the hardware.", "correct": false }
+    ],
+    "explanation": "Memory-Mapped I/O and I/O-Mapped I/O differ fundamentally in how the CPU treats and accesses peripheral devices:\n\n- Memory-Mapped I/O:\n  - The CPU treats peripheral ports exactly like memory locations.\n  - Both memory and I/O share the same address space. Therefore, any portion of address space allocated to I/O cannot be used for actual RAM/ROM, which directly reduces the total available memory space.\n  - The entire memory reference instruction set (e.g., MOV, LDA, STA, ADD M in 8085) can be used to read, write, or manipulate I/O data.\n  - No special control signals (like IO/M') are needed to distinguish them, as the CPU uses standard memory read/write cycles.\n- I/O-Mapped I/O (Isolated I/O):\n  - The I/O space is completely isolated from the memory address space.\n  - It uses a separate address space (e.g., 8-bit in 8085, allowing 256 ports) and requires specific instructions (IN and OUT) to perform data transfers.\n  - Since I/O has a dedicated space, it does not consume any of the memory address space.\n\nDistractor Analysis:\n- Option a is incorrect because it swaps the instruction capabilities of the two modes.\n- Option b is incorrect because I/O-mapped I/O requires the IO/M' control signal, whereas memory-mapped does not.\n- Option d is incorrect because instruction execution speed depends on machine cycles, and I/O-mapped IN/OUT instructions are not inherently faster than memory instructions.",
+    "interest": "Microprocessors",
+    "difficulty": "Medium",
+    "topics": ["Memory-Mapped I/O", "Isolated I/O", "Address Decoding", "Control Signals"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In a modern pipelined RISC processor with a standard 5-stage pipeline (Fetch, Decode, Execute, Memory, Write-back), a 'Data Hazard' can occur. Which of the following pipeline sequences exhibits a Read-After-Write (RAW) hazard assuming NO operand forwarding is implemented, and how many stall cycles are introduced?",
+    "choices": [
+      { "id": "a", "text": "ADD R1, R2, R3 followed immediately by SUB R4, R1, R5; Stall cycles = 2.", "correct": true },
+      { "id": "b", "text": "ADD R1, R2, R3 followed immediately by SUB R4, R5, R6; Stall cycles = 0.", "correct": false },
+      { "id": "c", "text": "LW R1, 0(R2) followed immediately by SW R1, 4(R3); Stall cycles = 1.", "correct": false },
+      { "id": "d", "text": "ADD R1, R2, R3 followed immediately by SUB R4, R1, R5; Stall cycles = 1.", "correct": false }
+    ],
+    "explanation": "Let's analyze the hazard under the assumption that NO operand forwarding (bypass logic) is implemented in a 5-stage MIPS-like pipeline:\n\n1. Sequence: \n   ADD R1, R2, R3  (writes R1 in WB stage)\n   SUB R4, R1, R5  (reads R1 in ID stage)\n\n2. Clock Cycle Analysis (No Forwarding):\n   - Cycle 1: ADD is in Instruction Fetch (IF).\n   - Cycle 2: ADD is in Instruction Decode (ID) / Reg Read. SUB is in IF.\n   - Cycle 3: ADD is in Execute (EX). SUB wants to enter ID and read register R1. However, the updated value of R1 is not written yet (it will be written by ADD during the WB stage). Thus, the pipeline must insert a stall.\n   - Cycle 4: ADD is in Memory Access (MEM). SUB remains stalled in the ID stage.\n   - Cycle 5: ADD enters Write-Back (WB). By standard design, register file writes occur in the first half of the clock cycle, and register reads occur in the second half. Therefore, during Cycle 5, ADD writes the updated R1, and SUB (still in ID stage) reads this updated value. The ID stage of SUB is finally completed.\n   - Cycle 6: SUB proceeds to the EX stage.\n\n3. Stall Count:\n   Without stalls, SUB's ID stage would have executed in Cycle 2. Instead, it executed in Cycle 5. This represents exactly 2 stall cycles (Cycles 3 and 4 are stalled).\n\nDistractor Analysis:\n- Option b is incorrect because there is no hazard since SUB does not depend on R1.\n- Option c is incorrect because without forwarding, a LW followed by SW on the same register would also require 2 stalls (as the data must go through WB).\n- Option d is incorrect because 1 stall cycle is only possible if operand forwarding is implemented (in which case a load-use hazard has 1 stall, but an ADD-to-SUB hazard has 0 stalls).",
+    "interest": "Microprocessors",
+    "difficulty": "Hard",
+    "topics": ["Pipelining", "Data Hazards", "Stall Cycles", "RAW Hazard"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A 4-way set-associative cache memory has a total capacity of 64 KB with a block (line) size of 64 bytes. The processor generates a 32-bit physical address. What are the widths of the Tag, Index, and Offset fields of the address, respectively?",
+    "choices": [
+      { "id": "a", "text": "Tag = 18 bits, Index = 8 bits, Offset = 6 bits", "correct": true },
+      { "id": "b", "text": "Tag = 16 bits, Index = 10 bits, Offset = 6 bits", "correct": false },
+      { "id": "c", "text": "Tag = 20 bits, Index = 6 bits, Offset = 6 bits", "correct": false },
+      { "id": "d", "text": "Tag = 14 bits, Index = 12 bits, Offset = 6 bits", "correct": false }
+    ],
+    "explanation": "Let's calculate the size of each field in the 32-bit address for a 4-way set-associative cache:\n\n1. Offset Field:\n   - The block size is 64 bytes.\n   - Since 64 = 2^6, we need 6 bits to identify a specific byte within a block.\n   - Thus, Offset = 6 bits.\n\n2. Index Field:\n   - Total Cache Capacity = 64 KB = 64 * 1024 bytes = 65,536 bytes.\n   - Total Number of Blocks = Total Capacity / Block Size = 64 KB / 64 bytes = 1024 blocks.\n   - The cache is 4-way set-associative, which means each set contains 4 blocks.\n   - Number of Sets = Total Blocks / Associativity = 1024 / 4 = 256 sets.\n   - Since 256 = 2^8, we need 8 bits to select one of the 256 sets.\n   - Thus, Index = 8 bits.\n\n3. Tag Field:\n   - The total address size is 32 bits.\n   - Tag Width = Total Address Width - (Index Width + Offset Width)\n   - Tag Width = 32 - (8 + 6) = 32 - 14 = 18 bits.\n\nTherefore: Tag = 18 bits, Index = 8 bits, Offset = 6 bits.\n\nDistractor Analysis:\n- Option b represents a 1-way (direct-mapped) cache where there are 1024 sets.\n- Option c represents a 16-way set-associative cache with 64 sets.\n- Option d represents a cache with 4096 sets, which is mathematically inconsistent with the 64KB size.",
+    "interest": "Microprocessors",
+    "difficulty": "Hard",
+    "topics": ["Cache Memory", "Set-Associative Mapping", "Address Partitioning"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a Direct Memory Access (DMA) controller, what is the precise operational difference between 'Burst Mode' and 'Cycle Stealing Mode' data transfer, and how do they affect system performance?",
+    "choices": [
+      { "id": "a", "text": "In Burst Mode, the DMA controller releases the system bus after transferring each byte, allowing the CPU to execute instructions; in Cycle Stealing Mode, the DMA holds the bus until the entire block of data is transferred.", "correct": false },
+      { "id": "b", "text": "In Burst Mode, the DMA controller takes control of the system bus and transfers the entire data block continuously without interruption; in Cycle Stealing Mode, the DMA controller transfers one byte, then releases the bus back to the CPU for one cycle, repeating this until completion.", "correct": true },
+      { "id": "c", "text": "Burst Mode requires the CPU to initiate each byte transfer via interrupts, whereas Cycle Stealing Mode operates fully autonomously without CPU intervention.", "correct": false },
+      { "id": "d", "text": "Cycle Stealing Mode increases the CPU's DMA-related execution overhead, whereas Burst Mode completely eliminates bus contention and latency.", "correct": false }
+    ],
+    "explanation": "DMA controllers transfer data directly between I/O devices and memory without CPU intervention. They do this using different bus transfer modes:\n\n- Burst Mode (Block Transfer Mode):\n  - Once the CPU grants the bus to the DMA controller (via HOLD/HLDA), the DMA controller transfers the entire block of data (thousands of bytes) in a continuous stream without releasing the bus.\n  - Advantage: Highly efficient for fast devices, providing maximum data throughput.\n  - Disadvantage: The CPU is completely locked out of the system bus for a long period, halting CPU instruction execution if it needs to access external memory.\n- Cycle Stealing Mode:\n  - The DMA controller takes control of the bus, transfers a single byte/word of data, and immediately releases the bus back to the CPU.\n  - It then waits for the next transfer request, takes the bus again for one cycle, transfers one byte, and releases it.\n  - Advantage: The CPU is not locked out of the bus for long periods, keeping the system highly responsive.\n  - Disadvantage: Overall data transfer is slower due to continuous arbitration overhead for every byte.\n\nDistractor Analysis:\n- Option a is incorrect because it completely swaps the definitions of the two modes.\n- Option c is incorrect because both modes are autonomous after initialization; the CPU is never interrupted for every single byte.\n- Option d is incorrect because Cycle Stealing does not increase CPU execution overhead, and Burst Mode actually maximizes bus contention.",
+    "interest": "Microprocessors",
+    "difficulty": "Hard",
+    "topics": ["DMA Controller", "Burst Mode", "Cycle Stealing", "Bus Arbitration"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In the Intel 8259A Programmable Interrupt Controller (PIC), what is the difference between the Initialization Command Words (ICWs) and the Operation Command Words (OCWs), and which specific register is programmed to select the 'Automatic End of Interrupt (AEOI)' mode?",
+    "choices": [
+      { "id": "a", "text": "ICWs are used to set up the basic hardware configuration (e.g., vector addresses, cascading) and are loaded only once; OCWs are used to dynamically control the controller's operation (e.g., masking, polling); AEOI is programmed via ICW4.", "correct": true },
+      { "id": "b", "text": "ICWs dynamically control masking during execution, whereas OCWs initialize vector addresses; AEOI is programmed via OCW1.", "correct": false },
+      { "id": "c", "text": "ICWs are loaded every time an interrupt occurs, whereas OCWs are loaded only during system boot; AEOI is programmed via OCW3.", "correct": false },
+      { "id": "d", "text": "Both ICWs and OCWs are loaded once at startup; AEOI is a hardware strapping option on the 8259A physical pins.", "correct": false }
+    ],
+    "explanation": "The Intel 8259A PIC is programmed using two categories of command words to handle interrupts in complex microprocessor systems:\n\n1. Initialization Command Words (ICWs):\n   - These are used to set up the fundamental hardware and programming configurations when the system is powered on or reset. They must be loaded sequentially (ICW1 to ICW4).\n   - ICW1: Edge/level trigger, single/cascaded mode.\n   - ICW2: Base vector address.\n   - ICW3: Cascade details (master/slave).\n   - ICW4: Programs operational modes such as Fully Nested, Buffered, MS, and Automatic End of Interrupt (AEOI).\n\n2. Operation Command Words (OCWs):\n   - These are loaded dynamically during normal system execution after initialization to alter 8259A behaviors on the fly.\n   - OCW1: Writing to Interrupt Mask Register (IMR) to mask specific interrupt lines.\n   - OCW2: Priority rotation and manual End of Interrupt (EOI) commands.\n   - OCW3: Reading status registers (ISR/IRR) and selecting Special Mask/Poll modes.\n\nThus, AEOI is programmed in ICW4 during initialization.\n\nDistractor Analysis:\n- Option b is incorrect because it swaps the purposes of ICW and OCW and puts AEOI in OCW1.\n- Option c is incorrect because ICWs are only loaded at startup, and OCWs are loaded dynamically during execution.\n- Option d is incorrect because AEOI is a software configuration programmed through ICW4, not a hardware pin strap.",
+    "interest": "Microprocessors",
+    "difficulty": "Hard",
+    "topics": ["8259A PIC", "ICWs and OCWs", "AEOI Mode", "Peripheral Interfacing"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A 32-bit virtual memory system uses a two-level page table scheme. The Translation Lookaside Buffer (TLB) has a hit rate of 95% and lookup takes negligible time (0 clock cycles). A physical memory access takes 80 clock cycles. If a TLB hit occurs, the physical address is accessed directly in memory (taking 80 clock cycles). If a TLB miss occurs, the two-level page table must be traversed in memory (each level takes 80 clock cycles) before fetching the actual operand from memory (which also takes 80 clock cycles). What is the Effective Memory Access Time (EMAT) to access the operand?",
+    "choices": [
+      { "id": "a", "text": "88 clock cycles", "correct": true },
+      { "id": "b", "text": "96 clock cycles", "correct": false },
+      { "id": "c", "text": "168 clock cycles", "correct": false },
+      { "id": "d", "text": "248 clock cycles", "correct": false }
+    ],
+    "explanation": "Let's calculate the Effective Memory Access Time (EMAT) with the given page-table lookup model:\n\n1. Define the parameters:\n   - TLB Hit Rate (h) = 95% = 0.95\n   - TLB Miss Rate (1-h) = 5% = 0.05\n   - Memory Access Time (t_m) = 80 clock cycles\n\n2. Scenario 1: TLB Hit (95% probability)\n   - Address translation is found immediately in the TLB (0 cycles).\n   - Access the physical memory to fetch the operand: t_hit = t_m = 80 cycles.\n\n3. Scenario 2: TLB Miss (5% probability)\n   - Address translation is not in the TLB. The CPU must traverse the two-level page table in memory:\n     - Level 1 Page Table access: 80 cycles\n     - Level 2 Page Table access: 80 cycles\n     - Actual operand fetch from memory: 80 cycles\n   - Total time on a miss: t_miss = t_m + t_m + t_m = 3 * t_m = 240 cycles.\n\n4. Compute EMAT:\n   EMAT = (h * t_hit) + ((1-h) * t_miss)\n   EMAT = (0.95 * 80) + (0.05 * 240)\n   EMAT = 76 + 12 = 88 clock cycles.\n\nThus, EMAT is 88 clock cycles.\n\nDistractor Analysis:\n- Option b (96 cycles) results from an incorrect miss calculation or incorrect hit rate application.\n- Option c (168 cycles) and d (248 cycles) represent incorrect formulas where the page table access levels are either miscounted or the memory access time is added incorrectly.",
+    "interest": "Microprocessors",
+    "difficulty": "Expert",
+    "topics": ["Virtual Memory", "Paging", "TLB Hit/Miss Ratio", "EMAT Calculation"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In advanced superscalar processor architectures executing instructions out-of-order, register renaming is used to eliminate false dependencies. Which of the following hazards are eliminated by register renaming, and which algorithm/hardware structure is commonly used to implement it?",
+    "choices": [
+      { "id": "a", "text": "Renaming eliminates Write-After-Read (WAR) and Write-After-Write (WAW) hazards; commonly implemented using Tomasulo's algorithm with Reservation Stations and a Reorder Buffer (ROB).", "correct": true },
+      { "id": "b", "text": "Renaming eliminates Read-After-Write (RAW) hazards; commonly implemented using a Booth Multiplier.", "correct": false },
+      { "id": "c", "text": "Renaming eliminates Structural hazards; commonly implemented using a Scoreboard.", "correct": false },
+      { "id": "d", "text": "Renaming eliminates Control hazards; commonly implemented using branch target buffers.", "correct": false }
+    ],
+    "explanation": "Register renaming is a fundamental microarchitectural technique used in high-performance superscalar processors:\n\n- Data Hazards:\n  1. Read-After-Write (RAW): A true dependency. Instruction B requires a value produced by Instruction A. Renaming cannot eliminate this hazard because B must wait for the actual value to be computed.\n  2. Write-After-Read (WAR): An anti-dependency. Instruction B writes to the same register that Instruction A needs to read. This is a false dependency due to limited architectural register names.\n  3. Write-After-Write (WAW): An output dependency. Instruction B writes to the same register as Instruction A. Also a false dependency.\n- Renaming Mechanism: By mapping architectural registers (e.g., R1) to a larger set of physical registers, the processor eliminates WAR and WAW hazards. If B writes to R1 while A is still reading the old R1, B's R1 is mapped to a different physical register, allowing both to execute concurrently.\n- Implementation: Historically implemented using Tomasulo's algorithm with Reservation Stations and a Reorder Buffer (ROB) to maintain precise interrupts during out-of-order execution, or via a physical Register Alias Table (RAT).\n\nDistractor Analysis:\n- Option b is incorrect because renaming cannot resolve true RAW dependencies, and a Booth Multiplier is an arithmetic hardware circuit.\n- Option c is incorrect because structural hazards arise from physical resource constraints (e.g., ALU count) and are managed by stalling, not renaming. A Scoreboard does not perform register renaming.\n- Option d is incorrect because control hazards are caused by branch instructions and are managed by branch prediction.",
+    "interest": "Microprocessors",
+    "difficulty": "Expert",
+    "topics": ["Superscalar Architecture", "Register Renaming", "Tomasulo's Algorithm", "Out-of-Order Execution"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Real-Time Operating Systems (RTOS) running on embedded microcontrollers, what is 'Interrupt Latency', what are its main contributing components, and which phenomenon can lead to an unbounded interrupt latency?",
+    "choices": [
+      { "id": "a", "text": "Interrupt Latency is the time taken to execute the entire Interrupt Service Routine (ISR); unbounded latency is caused by nesting interrupts.", "correct": false },
+      { "id": "b", "text": "Interrupt Latency is the time interval between the assertion of an interrupt hardware signal and the execution of the first instruction of the corresponding ISR; unbounded latency can be caused by Priority Inversion during shared resource access.", "correct": true },
+      { "id": "c", "text": "Interrupt Latency is the time required by the CPU to save registers onto the stack; unbounded latency is caused by stack overflow.", "correct": false },
+      { "id": "d", "text": "Interrupt Latency is the time the CPU spends in idle state waiting for an interrupt; unbounded latency is caused by disabling interrupts in the bootloader.", "correct": false }
+    ],
+    "explanation": "In real-time systems, predictability and timely response to external events are critical:\n\n- Definition: Interrupt Latency is the exact time elapsed from when an external hardware interrupt signal is asserted to when the first instruction of the corresponding Interrupt Service Routine (ISR) begins execution.\n- Components:\n  1. Time to complete the currently executing instruction.\n  2. Interrupt detection and acknowledgment overhead.\n  3. Context saving (pushing CPU registers to the stack).\n  4. Delays introduced by the RTOS kernel disabling interrupts during critical sections.\n- Unbounded Latency and Priority Inversion: If a low-priority task holds a shared resource (protected by a mutex) needed by a high-priority task, the high-priority task is blocked. If a medium-priority task preempts the low-priority task (since it does not need the resource), the low-priority task cannot run to release the resource. This indirectly blocks the high-priority task for an unbounded period (Priority Inversion). In complex systems, this can lead to unbounded latency in responding to real-time events that depend on the execution of these blocked high-priority tasks.\n\nDistractor Analysis:\n- Option a is incorrect because the time to execute the entire ISR is the 'Interrupt Service Time', not the latency.\n- Option c is incorrect because register saving is only one small component of the total latency, and stack overflow causes system crashes rather than unbounded latency.\n- Option d is incorrect because it misdefines the latency and references a static bootloader state.",
+    "interest": "Microprocessors",
+    "difficulty": "Expert",
+    "topics": ["RTOS", "Interrupt Latency", "Priority Inversion", "Real-Time Embedded Systems"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a symmetric multiprocessor (SMP) system, cache coherence must be maintained. Under the MESI protocol, a cache line can be in one of four states: Modified (M), Exclusive (E), Shared (S), or Invalid (I). If Processor A has a cache line in the 'Shared' state, and it performs a 'Write' operation to a byte within that line, what transition occurs in Processor A's cache, what bus transaction is generated, and what is the resulting state of this cache line in other processors' caches?",
+    "choices": [
+      { "id": "a", "text": "Processor A transitions to the 'Modified' state; generates a 'Read-With-Intent-To-Write' bus transaction; other processors transition their lines to the 'Invalid' state.", "correct": false },
+      { "id": "b", "text": "Processor A transitions to the 'Exclusive' state; generates a 'Bus Write' transaction; other processors transition their lines to the 'Shared' state.", "correct": false },
+      { "id": "c", "text": "Processor A transitions to the 'Modified' state; generates an 'Invalidate' (or BusRdX / BusUpgr) bus transaction; other processors transition their lines to the 'Invalid' state.", "correct": true },
+      { "id": "d", "text": "Processor A transitions to the 'Shared' state; generates no bus transaction; other processors maintain their lines in the 'Shared' state.", "correct": false }
+    ],
+    "explanation": "Let's analyze the MESI cache coherence protocol states and transitions during a write hit on a shared line:\n\n1. Initial State:\n   - Processor A has the cache line in the Shared (S) state. This means the line is valid and matches main memory, but other processors also have a copy of this line in their caches.\n\n2. Write Action:\n   - Processor A wants to write to this line. This is a write hit. However, because other processors hold copies (S state), Processor A must invalidate those copies before writing to prevent them from reading stale data.\n   - Processor A broadcasts an Invalidate (or BusUpgr / BusRdX) transaction on the system bus.\n\n3. Snooping and Transitions:\n   - Other processors snoop this transaction and immediately transition their corresponding cache lines from the Shared (S) state to the Invalid (I) state.\n   - Processor A completes the write, updating the data. Because it now holds the only valid, modified copy (which is dirty compared to main memory), Processor A transitions its cache line from the Shared (S) state to the Modified (M) state.\n\nDistractor Analysis:\n- Option a is incorrect because Read-With-Intent-To-Write (BusRdX) is generated during a write *miss*, whereas Processor A already has a copy in the S state (a write hit), so it only needs to invalidate other copies.\n- Option b is incorrect because Processor A must transition to Modified after writing, and other processors must invalidate their lines to maintain coherence.\n- Option d is incorrect because writing without invalidation would violate the fundamental rule of cache coherence, creating inconsistent data states.",
+    "interest": "Microprocessors",
+    "difficulty": "Expert",
+    "topics": ["Cache Coherence", "MESI Protocol", "Multiprocessor Systems", "Bus Snooping"],
+    "bloomLevel": "Analyze"
+  }
+]

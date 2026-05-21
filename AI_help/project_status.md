@@ -8,26 +8,57 @@ It evaluates performance across text, voice, and visual behavioral metrics to pr
 - **B2C:** Individual users practicing mock interviews and exams.
 - **B2B:** Institutions (colleges, training centers) monitoring student progress and skill gaps.
 
-**Key Features & Modules:**
-- **Interview Engine:** Core logic handling real-time interview sessions, dynamic question generation, and multimodal analysis.
-- **Multimodal Analysis:** Evaluates Voice (WPM, filler words, silence, sentiment), Visual (eye contact, emotions, posture, stress), and Content (technical accuracy, STAR method) in real-time.
-- **Authentication:** Strict OTP-based login and signup (via email/phone) using Redis for session management with robust security limits.
+## Technical Progress (Last Updated: May 21, 2026)
 
-## What Has Been Done Till Now
-1. **Initial Next.js Project Scaffolding:** 
-   - Created the base Next.js (App Router) project structure (`src/app`).
-   - Initialized global styles, layout, and fundamental routing configuration.
-2. **Defined Core Routing Architecture:**
-   - Established basic page directories for public pages (`/about`, `/contact`, `/features`, `/plans`, `/usage`).
-   - Scaffolded authentication routes (`/login`, `/signup`, `/register-institution`).
-   - Stubbed out dashboard and administration routes (`/dashboard`, `/admin`, `/superadmin`).
-3. **Comprehensive Authentication & User Flow Documentation:**
-   - Auth flows clearly defined (`flow.md`) for B2C Users (Student, Professional) and B2B Users (Student, Mentor).
-   - Documented detailed security measures and business rules for college registration, OTP validity limits, session invalidation, and rate-limiting (`plan.md`, `fome.md`, `previous.md`).
-4. **Project AI Manifest:**
-   - Established the `GEMINI.md` file mapping out the core project definition and requirements for AI assistance.
+### 1. Core Authentication & User Management
+- **Status**: Completed
+- **Implemented**: OTP-based signup and login with Redis session management.
+- **Database**: `users` collection stores basic credentials (`fullName`, `dob`, `phone`/`email`, `role`).
 
-## What NOT To Do As Of Now
-- **No Focus on UI/UX:** Do not spend time on CSS styling, design polish, or aesthetics. We are prioritizing functionality, logic, and application state over visual presentation.
-- **Use Dummy OTPs:** Do not integrate live SMS or email gateways. Always use hardcoded or simple dummy OTPs (e.g., logged to the console) for all verification and authentication flows.
-- **No Complex External Service Integrations Yet:** Hold off on plugging in final live external APIs or live LLMs until the foundational application state and authentications are proven.
+### 2. B2C Student Onboarding (Profile Completion)
+- **Status**: Completed
+- **UI**: Implemented a **Modal Wizard** on the dashboard that blocks access until the profile is 100% complete.
+- **Data**: Migrates `fullName` and `dob` from `users` to a dedicated `user_profile` collection.
+- **Interests**: Implemented a central **Taxonomy** (`src/lib/taxonomy.ts`) for consistent interest selection (Main Field + Sub-Interests) via dropdowns/chips.
+- **APIs**: Functional endpoints for username uniqueness verification and updating education/interests.
+
+### 3. Initial Assessment Flow (Mandatory)
+- **Status**: Completed
+- **Trigger**: Activates automatically after profile completion.
+- **Scoring**: Rigorous, **time-weighted accuracy** system. Correct answers award points based on `1.0 * (1.0 - (timeSpent / 120))`.
+- **Logic**: Strict rule—must answer exactly 4 questions per selected interest.
+- **AI/DB Tiering**: Initial assessment uses a **Static Bank** (`questions_non_ai`) of 88 hand-picked questions across all 22 taxonomy sub-topics to avoid LLM timeouts during onboarding.
+- **Persistence**: Final proficiency level (Beginner to Expert) is determined and stored in `user_assessment_stats`.
+
+### 4. Practice Exam Feature (AI Powered)
+- **Status**: Completed (Phase 1)
+- **UI**: Added a **Practice Setup** screen with a custom **Question Slider** (10-30 questions) and interest toggles.
+- **Adaptive Chunking**: Implemented a sophisticated architecture where questions are fetched in 25% chunks to prevent timeouts.
+- **AI Generation**: Safely revived live AI generation using **Nvidia (DeepSeek V4 Pro)** with an **OpenRouter (DeepSeek V3 Free)** fallback. 
+- **Reasoning Support**: LLM calls include `reasoning: { enabled: true }` and the parser handles `<think>` blocks and JSON extraction automatically.
+- **Adaptive Difficulty**: System silently analyzes accuracy during the exam and promotes/demotes difficulty (Easy, Medium, Hard, Expert) for the *next* chunk.
+
+### 5. Security & Protection
+- **Status**: Completed
+- **Route Guards**: Implemented `src/app/dashboard/b2c/layout.tsx` to block manual URL access to dashboard features before assessment completion.
+- **Sidebar Lockdown**: Sidebar navigation is disabled and dimmed until the user completes their initial evaluation.
+
+## Database Schema (MongoDB)
+- `users`: Core account data.
+- `user_profile`: Extended profile, interests, and `assessmentCompleted` flag.
+- `questions_non_ai`: High-quality static question bank (88 questions seeded).
+- `questions_ai`: Cached questions generated by LLMs on-the-fly.
+- `exam_sessions`: Tracks overall practice sessions.
+- `exam_attempts`: Detailed logs of answers, time spent, and difficulty per question.
+- `user_assessment_stats`: Aggregated user proficiency levels.
+
+## Key Files for Reference
+- `src/lib/ai-generator.ts`: The central AI/DB fetching logic with Nvidia/OpenRouter fallback.
+- `src/lib/profile.ts`: Shared logic for evaluating profile completion.
+- `src/lib/taxonomy.ts`: The source of truth for all fields and interests.
+- `src/app/api/students/exam/session/fetch-chunk/route.ts`: The adaptive difficulty engine.
+
+## What's Next
+- **B2B Implementation**: Mentee management and institution dashboards.
+- **Interview Engine**: Implementing the real-time video analysis and Star structure evaluation.
+- **Reporting Dashboard**: Visualizing the performance trends from the `user_assessment_stats`.

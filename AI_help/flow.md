@@ -193,3 +193,4 @@ Prompt:
 - College not found → Redirect to Institution Registration
 - Duplicate Institution Registration → Flag for admin review
 - Google Auth failure → Fallback to OTP login
+

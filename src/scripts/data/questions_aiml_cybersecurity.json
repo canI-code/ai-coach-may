@@ -1,0 +1,450 @@
+[
+  {
+    "text": "A machine learning model is trained on a dataset and achieves 98% accuracy on the training set, but only 67% accuracy on the validation set. Which of the following best describes this phenomenon and the appropriate remediation step?",
+    "choices": [
+      { "id": "a", "text": "High bias (underfitting); resolve by increasing model complexity or training for more epochs.", "correct": false },
+      { "id": "b", "text": "High variance (overfitting); resolve by applying regularization (e.g., L1/L2, dropout) or collecting more training data.", "correct": true },
+      { "id": "c", "text": "High variance (underfitting); resolve by removing outliers and simplifying the model architecture.", "correct": false },
+      { "id": "d", "text": "High bias (overfitting); resolve by reducing the learning rate and decreasing the batch size.", "correct": false }
+    ],
+    "explanation": "This scenario demonstrates high variance, also known as overfitting. The model has memorized the training data's noise and specific patterns (indicated by the 98% accuracy) but fails to generalize to unseen validation data (indicated by the 67% accuracy). To remediate overfitting, one should decrease model complexity, apply regularization techniques (such as L1/L2 regularization or dropout in neural networks), perform feature selection, or gather more diverse training data. High bias (underfitting) occurs when the model is too simple and performs poorly on both training and validation sets.",
+    "interest": "AI/ML",
+    "difficulty": "Easy",
+    "topics": ["supervised-learning", "bias-variance-tradeoff", "overfitting"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An organization has a large collection of customer purchase transactions and wants to segment these customers into distinct groups based on purchasing behavior for targeted marketing, without any pre-existing group labels. Which paradigm of machine learning is best suited for this task?",
+    "choices": [
+      { "id": "a", "text": "Supervised learning, utilizing a support vector machine classifier.", "correct": false },
+      { "id": "b", "text": "Reinforcement learning, utilizing a Deep Q-Network.", "correct": false },
+      { "id": "c", "text": "Unsupervised learning, utilizing a clustering algorithm such as K-Means.", "correct": true },
+      { "id": "d", "text": "Semi-supervised learning, utilizing a generative adversarial network.", "correct": false }
+    ],
+    "explanation": "Unsupervised learning is the paradigm used when the training data consists of unlabeled inputs, and the goal is to discover underlying patterns, structures, or groupings within the data. Clustering algorithms (like K-Means, DBSCAN, or hierarchical clustering) are designed specifically to segment data points into groups based on similarity. Supervised learning requires pre-labeled target variables. Reinforcement learning relies on agents interacting with an environment to maximize a cumulative reward. Semi-supervised learning utilizes a small amount of labeled data alongside a large amount of unlabeled data.",
+    "interest": "AI/ML",
+    "difficulty": "Easy",
+    "topics": ["unsupervised-learning", "clustering", "customer-segmentation"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "You are building a machine learning model to detect a rare disease that occurs in only 0.1% of the population. A baseline classifier that predicts 'healthy' (negative) for all patients achieves 99.9% accuracy. Which of the following evaluation metrics would be the most reliable indicator of model performance for this class-imbalanced problem?",
+    "choices": [
+      { "id": "a", "text": "Overall classification accuracy, because it measures the proportion of true results.", "correct": false },
+      { "id": "b", "text": "F1-Score, because it computes the harmonic mean of precision and recall, focusing on the positive class's correct detection.", "correct": true },
+      { "id": "c", "text": "Mean Absolute Error (MAE), because it calculates the absolute differences between predictions and actual labels.", "correct": false },
+      { "id": "d", "text": "The R-squared (coefficient of determination) score, because it accounts for the variance explained by the model.", "correct": false }
+    ],
+    "explanation": "In highly imbalanced datasets, classification accuracy is a misleading metric. A naive classifier predicting the majority class ('healthy') achieves 99.9% accuracy but fails completely at detecting the rare disease. The F1-Score is the harmonic mean of Precision (true positives / predicted positives) and Recall (true positives / actual positives). It focuses on the correct detection of the minority positive class while accounting for both false positives and false negatives, making it much more reliable. MAE and R-squared are metrics used for regression tasks, not classification.",
+    "interest": "AI/ML",
+    "difficulty": "Easy",
+    "topics": ["evaluation-metrics", "imbalanced-data", "classification"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In the context of training neural networks using gradient descent, what is the primary role of the learning rate parameter?",
+    "choices": [
+      { "id": "a", "text": "It determines the absolute number of nodes and hidden layers inside the deep neural network.", "correct": false },
+      { "id": "b", "text": "It specifies the proportion of training data used in each mini-batch for gradient updates.", "correct": false },
+      { "id": "c", "text": "It controls the step size taken in the opposite direction of the gradient to update model parameters during optimization.", "correct": true },
+      { "id": "d", "text": "It sets the threshold value for activation functions to decide if a neuron fires.", "correct": false }
+    ],
+    "explanation": "The learning rate is a hyperparameter that controls how much to adjust the model's weights with respect to the loss gradient. During backpropagation, the gradient of the loss function is calculated. The weight update rule is: W = W - (learning_rate * gradient). Thus, the learning rate determines the step size taken in the negative gradient direction (steepest descent) toward the local minimum. If too large, the optimization might overshoot and diverge. If too small, training will be computationally slow and might get trapped in suboptimal local minima.",
+    "interest": "AI/ML",
+    "difficulty": "Easy",
+    "topics": ["optimization", "gradient-descent", "hyperparameters"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During the construction of a Decision Tree classifier using the ID3 algorithm, which of the following mathematical formulations represents the calculation of Information Gain for an attribute A relative to a collection of examples S?",
+    "choices": [
+      { "id": "a", "text": "Gain(S, A) = Entropy(S) - Sum_{v in Values(A)} (|S_v| / |S|) * Entropy(S_v)", "correct": true },
+      { "id": "b", "text": "Gain(S, A) = Entropy(S) + Sum_{v in Values(A)} (|S_v| / |S|) * Log2(|S_v| / |S|)", "correct": false },
+      { "id": "c", "text": "Gain(S, A) = Sum_{v in Values(A)} (|S_v| / |S|) * Entropy(S_v) - Entropy(S)", "correct": false },
+      { "id": "d", "text": "Gain(S, A) = Entropy(S) * Sum_{v in Values(A)} (Entropy(S_v) / Entropy(S))", "correct": false }
+    ],
+    "explanation": "Information Gain measures the expected reduction in entropy (uncertainty) achieved by partitioning a dataset S according to an attribute A. The mathematical formulation is Gain(S, A) = Entropy(S) - Expected_Entropy_After_Split, where the expected entropy is the weighted sum of the entropies of the resulting subsets S_v, weighted by the fraction of examples that fall into each subset (|S_v| / |S|). This is represented by choice (a). The other options represent incorrect algebraic arrangements or mathematical misunderstandings of information theory concepts.",
+    "interest": "AI/ML",
+    "difficulty": "Medium",
+    "topics": ["decision-trees", "information-theory", "algorithms"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A machine learning engineer wants to apply regularization to a linear regression model where they suspect that many features are highly collinear or irrelevant, and they want the model to perform automatic feature selection by driving some weight coefficients to exactly zero. Which regularization technique should they choose, and what is its mathematical penalty term?",
+    "choices": [
+      { "id": "a", "text": "Ridge Regularization (L2), which adds a penalty equal to the sum of the squared values of the weights.", "correct": false },
+      { "id": "b", "text": "Lasso Regularization (L1), which adds a penalty equal to the sum of the absolute values of the weights.", "correct": true },
+      { "id": "c", "text": "Elastic Net Regularization, which only adds a penalty to the bias (intercept) term of the regression equation.", "correct": false },
+      { "id": "d", "text": "Dropout Regularization, which randomly forces weight coefficients to zero with a predetermined probability during inference.", "correct": false }
+    ],
+    "explanation": "Lasso (Least Absolute Shrinkage and Selection Operator) regularization uses an L1 penalty, which adds the sum of the absolute values of the weights to the loss function. Geometrically, the L1 constraint boundary is diamond-shaped with corners on the axes. Optimization often hits these corners, driving coefficients for less important or highly correlated features to exactly zero, effectively performing feature selection. Ridge (L2) regularization adds the squared values of the weights, creating a circular constraint boundary that shrinks weights towards zero but rarely makes them exactly zero. Dropout is a technique for neural networks, not linear regression, and is applied during training, not inference.",
+    "interest": "AI/ML",
+    "difficulty": "Medium",
+    "topics": ["regularization", "linear-regression", "feature-selection"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "How do Random Forests and Gradient Boosted Decision Trees (GBDT) differ in their approach to reducing error, and how are their constituent trees trained?",
+    "choices": [
+      { "id": "a", "text": "Random Forests train shallow trees sequentially to reduce bias; GBDT trains deep trees in parallel to reduce variance.", "correct": false },
+      { "id": "b", "text": "Random Forests reduce variance by averaging independent, deep trees trained in parallel; GBDT reduces bias by training shallow trees sequentially to fit the pseudo-residuals of the previous trees.", "correct": true },
+      { "id": "c", "text": "Random Forests use gradient-based optimization to update model parameters; GBDT relies entirely on bootstrap aggregating (bagging) to create trees.", "correct": false },
+      { "id": "d", "text": "Both models are identical in training, but Random Forests are used strictly for classification, while GBDT is used strictly for regression.", "correct": false }
+    ],
+    "explanation": "Random Forest is a bagging ensemble method. It trains multiple deep, high-variance decision trees in parallel using independent bootstrap samples of the data (and random feature subsets) and averages their predictions to reduce overall variance. GBDT is a boosting ensemble method. It trains shallow, high-bias decision trees (weak learners) sequentially. Each new tree is trained to predict the pseudo-residuals (gradients of the loss function) of the ensemble's current predictions, thereby iteratively reducing the model's overall bias. Both techniques can be used for both classification and regression.",
+    "interest": "AI/ML",
+    "difficulty": "Medium",
+    "topics": ["ensemble-methods", "bagging-boosting", "random-forest", "gbdt"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In deep feedforward neural networks, replacing Sigmoid or Tanh activation functions with Rectified Linear Units (ReLU) helps mitigate the vanishing gradient problem in deeper layers. What is the primary mathematical reason for this?",
+    "choices": [
+      { "id": "a", "text": "The derivative of ReLU is bounded between 0 and 0.25, which stabilizes the backpropagation process.", "correct": false },
+      { "id": "b", "text": "ReLU maps all inputs to a bounded range between -1 and 1, ensuring gradients never grow too large.", "correct": false },
+      { "id": "c", "text": "The derivative of ReLU is exactly 1 for all positive inputs, preventing the gradient from decaying exponentially as it is backpropagated through multiple layers.", "correct": true },
+      { "id": "d", "text": "ReLU relies on exponential functions that scale gradients linearly across layers.", "correct": false }
+    ],
+    "explanation": "The vanishing gradient problem occurs during backpropagation when gradients are repeatedly multiplied through layers via the chain rule. For Sigmoid, the maximum derivative value is 0.25, and for Tanh it is 1.0 (but only at 0). When inputs are far from zero, their derivatives are near 0, leading to exponential decay of gradients in deep networks. The ReLU function f(x) = max(0, x) has a derivative of exactly 1 for all positive inputs (x > 0). Consequently, when a neuron is active, it passes the gradient back perfectly without scaling it down, allowing deep networks to train effectively without vanishing gradients. ReLU is unbounded for positive inputs.",
+    "interest": "AI/ML",
+    "difficulty": "Medium",
+    "topics": ["neural-networks", "activation-functions", "optimization"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "When applying the 'kernel trick' in Support Vector Machines (SVMs) to project input data into a high-dimensional feature space, which mathematical condition must a candidate kernel function K(x, z) satisfy to ensure it corresponds to a valid inner product in some Reproducing Kernel Hilbert Space (RKHS)?",
+    "choices": [
+      { "id": "a", "text": "It must satisfy Euler's condition, meaning the function is homogeneous of degree 1.", "correct": false },
+      { "id": "b", "text": "It must satisfy Mercer's Theorem, requiring the kernel matrix (Gram matrix) to be symmetric and positive semi-definite for any finite set of points.", "correct": true },
+      { "id": "c", "text": "It must be a bounded, differentiable function whose derivative is strictly non-zero across its entire domain.", "correct": false },
+      { "id": "d", "text": "It must satisfy the Lipschitz continuity condition with a Lipschitz constant strictly less than 1.", "correct": false }
+    ],
+    "explanation": "According to Mercer's Theorem, a continuous symmetric function K(x, z) can be expanded as an inner product in a high-dimensional feature space if and only if the Gram matrix (the matrix of kernel evaluations K(x_i, x_j) for any finite subset of data points) is symmetric and positive semi-definite. If this condition is met, the kernel is valid and represents an inner product in some RKHS, allowing SVMs to solve non-linear classification problems efficiently in high dimensions without explicitly calculating the high-dimensional coordinates of the data points. Boundedness, differentiability, Euler's condition, or Lipschitz continuity are not the defining requirements for a valid SVM kernel.",
+    "interest": "AI/ML",
+    "difficulty": "Hard",
+    "topics": ["support-vector-machines", "kernel-methods", "mathematics"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The standard multi-head self-attention mechanism in the Transformer architecture (Vaswani et al., 2017) processes an input sequence of length N with an embedding dimension D. What is the computational complexity of computing the raw attention matrix (specifically QK^T) with respect to sequence length N and embedding dimension D?",
+    "choices": [
+      { "id": "a", "text": "O(N * D^2)", "correct": false },
+      { "id": "b", "text": "O(N^2 * D)", "correct": true },
+      { "id": "c", "text": "O(N * log(N) * D)", "correct": false },
+      { "id": "d", "text": "O(N^3 + D^3)", "correct": false }
+    ],
+    "explanation": "The multi-head self-attention mechanism computes Query (Q), Key (K), and Value (V) matrices, which are of size N x D. Computing the raw attention score matrix involves multiplying Q (size N x D) by K^T (size D x N). The matrix multiplication of an (N x D) matrix by a (D x N) matrix requires performing O(N^2) dot products, each of which takes O(D) operations. Therefore, the computational complexity of this step is O(N^2 * D). This quadratic scaling with respect to the sequence length N acts as a major performance bottleneck for processing long context windows in Transformers, prompting the development of linear-attention approximations and tiled algorithms.",
+    "interest": "AI/ML",
+    "difficulty": "Hard",
+    "topics": ["transformers", "attention-mechanism", "computational-complexity"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Consider a 2D convolutional neural network architecture with two sequential convolutional layers. Layer 1 has a kernel size of 3 x 3, stride of 1, and padding of 0. Layer 2 has a kernel size of 5 x 5, stride of 2, and padding of 0. What is the effective receptive field of a single unit in the output feature map of Layer 2 relative to the original input image?",
+    "choices": [
+      { "id": "a", "text": "5 x 5", "correct": false },
+      { "id": "b", "text": "7 x 7", "correct": true },
+      { "id": "c", "text": "8 x 8", "correct": false },
+      { "id": "d", "text": "9 x 9", "correct": false }
+    ],
+    "explanation": "The receptive field (RF) can be computed recursively using the formula: RF_in = RF_out + (k_l - 1) * j_{l-1}, where k_l is the kernel size of layer l, and j_{l-1} is the cumulative stride up to the previous layer. Initially, a single unit in Layer 2 has an output RF of 1 (RF_2 = 1) and cumulative stride j_0 = 1. \n1. For Layer 2: k_2 = 5, stride s_2 = 2. The RF at the input of Layer 2 (which is the output of Layer 1) is: RF_1 = 1 + (5 - 1) * j_1, where j_1 = j_0 * s_1 = 1 * 1 = 1. Thus, RF_1 = 1 + 4 * 1 = 5. \n2. For Layer 1: k_1 = 3, stride s_1 = 1. The receptive field at the input of Layer 1 (the original input image) is: RF_0 = RF_1 + (k_1 - 1) * j_0 = 5 + (3 - 1) * 1 = 5 + 2 = 7. \nThus, the effective receptive field of a single unit in the output of Layer 2 is 7 x 7.",
+    "interest": "AI/ML",
+    "difficulty": "Hard",
+    "topics": ["convolutional-neural-networks", "receptive-field", "deep-learning"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In reinforcement learning, the Bellman Optimality Equation expresses the relationship between the value of a state under an optimal policy and the value of its successor states. Which of the following formulations represents the Bellman Optimality Equation for the state-value function V*(s) under a discount factor gamma?",
+    "choices": [
+      { "id": "a", "text": "V*(s) = Max_a Sum_{s', r} p(s', r | s, a) [r + gamma * V*(s')]", "correct": true },
+      { "id": "b", "text": "V*(s) = Sum_a pi*(a | s) Sum_{s', r} p(s', r | s, a) [r + gamma * V*(s')]", "correct": false },
+      { "id": "c", "text": "V*(s) = Max_a [r(s,a) + gamma * Sum_{s'} V*(s')]", "correct": false },
+      { "id": "d", "text": "V*(s) = Sum_{s', r} p(s', r | s, a) [r + gamma * Max_{a'} Q*(s', a')]", "correct": false }
+    ],
+    "explanation": "The Bellman Optimality Equation for V*(s) states that the value of a state under an optimal policy must equal the expected return for the best action from that state. This is mathematically defined as V*(s) = Max_a E[R_{t+1} + gamma * V*(S_{t+1}) | S_t = s, A_t = a], which expands to V*(s) = Max_a Sum_{s', r} p(s', r | s, a) [r + gamma * V*(s')], where p(s', r | s, a) is the probability of transitioning to state s' with reward r when action a is taken in state s. Option (b) represents the Bellman Expectation Equation for a specific policy pi*, not the optimality equation. Option (d) incorrectly mixes the state-value and action-value formulation.",
+    "interest": "AI/ML",
+    "difficulty": "Hard",
+    "topics": ["reinforcement-learning", "bellman-equation", "dynamic-programming"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Traditional Generative Adversarial Networks (GANs) using Jensen-Shannon divergence face training instability and vanishing gradients when the discriminator becomes highly optimal. The Wasserstein GAN (WGAN) resolves this by using the Earth Mover's (Wasserstein-1) Distance. How does the WGAN with Gradient Penalty (WGAN-GP) mathematically enforce the required 1-Lipschitz continuity constraint on the critic?",
+    "choices": [
+      { "id": "a", "text": "By clipping the critic's weights to a compact metric space [-c, c] after each gradient update step.", "correct": false },
+      { "id": "b", "text": "By adding a regularization term to the objective function that penalizes the squared difference between the L2 norm of the critic's gradient (with respect to interpolated inputs) and 1.", "correct": true },
+      { "id": "c", "text": "By applying batch normalization to all layers of the critic, forcing activation values to have unit variance.", "correct": false },
+      { "id": "d", "text": "By minimizing the Kullback-Leibler divergence between the real and generated data distributions directly.", "correct": false }
+    ],
+    "explanation": "To compute the Earth Mover's Distance, the critic function must be 1-Lipschitz continuous (its gradient norm must be at most 1 almost everywhere). The original WGAN enforced this by weight clipping, which led to capacity underutilization and optimization difficulties (like vanishing/exploding gradients). WGAN-GP (Gulrajani et al.) resolves this by adding a gradient penalty term: GP = lambda * E[(||Grad_{x_hat} D(x_hat)||_2 - 1)^2], where x_hat is an interpolation between real and generated samples. This term penalizes the model when the L2 norm of the critic's gradient deviates from 1, smoothly and robustly enforcing the 1-Lipschitz constraint. Weight clipping is choice (a), which WGAN-GP explicitly aims to replace.",
+    "interest": "AI/ML",
+    "difficulty": "Expert",
+    "topics": ["generative-adversarial-networks", "wasserstein-loss", "optimization", "deep-learning"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Adam (Adaptive Moment Estimation) optimizer maintains running exponentially decaying averages of past gradients (m_t) and past squared gradients (v_t) to scale the learning rate dynamically. Why are the bias-correction steps, m_hat_t = m_t / (1 - beta_1^t) and v_hat_t = v_t / (1 - beta_2^t), mathematically necessary, particularly during the initial steps of training?",
+    "choices": [
+      { "id": "a", "text": "To prevent the running averages from growing exponentially and causing numerical overflow in 16-bit floating-point representations.", "correct": false },
+      { "id": "b", "text": "To correct the initialization bias of the moving averages towards zero, since both m_0 and v_0 are initialized as zero vectors.", "correct": true },
+      { "id": "c", "text": "To scale down the learning rate as the model approaches a global optimum to ensure convergence.", "correct": false },
+      { "id": "d", "text": "To convert the stochastic gradients into deterministic vectors to satisfy the conditions of the central limit theorem.", "correct": false }
+    ],
+    "explanation": "The estimators m_t and v_t are initialized as zero vectors. The running update equations are: m_t = beta_1 * m_{t-1} + (1 - beta_1) * g_t. Expanding this recursively from m_0 = 0 yields m_t = (1 - beta_1) * Sum_{i=1}^t beta_1^(t-i) * g_i. If we take the mathematical expectation of both sides, assuming the true gradient expectation E[g_i] is stationary, we get E[m_t] = E[g_t] * (1 - beta_1^t). Thus, to make the estimator unbiased (so that E[m_hat_t] = E[g_t]), we must divide m_t by (1 - beta_1^t). In the early steps of training (small t), beta_1^t is close to 1, making the denominator small and correcting the substantial bias toward zero. As training progresses (large t), beta_1^t approaches 0, and the correction term becomes negligible.",
+    "interest": "AI/ML",
+    "difficulty": "Expert",
+    "topics": ["optimization", "gradient-descent-variants", "deep-learning", "mathematics"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Variational Autoencoders (VAEs) optimize the Evidence Lower Bound (ELBO) to approximate the intractable true posterior probability distribution p(z|x) of the latent variables z given the observed data x. Which of the following mathematically represents the ELBO formulation, decomposing it into a reconstruction loss and a regularization term?",
+    "choices": [
+      { "id": "a", "text": "ELBO = E_{q_phi(z|x)}[log p_theta(x|z)] - D_KL(q_phi(z|x) || p(z))", "correct": true },
+      { "id": "b", "text": "ELBO = E_{p_theta(z|x)}[log q_phi(x|z)] + D_KL(p(z) || q_phi(z|x))", "correct": false },
+      { "id": "c", "text": "ELBO = log p_theta(x) - D_KL(p(z) || q_phi(z|x))", "correct": false },
+      { "id": "d", "text": "ELBO = Sum_z q_phi(z|x) * log p_theta(x) + D_KL(q_phi(z|x) || p(z|x))", "correct": false }
+    ],
+    "explanation": "The goal of a VAE is to maximize the marginal log-likelihood log p(x). By applying Jensen's Inequality and expanding the Kullback-Leibler (KL) divergence between the approximate posterior q_phi(z|x) and the true posterior p(z|x), we derive the Evidence Lower Bound (ELBO): log p(x) >= E_{q_phi(z|x)}[log p_theta(x, z) / q_phi(z|x)]. Expanding the joint distribution p_theta(x, z) as p_theta(x|z) * p(z) allows us to split this term into two parts: 1) E_{q_phi(z|x)}[log p_theta(x|z)], which measures the reconstruction quality (reconstruction loss), and 2) E_{q_phi(z|x)}[log (p(z) / q_phi(z|x))], which is the negative KL divergence -D_KL(q_phi(z|x) || p(z)), acting as a regularization term that forces the approximate posterior to match the simple prior distribution p(z) (typically a standard Gaussian). This corresponds to choice (a).",
+    "interest": "AI/ML",
+    "difficulty": "Expert",
+    "topics": ["generative-models", "variational-autoencoders", "probabilistic-ml", "information-theory"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "FlashAttention (Dao et al.) achieves significant acceleration for Transformer training and inference. What is the fundamental hardware-level optimization that FlashAttention introduces to achieve this speedup?",
+    "choices": [
+      { "id": "a", "text": "It replaces floating-point matrix multiplications with binary operations (XOR/Popcount) to run on specialized tensor cores.", "correct": false },
+      { "id": "b", "text": "It tiles the attention computation and computes it incrementally using online softmax, avoiding the need to read and write the massive N x N attention matrix to and from GPU High Bandwidth Memory (HBM).", "correct": true },
+      { "id": "c", "text": "It prunes 80% of the attention heads dynamically based on activation values, reducing overall computational complexity to O(N).", "correct": false },
+      { "id": "d", "text": "It utilizes pipeline parallelism to execute the feedforward layers of the Transformer on the CPU while the attention remains on the GPU.", "correct": false }
+    ],
+    "explanation": "Standard self-attention computes and stores an intermediate N x N attention matrix (where N is sequence length) in GPU High Bandwidth Memory (HBM), which is slow to read/write (memory-bandwidth bound). FlashAttention reorganizes the attention computation by splitting Q, K, and V into blocks (tiling). It loads these blocks into the fast, local GPU SRAM, computes the attention scores incrementally using a mathematically modified online softmax algorithm, and writes only the final output (of size N x D) back to HBM. By drastically reducing memory read/write operations (I/O complexity) from O(N^2) to O(N), FlashAttention achieves up to 2-4x speedups without changing the mathematical output of the attention mechanism.",
+    "interest": "AI/ML",
+    "difficulty": "Expert",
+    "topics": ["transformers", "hardware-acceleration", "flash-attention", "computational-complexity"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In cryptography, how do symmetric and asymmetric key algorithms differ fundamentally in terms of key usage and distribution?",
+    "choices": [
+      { "id": "a", "text": "Symmetric algorithms use a public key for encryption and a private key for decryption; asymmetric algorithms use a single shared key.", "correct": false },
+      { "id": "b", "text": "Symmetric algorithms use the same single shared key for both encryption and decryption; asymmetric algorithms use a mathematically linked pair containing a public key and a private key.", "correct": true },
+      { "id": "c", "text": "Symmetric algorithms are only used for digital signatures; asymmetric algorithms are used exclusively for encrypting large databases.", "correct": false },
+      { "id": "d", "text": "Symmetric algorithms require an active internet connection to distribute keys; asymmetric algorithms operate entirely offline.", "correct": false }
+    ],
+    "explanation": "Symmetric cryptography (e.g., AES, DES) relies on a single shared key that must be kept secret by both parties and is used for both encryption and decryption. This introduces a key distribution challenge. Asymmetric cryptography (e.g., RSA, ECC) solves this by using a key pair: a public key, which can be shared openly and is used by anyone to encrypt messages, and a private key, which is kept secret by the owner and is used to decrypt those messages. Symmetric algorithms are typically much faster and are used for bulk data encryption, while asymmetric algorithms are used for key exchange and digital signatures.",
+    "interest": "Cybersecurity",
+    "difficulty": "Easy",
+    "topics": ["cryptography", "encryption", "security-basics"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "An attacker intercepts a transit email containing sensitive company financial reports and alters the numbers within the document before forwarding it to the recipient. Which pillar of the classic CIA triad of information security has been directly compromised?",
+    "choices": [
+      { "id": "a", "text": "Confidentiality", "correct": false },
+      { "id": "b", "text": "Integrity", "correct": true },
+      { "id": "c", "text": "Availability", "correct": false },
+      { "id": "d", "text": "Non-repudiation", "correct": false }
+    ],
+    "explanation": "The CIA Triad stands for Confidentiality, Integrity, and Availability. Integrity is the assurance that information is accurate, complete, and has not been altered or tampered with by unauthorized parties during storage or transit. Because the attacker modified the data (altering the numbers in the financial report), the integrity of the data was compromised. Confidentiality is breached when unauthorized parties gain access to restricted data. Availability is compromised when systems or data are rendered inaccessible to authorized users.",
+    "interest": "Cybersecurity",
+    "difficulty": "Easy",
+    "topics": ["security-fundamentals", "cia-triad", "data-integrity"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An attacker researches the organizational structure of a target defense contractor and sends a highly customized, convincing email to the Chief Financial Officer (CFO). The email references a specific, real pending invoice from an actual subcontractor and requests an urgent bank transfer to a new routing number. Which specific security threat does this scenario represent?",
+    "choices": [
+      { "id": "a", "text": "Generic phishing, because it uses an email to trick a user into performing an action.", "correct": false },
+      { "id": "b", "text": "Spear phishing, because it targets a specific high-profile individual with highly tailored, researched information.", "correct": true },
+      { "id": "c", "text": "Denial of Service (DoS), because it disrupts the normal financial operations of the business.", "correct": false },
+      { "id": "d", "text": "Ransomware, because it attempts to lock the executive out of their computer terminal.", "correct": false }
+    ],
+    "explanation": "Spear phishing is a highly targeted form of social engineering where attackers research their target (using OSINT or compromised communications) to craft a highly customized email targeting a specific individual, organization, or executive (often referred to as 'whaling' when targeting C-level executives). This contrasts with generic phishing, which involves broad, non-targeted spam campaigns. Denial of Service is a network attack meant to disable services. Ransomware is malicious software that encrypts files and demands payment for decryption.",
+    "interest": "Cybersecurity",
+    "difficulty": "Easy",
+    "topics": ["social-engineering", "phishing", "email-security"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "What is the primary operational difference between a traditional stateless packet-filtering firewall and a stateful inspection firewall?",
+    "choices": [
+      { "id": "a", "text": "Stateless firewalls operate at the Application layer of the OSI model, while stateful firewalls operate strictly at the Physical layer.", "correct": false },
+      { "id": "b", "text": "Stateless firewalls inspect each network packet individually based on static rules (e.g., source IP, destination port), whereas stateful firewalls track the state of active connections and evaluate packets within the context of an established session.", "correct": true },
+      { "id": "c", "text": "Stateless firewalls require a physical key to configure, while stateful firewalls are entirely software-defined.", "correct": false },
+      { "id": "d", "text": "Stateless firewalls actively decrypt and scan encrypted HTTPS payloads, while stateful firewalls cannot inspect encrypted traffic.", "correct": false }
+    ],
+    "explanation": "A stateless packet-filtering firewall inspects individual packets in isolation, matching their headers (IP addresses, ports, protocol) against static Access Control Lists (ACLs). It has no memory of previous packets. A stateful inspection firewall maintains a state table to track active connections (e.g., TCP handshakes, established sessions). It dynamically allows packets that belong to an ongoing, legitimate conversation without needing static, wide-open inbound rules. Neither firewall type natively decrypts HTTPS payloads by default (which requires TLS decryption proxies/Next-Gen Firewalls), and both operate primarily at layers 3 and 4 of the OSI model.",
+    "interest": "Cybersecurity",
+    "difficulty": "Easy",
+    "topics": ["network-security", "firewalls", "network-protocols"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the following development practices is the most effective mitigation against SQL Injection (SQLi) vulnerabilities in web applications, and what is the underlying security mechanism?",
+    "choices": [
+      { "id": "a", "text": "Implementing client-side JavaScript validation, because it filters out single quotes before the request leaves the user's web browser.", "correct": false },
+      { "id": "b", "text": "Using parameterized queries (prepared statements), because they precompile the SQL query structure and ensure that user input is treated strictly as data parameters, never as executable code.", "correct": true },
+      { "id": "c", "text": "Encrypting the entire database at rest, because it prevents attackers from reading table structures when injecting malicious payloads.", "correct": false },
+      { "id": "d", "text": "Switching from a Relational Database (SQL) to an in-memory cache like Redis, which is completely immune to injection vulnerabilities.", "correct": false }
+    ],
+    "explanation": "SQL Injection occurs when untrusted user input is concatenated directly into a SQL query string, allowing the database interpreter to execute input as code. Parameterized queries (prepared statements) solve this by precompiling the SQL statement on the database server with placeholders. When user input is supplied, it is bound directly to these placeholders as literal values (data) rather than executable code. Client-side validation is easily bypassed. Encryption at rest protects stolen hard drives but does not prevent SQLi during application runtime. NoSQL databases or caching systems like Redis are not immune to injection; they are susceptible to their own forms of command/query injection.",
+    "interest": "Cybersecurity",
+    "difficulty": "Medium",
+    "topics": ["application-security", "sql-injection", "secure-coding"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An attacker exploits a vulnerability in a web forum to inject a malicious JavaScript payload into a comments thread. The comment is saved on the forum's database. Every time a legitimate user visits that specific comment page, the script executes automatically in their browser, stealing their session cookies and sending them to the attacker. Which type of Cross-Site Scripting (XSS) is this?",
+    "choices": [
+      { "id": "a", "text": "Reflected XSS, because the payload is reflected off the web server and executed in the response.", "correct": false },
+      { "id": "b", "text": "Stored (or Persistent) XSS, because the malicious script is permanently stored on the target server's database and served to multiple users.", "correct": true },
+      { "id": "c", "text": "DOM-based XSS, because the payload executes entirely inside the client-side JavaScript environment without involving the backend database.", "correct": false },
+      { "id": "d", "text": "Blind XSS, because the attacker cannot see the outcome of the script execution on the victim's machine.", "correct": false }
+    ],
+    "explanation": "Stored (Persistent) XSS occurs when a malicious script is permanently stored on a target server (such as in a database, forum post, visitor log, or comment field). When a victim requests the stored information, the server sends the malicious script back to the victim's browser, where it executes. Reflected XSS occurs when the payload is part of the request sent to the server (e.g., in a URL parameter) and is immediately reflected back in the response without being stored. DOM-based XSS occurs when client-side scripts write user input to the Document Object Model (DOM) in an unsafe manner, purely on the client side.",
+    "interest": "Cybersecurity",
+    "difficulty": "Medium",
+    "topics": ["web-security", "cross-site-scripting", "xss"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a standard Public Key Infrastructure (PKI) system, how is a digital signature created by a sender (Alice) and verified by a receiver (Bob) to ensure both authenticity and message integrity?",
+    "choices": [
+      { "id": "a", "text": "Alice encrypts the entire message with Bob's public key; Bob decrypts it with Alice's private key.", "correct": false },
+      { "id": "b", "text": "Alice hashes the message and encrypts the hash using her own private key; Bob decrypts the hash using Alice's public key and compares it to a freshly calculated hash of the received message.", "correct": true },
+      { "id": "c", "text": "Alice encrypts the message with a symmetric key, then encrypts that key with Bob's private key; Bob decrypts it using his public key.", "correct": false },
+      { "id": "d", "text": "Alice encrypts the message with her public key; Bob decrypts it using his private key and verifies the checksum.", "correct": false }
+    ],
+    "explanation": "To create a digital signature: 1) Alice computes a cryptographic hash of the message (ensuring integrity). 2) Alice encrypts this hash using her private key (ensuring authenticity and non-repudiation, since only she possesses her private key). This encrypted hash is the digital signature. Bob verifies the signature by: 1) Decrypting the signature using Alice's public key to retrieve the original hash. 2) Calculating a new hash of the received message. 3) Comparing the decrypted hash with the newly calculated hash. If they match, the message was not altered (integrity) and indeed came from Alice (authenticity). Bob's public key is used for confidentiality encryption, not signing.",
+    "interest": "Cybersecurity",
+    "difficulty": "Medium",
+    "topics": ["cryptography", "pki", "digital-signatures"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Time-Based One-Time Password (TOTP) algorithm (RFC 6238) is highly popular for multi-factor authentication. What are the two primary mathematical inputs required by a client application (such as a mobile authenticator app) to generate a valid 6-digit code at any given moment?",
+    "choices": [
+      { "id": "a", "text": "The user's account password and a random number generated by the authentication server via SMS.", "correct": false },
+      { "id": "b", "text": "A shared secret key (pre-shared seed) and the current Unix epoch time divided by a specified time step (typically 30 seconds).", "correct": true },
+      { "id": "c", "text": "The client's MAC address and a cryptographically secure sequence counter that increments with each login attempt.", "correct": false },
+      { "id": "d", "text": "A public key certificate and the GPS coordinates of the mobile device.", "correct": false }
+    ],
+    "explanation": "TOTP is an extension of the HMAC-Based One-Time Password (HOTP) algorithm. Instead of using an incrementing counter, TOTP uses time as the source of uniqueness. The two inputs are: 1) A shared secret key (usually exchanged via a QR code during MFA setup). 2) The current time step, which is calculated as T = floor((Current_Unix_Time - T0) / X), where X is the time step interval (typically 30 seconds) and T0 is 0. An HMAC hash is computed using the shared secret and the time step counter, and the result is dynamically truncated to produce a 6-digit code. This allows offline generation of codes since both the client and server share the secret and track the same time.",
+    "interest": "Cybersecurity",
+    "difficulty": "Medium",
+    "topics": ["identity-access-management", "mfa", "totp", "authentication"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In a Microsoft Active Directory environment, what occurs during a 'Golden Ticket' attack, and what specific credential must an attacker compromise to construct it?",
+    "choices": [
+      { "id": "a", "text": "The attacker hijacks the domain controller's IP address and intercepts LDAP queries; they must compromise the domain's root TLS certificate.", "correct": false },
+      { "id": "b", "text": "The attacker compromises the password hash of the KRBTGT service account, allowing them to forge offline Ticket Granting Tickets (TGTs) and impersonate any user with arbitrary group memberships.", "correct": true },
+      { "id": "c", "text": "The attacker exploits a buffer overflow in the DNS service to execute remote code; they must compromise the administrator's local NTLM hash.", "correct": false },
+      { "id": "d", "text": "The attacker performs a brute-force attack against SMB shares; they must compromise the SYSVOL share write permissions.", "correct": false }
+    ],
+    "explanation": "In Active Directory Kerberos, the Key Distribution Center (KDC) encrypts and signs Ticket Granting Tickets (TGTs) using the password hash of the KRBTGT service account. If an attacker gains Domain Admin access and extracts the KRBTGT password hash (typically via DCSync attacks), they can construct their own TGTs offline. Since they possess the signing key, they can forge a TGT (a 'Golden Ticket') designating themselves as any user (e.g., Administrator) with arbitrary Security Identifiers (SIDs) and group memberships. This forged TGT will be accepted as valid by any domain controller. This attack provides persistent domain compromise that is difficult to detect and survives password resets of standard administrators, unless the KRBTGT password is reset twice.",
+    "interest": "Cybersecurity",
+    "difficulty": "Hard",
+    "topics": ["active-directory", "kerberos", "privilege-escalation", "windows-security"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Meltdown and Spectre hardware vulnerabilities discovered in modern microprocessors exploit which CPU design optimization to leak privileged kernel memory space to unprivileged user processes?",
+    "choices": [
+      { "id": "a", "text": "Direct Memory Access (DMA) caching, using hardware-level race conditions to bypass the MMU.", "correct": false },
+      { "id": "b", "text": "Speculative execution and CPU cache timing side-channels.", "correct": true },
+      { "id": "c", "text": "Simultaneous Multithreading (SMT) scheduling, by overwhelming the instruction queue with dummy operations.", "correct": false },
+      { "id": "d", "text": "Dynamic frequency scaling, by monitoring power fluctuations during kernel cryptographic operations.", "correct": false }
+    ],
+    "explanation": "Modern CPUs use speculative execution to predict branch paths and run instructions ahead of time to optimize performance. If the prediction is incorrect, the CPU rolls back the architectural state (registers) but does not clear the microarchitectural state changes made to the CPU data cache during speculative execution. Meltdown and Spectre exploit this: an attacker executes code that speculatively accesses restricted memory (e.g., kernel space). When the CPU realizes the access is unauthorized, it rolls back the register changes, but the restricted data was already loaded into the CPU cache. The attacker then uses timing side-channel attacks (like Flush+Reload) to measure access speeds of memory arrays, deducing the cached secret data byte-by-byte.",
+    "interest": "Cybersecurity",
+    "difficulty": "Hard",
+    "topics": ["hardware-security", "speculative-execution", "side-channel-attacks", "cpu-architecture"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the OAuth 2.0 authorization framework, why is the Proof Key for Code Exchange (PKCE) extension (RFC 7636) critical for public clients, such as single-page web applications (SPAs) or native mobile apps?",
+    "choices": [
+      { "id": "a", "text": "It encrypts the access tokens using a hardware security module (HSM) on the authorization server.", "correct": false },
+      { "id": "b", "text": "It mitigates authorization code interception attacks by requiring the client to prove ownership of a dynamically generated secret (Code Verifier) during the token exchange step, removing the need for a static client secret.", "correct": true },
+      { "id": "c", "text": "It enforces strict IP-whitelisting on the token endpoint, preventing requests from arbitrary mobile carriers.", "correct": false },
+      { "id": "d", "text": "It bypasses the need for user consent screens, accelerating the user sign-in process.", "correct": false }
+    ],
+    "explanation": "Public clients (like mobile apps or React SPAs) cannot securely store a static client_secret because their source code/assets are exposed to the user. In the standard Authorization Code Flow, an attacker could intercept the authorization code returned via custom URI schemes or browser history. PKCE protects against this by generating a dynamic, high-entropy secret called the 'Code Verifier' and sending its hash (the 'Code Challenge') in the initial authorization request. When the client receives the authorization code and exchanges it for an access token, it must send the original plaintext Code Verifier. The authorization server hashes it and verifies it matches the initial challenge. An intercepting attacker who has only the authorization code but lacks the Code Verifier cannot exchange it for tokens.",
+    "interest": "Cybersecurity",
+    "difficulty": "Hard",
+    "topics": ["api-security", "oauth", "authentication", "identity-access-management"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "How do Address Space Layout Randomization (ASLR) and Data Execution Prevention (DEP / NX bit) operate in tandem to prevent buffer overflow exploitation, and how do attackers bypass both protections?",
+    "choices": [
+      { "id": "a", "text": "ASLR encrypts the stack using symmetric keys, while DEP blocks all network connections; attackers bypass them by utilizing social engineering.", "correct": false },
+      { "id": "b", "text": "ASLR randomizes the memory addresses of key program segments (stack, heap, libraries) to prevent predictable jumps, while DEP marks memory pages as non-executable to prevent execution of shellcode injected into data regions; attackers bypass both using Return-Oriented Programming (ROP) combined with an information disclosure vulnerability.", "correct": true },
+      { "id": "c", "text": "ASLR increases the size of the buffer to prevent overflow, while DEP monitors system logs for crash reports; attackers bypass them by overwriting the exception handler directly (SEH overwrite).", "correct": false },
+      { "id": "d", "text": "ASLR sandboxes the application, while DEP signs binaries cryptographically; attackers bypass them by running the application in a local administrator context.", "correct": false }
+    ],
+    "explanation": "DEP (or the No-Execute 'NX' bit) prevents attackers from executing code located on the stack or heap (where input buffers reside). ASLR randomizes the memory addresses of executable binaries and shared libraries to prevent attackers from predicting the address of system functions (like system() in libc). To bypass DEP, attackers use Return-Oriented Programming (ROP), which does not inject new code but instead chains existing executable code snippets (ending in 'RET' instructions, called 'gadgets') in the application or libraries to execute arbitrary commands. To bypass ASLR, attackers must first exploit an information disclosure vulnerability (like a memory leak) to discover a base address, allowing them to calculate the randomized offsets of their ROP gadgets in memory.",
+    "interest": "Cybersecurity",
+    "difficulty": "Hard",
+    "topics": ["exploit-mitigation", "binary-exploitation", "software-security", "memory-management"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Elliptic Curve Diffie-Hellman (ECDH) key exchange, Alice and Bob agree on a common elliptic curve and a generator base point G. Alice selects a private key d_A and transmits her public key Q_A = d_A * G. Bob selects a private key d_B and transmits Q_B = d_B * G. What mathematical problem prevents an eavesdropper from calculating the shared secret S = d_A * d_B * G given only the public curve parameters and the public keys?",
+    "choices": [
+      { "id": "a", "text": "The prime factorization problem, which states that factoring the product of two large prime numbers is computationally hard.", "correct": false },
+      { "id": "b", "text": "The Elliptic Curve Discrete Logarithm Problem (ECDLP), which states that given Q = d * G, it is computationally infeasible to recover the scalar d when the group order is sufficiently large.", "correct": true },
+      { "id": "c", "text": "The Knapsack Cryptography problem, which asserts that selecting subsets of items to sum to a target value is NP-complete.", "correct": false },
+      { "id": "d", "text": "The Chinese Remainder Theorem complexity, which prevents finding modular congruence variables.", "correct": false }
+    ],
+    "explanation": "The security of Elliptic Curve Cryptography (ECC) and ECDH rests on the Elliptic Curve Discrete Logarithm Problem (ECDLP). In elliptic curve mathematics, multiplying a scalar d by a point G (which involves repeated point addition and doubling) is computationally easy. However, the inverse operation—finding the scalar d given the resulting point Q and base point G—is extremely difficult. Eavesdroppers intercept Q_A and Q_B. To compute the shared secret S, they would need to extract either d_A or d_B from the public keys. Since there is no known sub-exponential classical algorithm (like index calculus for finite fields) to solve the ECDLP on properly chosen curves, ECC offers comparable security to RSA with significantly smaller key sizes.",
+    "interest": "Cybersecurity",
+    "difficulty": "Expert",
+    "topics": ["cryptography", "elliptic-curve", "mathematics", "key-exchange"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Zero-Knowledge Succinct Non-Interactive Arguments of Knowledge (zk-SNARKs) allow a prover to verify the validity of a statement without revealing secret data. What is the precise role of a 'trusted setup' (such as in the Groth16 protocol) and what security vulnerability arises if the randomness generated during this phase is compromised?",
+    "choices": [
+      { "id": "a", "text": "The trusted setup generates the private keys for all users; if compromised, attackers can decrypt all future messages transmitted on the network.", "correct": false },
+      { "id": "b", "text": "The trusted setup creates a Common Reference String (CRS) containing proving and verification keys using secret random parameters ('toxic waste'); if these random parameters are leaked, an attacker can generate mathematically valid proofs for false statements, compromising the soundness of the system.", "correct": true },
+      { "id": "c", "text": "The trusted setup establishes a centralized server to validate proofs; if compromised, the system suffers a distributed denial of service.", "correct": false },
+      { "id": "d", "text": "The trusted setup acts as a secondary hashing layer; if compromised, it reduces the cryptographic strength from SHA-256 to MD5.", "correct": false }
+    ],
+    "explanation": "Traditional zk-SNARKs require a one-time cryptographic generation phase called the trusted setup to create a Common Reference String (CRS), which is used by the prover to generate proofs and the verifier to check them. This setup requires generating random numbers (known as 'toxic waste') to construct the keys, which must then be permanently deleted. If an attacker gains access to this entropy/toxic waste, they can exploit the underlying algebraic structure (usually pairing-friendly elliptic curves) to create forged proofs. These forged proofs will pass verification successfully despite the underlying statement being completely false (e.g., proving they own funds they do not possess). This violates the 'soundness' property of the zero-knowledge system.",
+    "interest": "Cybersecurity",
+    "difficulty": "Expert",
+    "topics": ["cryptography", "zero-knowledge-proofs", "zk-snark", "advanced-security"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Supply-chain Levels for Software Artifacts (SLSA) framework defines guidelines to secure the software build process. To achieve SLSA Level 3 compliance (under SLSA v1.0), what specific criteria must be met regarding the build environment and the generation of provenance records?",
+    "choices": [
+      { "id": "a", "text": "The build must be signed manually by three separate senior engineers using physical security keys, and the code must reside on a private air-gapped repository.", "correct": false },
+      { "id": "b", "text": "The build must run in a dedicated, isolated, and ephemeral environment, and the provenance (build metadata) must be generated by the build platform in a cryptographically signed manner that is non-falsifiable by the user.", "correct": true },
+      { "id": "c", "text": "The compiler must be written in a memory-safe language, and all dependencies must be checked against vulnerability databases every 10 minutes.", "correct": false },
+      { "id": "d", "text": "The build must compile without any warnings, and the output binary must match the hash of the source code exactly.", "correct": false }
+    ],
+    "explanation": "SLSA (pronounced 'salsa') is a security framework to prevent tampering and ensure software integrity. Under SLSA guidelines, Level 3 focuses on hardening the build platform against threat vectors. It requires: 1) A dedicated, isolated build environment that is ephemeral (spun up for a single build and then discarded) to prevent persistent attacks or state poisoning. 2) Non-falsifiable provenance, meaning the build platform itself (e.g., GitHub Actions runner or AWS CodeBuild) generates and signs metadata describing how the artifact was built, including the exact source repo, commit hash, and build parameters. Crucially, the developer or user cannot alter or fake this provenance during the build process, preventing injection of malicious artifacts into the supply chain.",
+    "interest": "Cybersecurity",
+    "difficulty": "Expert",
+    "topics": ["devsecops", "supply-chain-security", "slsa-framework", "software-engineering"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A smart contract written in Solidity contains a vulnerability where an external call is executed to transfer funds to a caller's contract before the caller's balance state variable is updated. How is this reentrancy exploit executed by an attacker, and which coding pattern is the most robust programmatic defense against it?",
+    "choices": [
+      { "id": "a", "text": "The attacker performs a brute-force attack on the contract owner's private key; the defense is using a multi-signature wallet.", "correct": false },
+      { "id": "b", "text": "The attacker calls the withdraw function using a malicious contract that implements a fallback or receive function that recursively calls the withdraw function before the victim contract updates the state balance; the primary defense is the 'Checks-Effects-Interactions' pattern.", "correct": true },
+      { "id": "c", "text": "The attacker inputs an extremely large integer to trigger an integer overflow; the defense is using the SafeMath library.", "correct": false },
+      { "id": "d", "text": "The attacker intercepts the transaction in the mempool and frontruns it; the defense is utilizing a private transaction pool like Flashbots.", "correct": false }
+    ],
+    "explanation": "In a reentrancy attack (famous from the 2016 DAO exploit), a vulnerable contract transfers Ether using an external call (e.g., call{value: amount}('')). This transfer transfers control of execution to the recipient. If the recipient is a malicious contract, it can trigger its fallback or receive function, which recursively calls the vulnerable contract's withdraw function again. Since the vulnerable contract has not yet updated the state variable containing the user's balance, it sees the balance as unchanged and permits another withdrawal. This loop continues until the contract is drained. The primary defense is the 'Checks-Effects-Interactions' pattern: 1) Checks: validate conditions (e.g., require(balance >= amount)). 2) Effects: update internal state variables (e.g., balance -= amount). 3) Interactions: perform external calls (e.g., transfer funds). This ensures state changes occur BEFORE control is handed over, making reentrancy impossible. Reentrancy guards (mutexes) are also a strong secondary defense.",
+    "interest": "Cybersecurity",
+    "difficulty": "Expert",
+    "topics": ["web3-security", "smart-contracts", "solidity", "ethereum"],
+    "bloomLevel": "Apply"
+  }
+]

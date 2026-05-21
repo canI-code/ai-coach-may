@@ -1,0 +1,450 @@
+[
+  {
+    "text": "During a project life cycle, at which point is the influence of stakeholders highest and the cost of changes lowest?",
+    "choices": [
+      { "id": "a", "text": "At the beginning of the project", "correct": true },
+      { "id": "b", "text": "During the execution phase", "correct": false },
+      { "id": "c", "text": "Near the project closure", "correct": false },
+      { "id": "d", "text": "During the monitoring and controlling phase", "correct": false }
+    ],
+    "explanation": "In a standard project life cycle, stakeholders have the highest influence at the beginning because project parameters, requirements, and deliverables are still being defined. Making changes early in the project is relatively cheap because little to no physical work has been executed and few resources have been spent. As the project progresses, the cost of changes increases dramatically, and stakeholder influence drops as decisions become locked in.",
+    "interest": "Project Management",
+    "difficulty": "Easy",
+    "topics": ["project lifecycle", "stakeholder management"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In the Critical Path Method (CPM) of project scheduling, what does a float (or slack) of zero indicate for a specific activity?",
+    "choices": [
+      { "id": "a", "text": "The activity has no resources assigned.", "correct": false },
+      { "id": "b", "text": "The activity lies on the critical path and cannot be delayed without delaying the project.", "correct": true },
+      { "id": "c", "text": "The activity is a milestone and has a duration of zero.", "correct": false },
+      { "id": "d", "text": "The activity can be delayed indefinitely without impacting the project schedule.", "correct": false }
+    ],
+    "explanation": "Float or slack is the amount of time an activity can be delayed without delaying the project finish date or a succeeding activity. An activity with zero float lies on the critical path. If any activity on the critical path is delayed by even a single day, the entire project completion date will be delayed by a day.",
+    "interest": "Project Management",
+    "difficulty": "Easy",
+    "topics": ["critical path", "scheduling"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which document formally authorizes the existence of a project and provides the project manager with the authority to apply organizational resources to project activities?",
+    "choices": [
+      { "id": "a", "text": "Project Management Plan", "correct": false },
+      { "id": "b", "text": "Project Scope Statement", "correct": false },
+      { "id": "c", "text": "Project Charter", "correct": true },
+      { "id": "d", "text": "Statement of Work (SOW)", "correct": false }
+    ],
+    "explanation": "The Project Charter is the official document issued by the project sponsor or initiator that formally authorizes the existence of a project and gives the project manager the authority to apply organizational resources to project activities. The Project Management Plan is created later by the project team. The Scope Statement defines what is included/excluded in the project, and the SOW is an input describing the work to be done.",
+    "interest": "Project Management",
+    "difficulty": "Easy",
+    "topics": ["integration management", "project initiation"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "If a project team expands from 4 members to 8 members, how many new communication channels are added to the team?",
+    "choices": [
+      { "id": "a", "text": "4", "correct": false },
+      { "id": "b", "text": "12", "correct": false },
+      { "id": "c", "text": "22", "correct": true },
+      { "id": "d", "text": "28", "correct": false }
+    ],
+    "explanation": "The formula for communication channels is N(N-1)/2. For 4 members, channels = 4(3)/2 = 6. For 8 members, channels = 8(7)/2 = 28. The question asks for how many *new* communication channels are added, which is the difference: 28 - 6 = 22.",
+    "interest": "Project Management",
+    "difficulty": "Easy",
+    "topics": ["communication management", "formulas"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A project manager is reviewing performance metrics and finds that the Cost Performance Index (CPI) is 0.85 and the Schedule Performance Index (SPI) is 1.15. Which of the following describes the current state of the project?",
+    "choices": [
+      { "id": "a", "text": "The project is under budget and ahead of schedule.", "correct": false },
+      { "id": "b", "text": "The project is over budget and behind schedule.", "correct": false },
+      { "id": "c", "text": "The project is under budget and behind schedule.", "correct": false },
+      { "id": "d", "text": "The project is over budget and ahead of schedule.", "correct": true }
+    ],
+    "explanation": "A CPI of less than 1.0 (0.85) indicates that the project is over budget (spending more than planned for the work accomplished). An SPI of greater than 1.0 (1.15) indicates that the project is ahead of schedule (earning more value than planned by this point in time).",
+    "interest": "Project Management",
+    "difficulty": "Medium",
+    "topics": ["earned value management", "cost control"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "To address a potential risk of server failure, a project team decides to host their application on a cloud provider with a 99.99% SLA, rather than hosting it on local servers. This is an example of which risk response strategy?",
+    "choices": [
+      { "id": "a", "text": "Avoidance", "correct": false },
+      { "id": "b", "text": "Mitigation", "correct": false },
+      { "id": "c", "text": "Transfer", "correct": true },
+      { "id": "d", "text": "Acceptance", "correct": false }
+    ],
+    "explanation": "Risk transfer involves shifting the impact of a threat, along with ownership of the response, to a third party (in this case, the cloud provider who guarantees the SLA). Unlike avoidance (which changes the plan to eliminate the threat entirely) or mitigation (which seeks to reduce the probability or impact of the risk), transfer typically involves paying a premium or using contractual agreements to move the financial or operational burden of the risk to another entity.",
+    "interest": "Project Management",
+    "difficulty": "Medium",
+    "topics": ["risk management", "risk response"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Two key technical leads disagree on the database architecture for a new platform. The project manager listens to both arguments, highlights areas of agreement, and encourages them to focus on shared goals rather than their differences to maintain team harmony. What conflict resolution technique did the project manager apply?",
+    "choices": [
+      { "id": "a", "text": "Compromising / Reconciling", "correct": false },
+      { "id": "b", "text": "Smoothing / Accommodating", "correct": true },
+      { "id": "c", "text": "Collaborating / Problem Solving", "correct": false },
+      { "id": "d", "text": "Forcing / Directing", "correct": false }
+    ],
+    "explanation": "Smoothing (or Accommodating) is a conflict resolution technique that emphasizes areas of agreement rather than areas of difference, conceding one's position to the needs of others to maintain harmony and relationships. While it helps keep the peace, it doesn't resolve the underlying issue. Collaborating would require working together to find a win-win solution, and Compromising would involve both parties giving up something.",
+    "interest": "Project Management",
+    "difficulty": "Medium",
+    "topics": ["resource management", "conflict resolution"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A project manager needs to address resource over-allocation without changing the original project completion date. Which resource optimization technique should they use?",
+    "choices": [
+      { "id": "a", "text": "Resource Leveling", "correct": false },
+      { "id": "b", "text": "Resource Smoothing", "correct": true },
+      { "id": "c", "text": "Crashing", "correct": false },
+      { "id": "d", "text": "Fast Tracking", "correct": false }
+    ],
+    "explanation": "Resource Smoothing adjusts the activities of a schedule model such that the requirements for resources on the project do not exceed certain predefined resource limits. Unlike Resource Leveling, which can change the critical path and delay the project completion date, Resource Smoothing only delays activities within their free and total float, ensuring that the project completion date is not delayed. Crashing and Fast Tracking are schedule compression techniques, not resource optimization techniques.",
+    "interest": "Project Management",
+    "difficulty": "Medium",
+    "topics": ["schedule management", "resource optimization"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A project is behind schedule, and the project manager decides to compress the schedule using 'crashing'. Activity A costs $100/day to crash and can be crashed by 2 days. Activity B costs $150/day to crash and can be crashed by 3 days. Activity C costs $200/day to crash and can be crashed by 1 day. The critical path consists of Activity A and Activity C. To shorten the project duration by 2 days at the lowest possible cost, what actions should the project manager take?",
+    "choices": [
+      { "id": "a", "text": "Crash Activity A by 2 days.", "correct": true },
+      { "id": "b", "text": "Crash Activity B by 2 days.", "correct": false },
+      { "id": "c", "text": "Crash Activity A by 1 day and Activity C by 1 day.", "correct": false },
+      { "id": "d", "text": "Crash Activity A by 1 day and Activity B by 1 day.", "correct": false }
+    ],
+    "explanation": "To compress a project schedule, the project manager must crash activities that are on the critical path. The critical path contains Activities A and C. Activity B is not on the critical path, so crashing Activity B will not reduce the overall project duration. The cost to crash Activity A is $100/day, and the cost to crash Activity C is $200/day. To shorten the project by 2 days, we should choose the cheapest option on the critical path. Since Activity A can be crashed by up to 2 days at $100/day (total $200), this is the optimal choice compared to crashing A by 1 day ($100) and C by 1 day ($200) for a total of $300.",
+    "interest": "Project Management",
+    "difficulty": "Hard",
+    "topics": ["schedule compression", "crashing", "critical path"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A project manager is evaluating two alternative strategies for a software development project. Strategy A has a 60% chance of yielding a $100,000 profit and a 40% chance of resulting in a $30,000 loss. Strategy B has a 50% chance of yielding a $120,000 profit and a 50% chance of resulting in a $40,000 loss. Which strategy has the higher Expected Monetary Value (EMV), and what is its value?",
+    "choices": [
+      { "id": "a", "text": "Strategy A with an EMV of $48,000", "correct": true },
+      { "id": "b", "text": "Strategy B with an EMV of $40,000", "correct": false },
+      { "id": "c", "text": "Strategy A with an EMV of $60,000", "correct": false },
+      { "id": "d", "text": "Strategy B with an EMV of $80,000", "correct": false }
+    ],
+    "explanation": "Expected Monetary Value (EMV) is calculated as EMV = Sum(Probability * Impact). For Strategy A: EMV = (0.60 * $100,000) + (0.40 * -$30,000) = $60,000 - $12,000 = $48,000. For Strategy B: EMV = (0.50 * $120,000) + (0.50 * -$40,000) = $60,000 - $20,000 = $40,000. Therefore, Strategy A has the higher EMV at $48,000.",
+    "interest": "Project Management",
+    "difficulty": "Hard",
+    "topics": ["risk management", "expected monetary value", "quantitative risk analysis"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a hybrid project where hardware is developed using Waterfall and software using Scrum, a critical change is requested for the hardware interface that will impact the software API. How should this change request be processed?",
+    "choices": [
+      { "id": "a", "text": "The Product Owner should immediately prioritize it in the Software Sprint Backlog.", "correct": false },
+      { "id": "b", "text": "The change should be submitted to the formal Change Control Board (CCB) for impact assessment across both work streams before approval.", "correct": true },
+      { "id": "c", "text": "The hardware team should implement the change, and the software team should adapt in their next sprint planning.", "correct": false },
+      { "id": "d", "text": "The Project Sponsor should bypass formal processes and issue a direct change directive to both teams.", "correct": false }
+    ],
+    "explanation": "In hybrid projects, changes that cross the boundary between Waterfall and Agile components must be managed through a unified process to prevent integration failures. A change in the hardware interface directly impacts the software API, representing a cross-cutting change. Therefore, it must go through a formal Change Control Board (CCB) to fully analyze the downstream impact on both Waterfall schedules and Agile release plans before any work is authorized.",
+    "interest": "Project Management",
+    "difficulty": "Hard",
+    "topics": ["change management", "hybrid project management", "agile"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A project buyer is procuring custom equipment where the scope is highly uncertain and subject to change. The buyer wants to incentivize the seller to control costs while sharing the risk of cost overruns. Which contract type is most appropriate?",
+    "choices": [
+      { "id": "a", "text": "Firm Fixed Price (FFP)", "correct": false },
+      { "id": "b", "text": "Cost Plus Fixed Fee (CPFF)", "correct": false },
+      { "id": "c", "text": "Cost Plus Incentive Fee (CPIF)", "correct": true },
+      { "id": "d", "text": "Time and Material (T&M)", "correct": false }
+    ],
+    "explanation": "In a Cost Plus Incentive Fee (CPIF) contract, the seller is reimbursed for allowable costs and receives a predetermined fee plus an incentive fee based upon achieving certain performance levels. If the final costs differ from the target costs, both buyer and seller share the cost overrun or saving based on a pre-negotiated sharing formula. This aligns incentives to control costs when scope is uncertain, sharing the risk between buyer and seller. FFP puts all risk on the seller (inappropriate for uncertain scope), while CPFF places all risk on the buyer with no cost-control incentive for the seller.",
+    "interest": "Project Management",
+    "difficulty": "Hard",
+    "topics": ["procurement management", "contracts"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During a quantitative risk analysis, a Monte Carlo simulation of a complex project schedule yields a probability distribution where the deterministic critical path finish date has a 'P30' value. What is the most accurate interpretation of this finding?",
+    "choices": [
+      { "id": "a", "text": "There is a 30% chance that the project will finish after the deterministic date.", "correct": false },
+      { "id": "b", "text": "There is a 70% chance that the project will finish on or before the deterministic date.", "correct": false },
+      { "id": "c", "text": "The project is highly likely to finish on time, and schedule risk is low.", "correct": false },
+      { "id": "d", "text": "There is only a 30% probability of completing the project on or before the deterministic date, indicating high merge bias and schedule risk.", "correct": true }
+    ],
+    "explanation": "In quantitative schedule risk analysis, a P-value (e.g., P30) represents the percentile of completion. A P30 rating for the deterministic schedule means there is only a 30% probability that the project will be completed on or before that date, and a 70% probability that it will overrun. This discrepancy often occurs due to 'merge bias,' where multiple parallel paths merge into a single milestone, and the delay of any one path delays the merge point, significantly increasing overall schedule risk compared to simple deterministic CPM models.",
+    "interest": "Project Management",
+    "difficulty": "Expert",
+    "topics": ["quantitative risk analysis", "monte carlo simulation", "scheduling", "merge bias"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A project is late in its execution phase, currently at 95% physical completion. The traditional EVM Schedule Performance Index (SPI) is 1.04, but the Earned Schedule SPI (SPI_t) is 0.82. What explains this divergence, and which metric should the project manager trust?",
+    "choices": [
+      { "id": "a", "text": "The project has experienced significant cost savings; the project manager should trust the traditional SPI.", "correct": false },
+      { "id": "b", "text": "Traditional SPI is behaving normally, but Earned Schedule is inaccurate near the end of a project.", "correct": false },
+      { "id": "c", "text": "Traditional SPI mathematically yields 1.0 at project completion regardless of late delivery, whereas Earned Schedule SPI (SPI_t) correctly reflects actual schedule delays; trust SPI_t.", "correct": true },
+      { "id": "d", "text": "Traditional SPI represents the critical path, while SPI_t represents non-critical path tasks; trust traditional SPI.", "correct": false }
+    ],
+    "explanation": "Traditional Earned Value Management (EVM) has a well-known flaw: as a project nears completion, the Schedule Variance (SV) approaches zero and the Schedule Performance Index (SPI) approaches 1.0, even if the project is heavily delayed, because Planned Value (PV) eventually equals Earned Value (EV) when all work is finished. Earned Schedule (ES) theory addresses this by measuring schedule performance in units of time rather than currency. SPI_t (Earned Schedule / Actual Time) does not revert to 1.0 at the end of a late project and remains an accurate indicator of schedule performance. The project manager should trust the SPI_t of 0.82.",
+    "interest": "Project Management",
+    "difficulty": "Expert",
+    "topics": ["earned schedule", "earned value management", "advanced metrics"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "An enterprise organization is transitioning to SAFe (Scaled Agile Framework) and wants to optimize its portfolio-level value stream. The portfolio dashboard shows a high Work-in-Process (WIP) limit, high lead times, and low deployment frequency. According to Little's Law and queuing theory, which structural change will most effectively increase throughput and reduce cycle times?",
+    "choices": [
+      { "id": "a", "text": "Increase the capacity of individual agile teams by hiring more engineers.", "correct": false },
+      { "id": "b", "text": "Decrease portfolio WIP limits and decrease batch sizes of Portfolio Epics.", "correct": true },
+      { "id": "c", "text": "Switch from a pull-based system to a push-based system for epic allocation.", "correct": false },
+      { "id": "d", "text": "Extend the duration of the Program Increments (PI) to allow more time for integration.", "correct": false }
+    ],
+    "explanation": "Little's Law states that Cycle Time = Work in Process (WIP) / Throughput. To reduce cycle/lead times and improve flow, portfolio governance must restrict Work in Process (WIP) and reduce batch sizes. Reducing batch sizes decreases the variability of the queue, and lower WIP directly leads to shorter cycle times, allowing value to be delivered faster and more frequently. Adding resources or extending PIs does not solve the underlying queue congestion and can actually increase coordination overhead and lead times.",
+    "interest": "Project Management",
+    "difficulty": "Expert",
+    "topics": ["agile governance", "queuing theory", "littles law", "portfolio management"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A corporation has a capital constraint of $5,000,000 and is evaluating four mutually exclusive projects. Project W has an NPV of $1,200,000 and requires $3,000,000. Project X has an NPV of $1,000,000 and requires $2,000,000. Project Y has an NPV of $900,000 and requires $2,000,000. Project Z has an NPV of $800,000 and requires $1,000,000. Which combination of projects maximizes shareholder wealth within the capital budget?",
+    "choices": [
+      { "id": "a", "text": "Projects W and X (Total NPV $2.2M, Cost $5.0M)", "correct": false },
+      { "id": "b", "text": "Projects X, Y, and Z (Total NPV $2.7M, Cost $5.0M)", "correct": true },
+      { "id": "c", "text": "Projects W and Y (Total NPV $2.1M, Cost $5.0M)", "correct": false },
+      { "id": "d", "text": "Project W and Z (Total NPV $2.0M, Cost $4.0M)", "correct": false }
+    ],
+    "explanation": "Since the capital constraint is $5,000,000, we must find the combination of projects that fits within this budget and yields the highest total Net Present Value (NPV). Option A (W+X) yields $2.2M NPV. Option B (X+Y+Z) yields $2.7M NPV. Option C (W+Y) yields $2.1M NPV. Option D (W+Z) yields $2.0M NPV. The combination of Projects X, Y, and Z yields the highest overall Net Present Value of $2,700,000 while remaining within the $5,000,000 capital budget.",
+    "interest": "Project Management",
+    "difficulty": "Expert",
+    "topics": ["capital budgeting", "project selection", "financial analysis"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "What is the primary purpose of building a Minimum Viable Product (MVP) in the Lean Startup methodology?",
+    "choices": [
+      { "id": "a", "text": "To launch a fully polished product to gain immediate market dominance.", "correct": false },
+      { "id": "b", "text": "To test fundamental business hypotheses and gather validated learning with the least effort.", "correct": true },
+      { "id": "c", "text": "To cut development costs and avoid hiring professional software engineers.", "correct": false },
+      { "id": "d", "text": "To present a high-fidelity prototype to secure Series A venture capital funding.", "correct": false }
+    ],
+    "explanation": "According to Eric Ries in the Lean Startup methodology, the primary goal of an MVP is not to sell a cheap product, but to begin the process of learning as quickly as possible. It is designed to test core business hypotheses with the minimum amount of effort and development time, allowing the entrepreneur to gather validated customer feedback and iterate.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Easy",
+    "topics": ["lean startup", "mvp", "product-market fit"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In entrepreneurship, what does the term 'pivot' mean?",
+    "choices": [
+      { "id": "a", "text": "Shutting down the company and returning remaining capital to investors.", "correct": false },
+      { "id": "b", "text": "A structured course correction designed to test a new basic hypothesis about the product, strategy, and engine of growth.", "correct": true },
+      { "id": "c", "text": "Raising a new round of funding at a significantly higher valuation.", "correct": false },
+      { "id": "d", "text": "Changing the company's executive leadership to appease the board of directors.", "correct": false }
+    ],
+    "explanation": "A pivot is a structured course correction designed to test a new fundamental hypothesis about the product, business model, or engine of growth, while keeping the overall vision of the startup intact. It is a core concept in Lean Startup, distinct from simply changing everything or giving up.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Easy",
+    "topics": ["lean startup", "pivot", "business model strategy"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "How is Customer Acquisition Cost (CAC) calculated?",
+    "choices": [
+      { "id": "a", "text": "Total marketing and sales spend divided by the number of new customers acquired during the same period.", "correct": true },
+      { "id": "b", "text": "Total cost of goods sold (COGS) divided by the number of active users.", "correct": false },
+      { "id": "c", "text": "Average revenue per user (ARPU) multiplied by the customer churn rate.", "correct": false },
+      { "id": "d", "text": "Total operating expenses divided by the number of paying customers.", "correct": false }
+    ],
+    "explanation": "Customer Acquisition Cost (CAC) is calculated by taking the total costs associated with acquiring new customers (marketing expenses, sales team salaries, software tools, etc.) over a specific time period, and dividing it by the number of new customers acquired during that same period.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Easy",
+    "topics": ["unit economics", "startup metrics", "growth"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Which of the following best describes 'bootstrapping' in the context of financing a startup?",
+    "choices": [
+      { "id": "a", "text": "Securing a large line of credit from an investment bank.", "correct": false },
+      { "id": "b", "text": "Funding the growth of the business using personal savings and early revenues instead of external capital.", "correct": true },
+      { "id": "c", "text": "Exiting the business through an initial public offering (IPO).", "correct": false },
+      { "id": "d", "text": "Participating in a highly competitive startup accelerator program.", "correct": false }
+    ],
+    "explanation": "Bootstrapping is a situation in which an entrepreneur starts a company with little capital, relying on personal finances, sweat equity, and revenue from early customers to fund operations and expansion, without giving up equity to external investors like venture capitalists or angel investors.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Easy",
+    "topics": ["fundraising", "bootstrapping", "finance"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An early-stage SaaS startup wants to evaluate if they have achieved Product-Market Fit. Which of the following metrics is the most reliable indicator of PMF?",
+    "choices": [
+      { "id": "a", "text": "A high number of total registered users and social media followers.", "correct": false },
+      { "id": "b", "text": "High customer retention rates and a net promoter score (NPS) above 50, alongside strong organic referral loops.", "correct": true },
+      { "id": "c", "text": "A significant increase in top-of-funnel marketing traffic driven by paid advertisements.", "correct": false },
+      { "id": "d", "text": "Successfully raising a Series A funding round from a top-tier venture capital firm.", "correct": false }
+    ],
+    "explanation": "Vanity metrics like total registered users or social media followers do not indicate value delivery. PMF is best demonstrated by cohort retention (customers returning and paying over time) and customer advocacy (high NPS and organic referrals). Raising venture capital or driving paid traffic does not prove that users actually find sustainable value in the product.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Medium",
+    "topics": ["product-market fit", "startup metrics", "saas"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A founder owns 100% of a startup with 1,000,000 shares. An angel investor agrees to invest $200,000 at a $1,000,000 post-money valuation. How many new shares must the company issue to the investor, and what will the founder's ownership percentage be after the investment?",
+    "choices": [
+      { "id": "a", "text": "250,000 shares; founder owns 80%", "correct": true },
+      { "id": "b", "text": "200,000 shares; founder owns 83.3%", "correct": false },
+      { "id": "c", "text": "200,000 shares; founder owns 80%", "correct": false },
+      { "id": "d", "text": "250,000 shares; founder owns 75%", "correct": false }
+    ],
+    "explanation": "A post-money valuation of $1,000,000 with a $200,000 investment means the investor is buying 20% of the company ($200k / $1M). The founder's remaining share is 80%. If the founder's existing 1,000,000 shares represent 80% of the post-money company, then the total number of post-money shares (T) is calculated as: 0.80 * T = 1,000,000 -> T = 1,250,000. The investor's shares are T - 1,000,000 = 250,000 shares (which is exactly 20% of 1,250,000). Thus, the company issues 250,000 new shares, and the founder owns 80%.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Medium",
+    "topics": ["cap table", "equity dilution", "fundraising"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In the Business Model Canvas, what is the relationship between the 'Value Propositions' and 'Customer Segments' blocks?",
+    "choices": [
+      { "id": "a", "text": "They are connected by 'Key Resources' to optimize operational costs.", "correct": false },
+      { "id": "b", "text": "They represent the front-stage and back-stage operations respectively.", "correct": false },
+      { "id": "c", "text": "They are bridged by 'Channels' (how the value is delivered) and 'Customer Relationships' (how customers are interacted with).", "correct": true },
+      { "id": "d", "text": "They have no direct relationship, as they represent independent components of the canvas.", "correct": false }
+    ],
+    "explanation": "In Alexander Osterwalder's Business Model Canvas, the Value Propositions (what you offer) and Customer Segments (who you offer it to) are the two core anchors of the business model. They are bridged by Channels (describing how a company communicates with and reaches its Customer Segments to deliver a Value Proposition) and Customer Relationships (describing the types of relationships a company establishes with specific Customer Segments).",
+    "interest": "Entrepreneurship",
+    "difficulty": "Medium",
+    "topics": ["business model canvas", "strategy"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A pre-revenue hardware startup has $600,000 in cash reserves. The monthly operational costs are $60,000, and they generate $10,000 per month in service revenue. What is the startup's monthly net burn rate and current runway?",
+    "choices": [
+      { "id": "a", "text": "Net burn $60,000; Runway 10 months", "correct": false },
+      { "id": "b", "text": "Net burn $50,000; Runway 12 months", "correct": true },
+      { "id": "c", "text": "Net burn $70,000; Runway 8.5 months", "correct": false },
+      { "id": "d", "text": "Net burn $50,000; Runway 10 months", "correct": false }
+    ],
+    "explanation": "Net Burn Rate is calculated as Gross Burn (Operational Costs) - Revenue. Here, Gross Burn = $60,000 and Revenue = $10,000, so Net Burn = $60,000 - $10,000 = $50,000 per month. Runway is calculated as Cash Reserves / Net Burn Rate. Thus, Runway = $600,000 / $50,000 = 12 months.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Medium",
+    "topics": ["financial metrics", "runway", "burn rate"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A startup raises a $500,000 seed round using a convertible note with a $4,000,000 valuation cap and a 20% discount rate. At the Series A round, the pre-money valuation is set at $5,000,000 and the share price is $1.00. At what price will the seed investor's note convert into Series A preferred shares?",
+    "choices": [
+      { "id": "a", "text": "$0.80 per share", "correct": true },
+      { "id": "b", "text": "$1.00 per share", "correct": false },
+      { "id": "c", "text": "$0.64 per share", "correct": false },
+      { "id": "d", "text": "$0.75 per share", "correct": false }
+    ],
+    "explanation": "Convertible note holders convert their debt into equity at the lower price determined by either the valuation cap or the discount rate. 1) Discount Route: A 20% discount on the Series A price of $1.00 yields a share price of $1.00 * (1 - 0.20) = $0.80. 2) Valuation Cap Route: The valuation cap is $4,000,000, while the actual Series A valuation is $5,000,000. The conversion ratio based on the cap is Cap / Series A Valuation = $4M / $5M = 0.80. Multiplying this by the Series A share price: 0.80 * $1.00 = $0.80. Since both conversion routes yield $0.80 per share, the note converts at $0.80 per share.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Hard",
+    "topics": ["convertible notes", "valuation cap", "venture finance", "fundraising"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A SaaS startup has an Average Revenue Per Account (ARPU) of $100/month, a gross margin of 80%, and a monthly customer churn rate of 2%. If their CAC is $1,500, what is their LTV (Customer Lifetime Value) and the LTV:CAC ratio?",
+    "choices": [
+      { "id": "a", "text": "LTV $5,000; Ratio 3.33:1", "correct": false },
+      { "id": "b", "text": "LTV $4,000; Ratio 2.67:1", "correct": true },
+      { "id": "c", "text": "LTV $2,500; Ratio 1.67:1", "correct": false },
+      { "id": "d", "text": "LTV $4,000; Ratio 4:1", "correct": false }
+    ],
+    "explanation": "Customer Lifetime Value (LTV) for a SaaS business is calculated as LTV = (ARPU * Gross Margin %) / Churn Rate. Here, ARPU = $100, Gross Margin = 0.80, and Churn = 0.02. LTV = ($100 * 0.80) / 0.02 = $80 / 0.02 = $4,000. The LTV:CAC ratio is LTV / CAC = $4,000 / $1,500 = 2.67. Therefore, the LTV is $4,000 and the ratio is 2.67:1.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Hard",
+    "topics": ["saas economics", "unit economics", "ltv", "cac"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "At the beginning of Q1, a B2B SaaS startup has $100,000 in Monthly Recurring Revenue (MRR). During Q1, they lose $5,000 MRR from churned customers, suffer $3,000 in contraction MRR from existing customers downgrading, add $10,000 in expansion MRR from existing customers upgrading, and acquire $15,000 in new MRR. What is their Net Revenue Retention (NRR) rate for Q1?",
+    "choices": [
+      { "id": "a", "text": "117%", "correct": false },
+      { "id": "b", "text": "102%", "correct": true },
+      { "id": "c", "text": "92%", "correct": false },
+      { "id": "d", "text": "112%", "correct": false }
+    ],
+    "explanation": "Net Revenue Retention (NRR) measures the change in recurring revenue from existing customers over a given period, excluding new sales. The formula is: NRR = (Starting MRR + Expansion MRR - Contraction MRR - Churn MRR) / Starting MRR. Starting MRR = $100,000. Expansion = $10,000. Contraction = $3,000. Churn = $5,000. NRR = ($100,000 + $10,000 - $3,000 - $5,000) / $100,000 = $102,000 / $100,000 = 102%. New MRR of $15,000 is excluded because NRR only focuses on the retention and expansion of existing customers.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Hard",
+    "topics": ["growth accounting", "nrr", "mrr", "saas metrics"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An entrepreneur is pitching a medical device that reduces recovery time for knee replacement surgeries. There are 1,000,000 knee replacements globally each year (700,000 in hospitals, 300,000 in private clinics). The device is priced at $1,000. Due to regulatory barriers, the startup can only target private clinics in the US, which perform 100,000 surgeries annually. The startup expects to capture 10% of this market within 3 years. What is the Total Addressable Market (TAM) and Serviceable Obtainable Market (SOM)?",
+    "choices": [
+      { "id": "a", "text": "TAM $1,000,000,000; SOM $10,000,000", "correct": true },
+      { "id": "b", "text": "TAM $700,000,000; SOM $10,000,000", "correct": false },
+      { "id": "c", "text": "TAM $1,000,000,000; SOM $100,000,000", "correct": false },
+      { "id": "d", "text": "TAM $300,000,000; SOM $30,000,000", "correct": false }
+    ],
+    "explanation": "TAM (Total Addressable Market) is the total market demand globally: 1,000,000 surgeries * $1,000 = $1,000,000,000. SAM (Serviceable Addressable Market) is the segment within regulatory reach (US private clinics): 100,000 surgeries * $1,000 = $100,000,000. SOM (Serviceable Obtainable Market) is the portion of SAM they realistically expect to capture: 10% of SAM = $10,000,000.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Hard",
+    "topics": ["market sizing", "tam sam som", "pitch deck"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A $100,000,000 venture capital fund charges a 2% annual management fee over its 10-year life cycle and has a 20% carried interest on profits (above the fund size). The fund expects to write off 50% of its portfolio. If the fund aims to return a '3x net' of the fund size to its Limited Partners (LPs), what is the required gross cash return from the surviving portfolio companies?",
+    "choices": [
+      { "id": "a", "text": "$300,000,000", "correct": false },
+      { "id": "b", "text": "$350,000,000", "correct": true },
+      { "id": "c", "text": "$400,000,000", "correct": false },
+      { "id": "d", "text": "$320,000,000", "correct": false }
+    ],
+    "explanation": "Fund Size = $100,000,000. Management fees = 2%/year for 10 years = 20% of fund size = $20,000,000. '3x net' return to LPs means LPs must receive $300,000,000 in net cash distributions. Let G be the gross cash return of the fund. Profits = G - $100M. The GP takes a 20% carried interest on these profits: GP carry = 0.20 * (G - $100M). The LPs receive the remaining gross cash: LP Return = G - GP Carry = G - 0.20 * (G - $100M) = 0.80 * G + $20M. Set LP Return equal to $300,000,000: 0.80 * G + $20M = $300M -> 0.80 * G = $280M -> G = $350,000,000. Thus, the gross cash return required is $350,000,000.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Expert",
+    "topics": ["venture capital", "fund math", "carried interest", "limited partners"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A new peer-to-peer ride-sharing platform is launching in a highly competitive metro area. To solve the classic 'chicken-and-egg' (cold start) problem of multi-sided platforms, which strategy is theoretically and empirically most effective?",
+    "choices": [
+      { "id": "a", "text": "Simultaneously spend marketing budgets equally on passenger ads and driver ads to grow both sides in tandem.", "correct": false },
+      { "id": "b", "text": "Subsidize the supply side (drivers) by guaranteeing high hourly wages initially, thereby creating a reliable service that organically attracts the demand side (passengers).", "correct": true },
+      { "id": "c", "text": "Rely on organic word-of-mouth without subsidies, as subsidies create artificial demand that immediately churns.", "correct": false },
+      { "id": "d", "text": "Restrict the supply side to a very small group of drivers to create an exclusive, high-cost luxury brand feel.", "correct": false }
+    ],
+    "explanation": "In multi-sided platforms, solving the cold-start problem requires focusing heavily on one side of the market first (usually the supply side or the side that is harder to acquire and forms the baseline utility). By subsidizing drivers (supply) with guaranteed hourly rates, the platform ensures low wait times and high availability. When passengers (demand) check the app, they find a reliable service, solving the chicken-and-egg problem. In contrast, spreading resources equally leads to thin liquidity on both sides, causing high bounce rates for passengers and long idle times for drivers.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Expert",
+    "topics": ["platform strategy", "network effects", "cold start problem"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A university spin-off is commercializing a novel solid-state battery technology with a 10-year research moat. What is the most capital-efficient business model to scale this technology while minimizing capital expenditures (CapEx) and maximizing shareholder returns?",
+    "choices": [
+      { "id": "a", "text": "Raise $500M in venture debt to build a massive battery gigafactory to manufacture and sell cells directly to automotive OEMs.", "correct": false },
+      { "id": "b", "text": "Form a joint venture (JV) or license the intellectual property (IP) to established automotive OEMs and tier-1 battery manufacturers, leveraging their manufacturing capacity and distribution channels.", "correct": true },
+      { "id": "c", "text": "Launch a direct-to-consumer electric vehicle brand to vertically integrate the battery technology.", "correct": false },
+      { "id": "d", "text": "Keep the technology entirely proprietary and offer consulting services to battery manufacturers.", "correct": false }
+    ],
+    "explanation": "For deep-tech startups with long R&D cycles, building massive manufacturing plants (gigafactories) requires astronomical capital expenditure (CapEx) and exposes the company to extreme execution risk. The most capital-efficient strategy is to license the intellectual property (IP) or establish a joint venture (JV) with existing industrial giants (auto OEMs/tier-1 suppliers) who already possess the infrastructure, capital, and supply chains. This allows the startup to capture high-margin royalty streams without the dilutive financing rounds required to build factories.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Expert",
+    "topics": ["deep tech", "business models", "ip licensing", "capital efficiency"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A growing SaaS startup in the cybersecurity space is planning its long-term exit strategy. The founders are considering an acquisition by a major industry consolidator that holds 65% of the market share. What regulatory hurdle is the most critical to evaluate under US antitrust law (specifically the Clayton Act)?",
+    "choices": [
+      { "id": "a", "text": "The Sarbanes-Oxley Act compliance costs of the acquiring firm.", "correct": false },
+      { "id": "b", "text": "The Hart-Scott-Rodino (HSR) filing thresholds and the potential for the Federal Trade Commission (FTC) to block the merger due to a significant increase in the Herfindahl-Hirschman Index (HHI).", "correct": true },
+      { "id": "c", "text": "The SEC's Form 10-K filing deadline for the target company.", "correct": false },
+      { "id": "d", "text": "The Foreign Investment Risk Review Modernization Act (FIRRMA) requirements, regardless of the acquirer's origin.", "correct": false }
+    ],
+    "explanation": "Under US antitrust law (Clayton Act Section 7), mergers and acquisitions that may substantially lessen competition or tend to create a monopoly are illegal. For a market consolidator holding 65% of the market, acquiring a close competitor would significantly increase market concentration as measured by the Herfindahl-Hirschman Index (HHI). The parties must make a Hart-Scott-Rodino (HSR) premerger notification filing if certain transaction size thresholds are met, and the FTC or DOJ will scrutinize the deal. This is a critical regulatory hurdle for the startup's exit strategy.",
+    "interest": "Entrepreneurship",
+    "difficulty": "Expert",
+    "topics": ["m&a", "antitrust", "exit strategy", "startup law"],
+    "bloomLevel": "Understand"
+  }
+]

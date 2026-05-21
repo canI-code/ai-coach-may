@@ -1,0 +1,1072 @@
+[
+  {
+    "text": "In a standard SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis, how are the four quadrants categorized in terms of internal versus external origin?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Strengths and Opportunities are internal; Weaknesses and Threats are external.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Strengths and Weaknesses are internal; Opportunities and Threats are external.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Strengths and Threats are internal; Weaknesses and Opportunities are external.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "All four quadrants are considered internal, with only the macro-environment considered external.",
+        "correct": false
+      }
+    ],
+    "explanation": "SWOT Analysis categorizes organizational factors into internal and external origins. Strengths (S) and Weaknesses (W) are internal factors (under the organization's control, e.g., proprietary technology, operational inefficiencies). Opportunities (O) and Threats (T) are external factors stemming from the macro-environment or industry dynamics (e.g., regulatory changes, shifting market demand). Option A is incorrect because Opportunities are external. Option C is incorrect because Threats are external. Option D is fundamentally incorrect as Opportunities and Threats are defined by external forces.",
+    "interest": "Marketing",
+    "difficulty": "Easy",
+    "topics": [
+      "SWOT Analysis",
+      "Strategic Planning"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the traditional '4Ps' of the marketing mix is directly responsible for revenue generation, while the other three represent cost centers?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Product",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Price",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Place",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Promotion",
+        "correct": false
+      }
+    ],
+    "explanation": "Within the traditional McCarthy's 4Ps framework (Product, Price, Place, Promotion), Price is the only element that generates revenue. Product design, Place (distribution logistics), and Promotion (advertising, sales promotions) all represent activities that incur costs to add value and communicate that value. Therefore, setting an optimal price is critical for capturing value.",
+    "interest": "Marketing",
+    "difficulty": "Easy",
+    "topics": [
+      "Marketing Mix",
+      "4Ps"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "A health food company targets consumers who value organic living, actively engage in outdoor sports, and exhibit high concern for environmental sustainability. What type of market segmentation is this company primarily utilizing?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Demographic segmentation",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Geographic segmentation",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Psychographic segmentation",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Behavioral segmentation",
+        "correct": false
+      }
+    ],
+    "explanation": "Psychographic segmentation divides the market based on lifestyle, values, personality traits, and interests. Valuation of organic living, interest in outdoor sports, and environmental concern are key lifestyle and value indicators, making psychographics the correct answer. Demographic segmentation would focus on age, gender, or income. Geographic segmentation focuses on physical location. Behavioral segmentation focuses on product usage rates, brand loyalty, or specific purchase occasions.",
+    "interest": "Marketing",
+    "difficulty": "Easy",
+    "topics": [
+      "Market Segmentation",
+      "Targeting"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "According to David Aaker's Brand Equity model, which of the following is NOT one of the core assets that constitute brand equity?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Brand Loyalty",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Brand Awareness",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Operating Margin",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Brand Associations",
+        "correct": false
+      }
+    ],
+    "explanation": "David Aaker's Brand Equity model identifies five core categories of assets: Brand Loyalty, Brand Awareness, Perceived Quality, Brand Associations, and other proprietary brand assets (like patents and channel relationships). Operating Margin is a financial outcome of strong brand equity but is not defined as an asset within the core model itself.",
+    "interest": "Marketing",
+    "difficulty": "Easy",
+    "topics": [
+      "Brand Equity",
+      "Branding"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A SaaS company spent $150,000 on digital marketing campaigns, $50,000 on sales representatives' salaries, and $20,000 on marketing automation software during Q1. If they acquired 500 new customers during this period, what is their Customer Acquisition Cost (CAC)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "$300",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "$400",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "$440",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "$340",
+        "correct": false
+      }
+    ],
+    "explanation": "Customer Acquisition Cost (CAC) is calculated as the sum of all sales and marketing costs divided by the number of new customers acquired during the specified period. Total costs = $150,000 (marketing campaigns) + $50,000 (sales salaries) + $20,000 (software) = $220,000. New customers acquired = 500. CAC = $220,000 / 500 = $440. Options A, B, and D are mathematical errors omitting either sales salaries or software costs.",
+    "interest": "Marketing",
+    "difficulty": "Medium",
+    "topics": [
+      "CAC",
+      "Marketing Metrics"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In web analytics, what is the key distinction between 'Bounce Rate' and 'Exit Rate' for a specific webpage?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Bounce Rate applies only to single-page sessions starting on that page; Exit Rate is the percentage of sessions that ended on that page out of all visits to that page.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "Exit Rate applies only to single-page sessions; Bounce Rate is the percentage of sessions that ended on that page out of all visits.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Bounce Rate measures absolute session termination; Exit Rate is a relative measure based on user flow.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "There is no functional difference; they are synonymous metrics representing user departure.",
+        "correct": false
+      }
+    ],
+    "explanation": "Bounce Rate is calculated as the percentage of single-page sessions (sessions where the visitor left the site from the entrance page without interacting further) starting on that webpage. Exit Rate represents the percentage of pageviews to a page that were the final session in a user's visit, regardless of whether that page was the initial landing page. Thus, a high bounce rate indicates that landing page traffic is not engaging, whereas a high exit rate on a checkout success page is expected and healthy.",
+    "interest": "Marketing",
+    "difficulty": "Medium",
+    "topics": [
+      "Web Analytics",
+      "Marketing Metrics"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In Dave McClure's AARRR (Acquisition, Activation, Retention, Referral, Revenue) framework, which phase is primarily concerned with ensuring users have their first 'Aha! moment' and experience the core value proposition of the product?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Acquisition",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Activation",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Retention",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Revenue",
+        "correct": false
+      }
+    ],
+    "explanation": "The 'Activation' phase of the AARRR framework focuses on the user's first positive experience with the product, often called the 'Aha! moment' or first strike of value. This occurs after Acquisition (bringing the user to the product) and before Retention (ensuring they keep coming back), Referral (getting them to invite others), or Revenue (converting them to paying customers).",
+    "interest": "Marketing",
+    "difficulty": "Medium",
+    "topics": [
+      "AARRR Framework",
+      "Growth Hacking"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Which of the following describes the correct interpretation of the 'canonical tag' (rel='canonical') in Search Engine Optimization (SEO)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It instructs search engines to prioritize indexing a webpage over external domains.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It points search engines to the preferred 'master' version of duplicate or highly similar webpages to consolidate indexing and link equity.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It forces a hard 301 redirect to the specified URL for all website traffic.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It is a meta tag that guarantees a page will not be crawled or indexed by bots.",
+        "correct": false
+      }
+    ],
+    "explanation": "The canonical tag rel='canonical' is used in the HTML header of a webpage to inform search engines that a specific URL represents the master copy of a page. This prevents search engines from penalizing the site for duplicate content (e.g., from parameters, tracking IDs, or separate mobile URLs) and consolidates link signals (like PageRank) to the canonical URL. It is a hint, not a directive, and does not cause an HTTP redirect (unlike Option C). It does not block indexing (unlike Option D).",
+    "interest": "Marketing",
+    "difficulty": "Medium",
+    "topics": [
+      "SEO",
+      "Digital Marketing"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A digital marketing manager is evaluating attribution models. The manager wants to use a cooperative game theory approach that assigns conversion credit based on the marginal contribution of each marketing channel across all possible touchpoint combinations. Which model should they use?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Time-Decay Attribution",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Position-Based (U-Shaped) Attribution",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Shapley Value Attribution",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Last-Click Attribution",
+        "correct": false
+      }
+    ],
+    "explanation": "The Shapley Value attribution model is a data-driven attribution methodology derived from cooperative game theory. It calculates the fair distribution of payouts (conversion credits) to players (marketing channels) based on their average marginal contribution to all possible coalitions (touchpoint sequences). This addresses the limitations of heuristic models like Time-Decay (which arbitrarily penalizes early touchpoints), Position-Based (which fixedly favors first/last touchpoints), and Last-Click (which completely ignores early funnel actions).",
+    "interest": "Marketing",
+    "difficulty": "Hard",
+    "topics": [
+      "Attribution Modeling",
+      "Marketing Analytics"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "An electronics manufacturer is using Choice-Based Conjoint (CBC) analysis to design a new smartwatch. What is the primary purpose of utilizing conjoint analysis in this scenario?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "To determine the price elasticity of demand by adjusting only a single product attribute at a time.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "To decompose consumer preferences into part-worth utilities to determine the optimal combination of attributes and their relative importance.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "To segment customers into distinct clusters using demographic and geographic covariates.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "To run automated A/B tests on landing pages to evaluate user click-through rates.",
+        "correct": false
+      }
+    ],
+    "explanation": "Conjoint analysis is a statistical research technique used to determine how consumers value different attributes (features, benefits, price) that make up an individual product or service. By presenting respondents with trade-off choices, conjoint analysis decomposes their overall choices to calculate part-worth utilities (coefficients) for each attribute level, allowing product managers to optimize product design and predict market share. It changes multiple attributes simultaneously rather than one at a time (distinguishing it from traditional monadic testing).",
+    "interest": "Marketing",
+    "difficulty": "Hard",
+    "topics": [
+      "Conjoint Analysis",
+      "Market Research"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In real-time bidding (RTB) within programmatic advertising, what are the characteristic differences between a Demand-Side Platform (DSP) and a Supply-Side Platform (SSP)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "DSPs are used by publishers to manage ad inventory; SSPs are used by advertisers to purchase ad impressions.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "DSPs allow advertisers to buy ad inventory across multiple ad exchanges based on target parameters; SSPs allow publishers to aggregate, manage, and sell their ad inventory to maximize yield.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "DSPs operate purely on historical pricing data; SSPs operate solely on real-time bid algorithms.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "DSPs execute second-price auctions; SSPs execute first-price auctions only.",
+        "correct": false
+      }
+    ],
+    "explanation": "A Demand-Side Platform (DSP) is software used by advertisers to buy mobile, search, and video ads from a marketplace (like ad exchanges) programmatically. A Supply-Side Platform (SSP) is software used by publishers to automate the selling of their advertising spaces (inventory) to maximize the yield (revenue) from their impressions. Option A reverses the definitions. Option C is false as both operate in real-time. Option D is incorrect as auction mechanics depend on the exchange standards, not purely on whether it is a DSP or SSP.",
+    "interest": "Marketing",
+    "difficulty": "Hard",
+    "topics": [
+      "Programmatic Advertising",
+      "AdTech"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A growth marketer reviews a retention cohort table where cohorts are grouped by signup month. The marketer notices that while the 1-month retention rate for the January cohort was 45%, it steadily dropped to 20% for the April cohort. What diagnostic conclusion is most supported by this cohort analysis?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The overall user growth rate of the product is declining month-over-month.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The quality of acquired users or the early onboarding experience is deteriorating over time.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Product updates released in April improved overall lifetime value.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Seasonal marketing spend in January was highly inefficient.",
+        "correct": false
+      }
+    ],
+    "explanation": "A cohort analysis tracks groups of users who share a common characteristic (such as signup month) over time. If the 1-month retention (the percentage of users active in month 1 after signing up) decreases steadily from 45% in January to 20% in April, it suggests that the product is failing to activate or retain new users as effectively as it did in January. This points to either a degradation of the onboarding experience, product bugs introduced in recent releases, or the acquisition of lower-quality/less-aligned traffic in later months. It does not speak directly to absolute growth rates (Option A) or confirm an improvement in LTV (Option C).",
+    "interest": "Marketing",
+    "difficulty": "Hard",
+    "topics": [
+      "Cohort Analysis",
+      "Retention Analytics"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In advanced database marketing, the Beta-Geometric/Negative Binomial Distribution (BG/NBD) model is widely used to forecast customer transaction patterns in non-contractual settings. Which of the following correctly describes one of the core probabilistic assumptions of the BG/NBD model?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "While active, the time between transactions for a customer follows a Poisson distribution.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Opportunities for a customer to drop out (become inactive) occur immediately after any transaction, according to a geometric distribution.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "The transaction rates (lambda) across customers are assumed to be identical and homogeneous.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Customer lifetime follows a deterministic exponential curve that is identical for all segments.",
+        "correct": false
+      }
+    ],
+    "explanation": "The BG/NBD model is a foundational probabilistic model for customer lifetime value estimation. Its core assumptions are: (1) While active, a customer's transactions follow a Poisson process with rate lambda (equivalent to exponentially distributed inter-transaction times). (2) Heterogeneity in lambda across customers follows a Gamma distribution. (3) After any transaction, a customer has a probability 'p' of becoming inactive (dropping out), which is modeled as a Geometric distribution. (4) Heterogeneity in 'p' follows a Beta distribution. Therefore, Option B is correct. Option A is incorrect because the *time* between transactions follows an *exponential* distribution (though the *number* of transactions follows a Poisson distribution). Option C is incorrect because transaction rates are assumed heterogeneous (following Gamma).",
+    "interest": "Marketing",
+    "difficulty": "Expert",
+    "topics": [
+      "Customer Lifetime Value",
+      "BG/NBD Model",
+      "Predictive Modeling"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In econometric Marketing Mix Modeling (MMM), adstock is used to model the carryover effects of advertising. If a TV campaign has an adstock decay rate (lambda) of 0.70, and the media spend in week t is $100k, with no spend in week t+1, what is the calculated adstock value in week t+1 (assuming a simple linear adstock model with no lag threshold)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "$70k",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "$30k",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "$100k",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "$49k",
+        "correct": false
+      }
+    ],
+    "explanation": "Adstock measures the cumulative build-up and decay of advertising awareness. The simple linear adstock model is formulated as: At = Xt + lambda * A(t-1), where At is the adstock at time t, Xt is the media input (spend/impressions) at time t, and lambda is the decay parameter (0 <= lambda < 1). For week t, At = 100k. In week t+1, with X(t+1) = 0, the adstock is A(t+1) = 0 + lambda * At = 0.70 * 100k = 70k. Option B uses (1 - lambda), which is incorrect. Option D represents the second week of decay (0.70^2 * 100k).",
+    "interest": "Marketing",
+    "difficulty": "Expert",
+    "topics": [
+      "Marketing Mix Modeling",
+      "Econometrics",
+      "Adstock"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A product manager wants to determine the optimal price point for a new SaaS feature using the Gabor-Granger pricing methodology. How is the data collected from respondents to construct the demand curve in this model?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Respondents are presented with two complete product configurations and asked to choose their preferred one.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Respondents are asked to state the maximum price they would be willing to pay, the minimum price that would make them doubt quality, and a price that would feel expensive.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "Respondents are randomly shown a specific price point and asked if they would buy the product at that price; depending on their answer, the price is adjusted up or down in a sequential laddering process.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "Respondents are asked to rank their preferences for a series of products across different price points.",
+        "correct": false
+      }
+    ],
+    "explanation": "The Gabor-Granger method is a direct pricing research technique. Respondents are asked if they would purchase a product at a specific price. If they say 'yes', the interviewer raises the price to a higher level. If they say 'no', the price is lowered. This laddering process continues until the maximum price the respondent is willing to pay is identified, allowing researchers to plot a demand curve. Option B describes the Van Westendorp Price Sensitivity Meter (which uses 4 pricing questions). Options A and D describe conjoint-like or monadic choice tasks.",
+    "interest": "Marketing",
+    "difficulty": "Expert",
+    "topics": [
+      "Pricing Strategy",
+      "Gabor-Granger",
+      "Market Research"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "The Bass Diffusion Model is used to forecast the adoption of new products in a market. It relies on the coefficient of innovation (p) and the coefficient of imitation (q). If a product has a very high coefficient of innovation (p) but a very low coefficient of imitation (q), what will the shape of the cumulative adoption curve look like over time?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A classic S-shaped curve with slow initial adoption followed by rapid exponential growth.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "A concave curve with rapid adoption at the very beginning that slowly levels off, lacking the classic S-shaped inflection point.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "A flat line indicating zero adoption due to a lack of social proof.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "A cyclical wave-like pattern fluctuating with seasonal marketing spend.",
+        "correct": false
+      }
+    ],
+    "explanation": "In the Bass Diffusion Model, the rate of adoption is governed by f(t) = [p + q * F(t)] * [1 - F(t)]. If the coefficient of innovation p (external influence, advertising) is high and the coefficient of imitation q (internal influence, word-of-mouth, social proof) is low, the adoption is driven primarily by innovators early on. The resulting cumulative adoption curve F(t) will be concave, rising quickly from the start and flattening out without the typical S-shaped curve (which requires a high q relative to p to generate the exponential acceleration/word-of-mouth cascade).",
+    "interest": "Marketing",
+    "difficulty": "Expert",
+    "topics": [
+      "Bass Diffusion Model",
+      "Product Adoption",
+      "Growth Strategy"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "An investor deposits $10,000 into a savings account that pays a 6% nominal annual interest rate, compounded quarterly. What will the future value of this investment be at the end of exactly 2 years (rounded to the nearest dollar)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "$11,200",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "$11,236",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "$11,265",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "$11,272",
+        "correct": false
+      }
+    ],
+    "explanation": "The formula for future value with compound interest is FV = PV * (1 + r/n)^(nt), where PV is the present value, r is the annual nominal interest rate, n is the compounding frequency per year, and t is the number of years. Here, PV = 10,000, r = 0.06, n = 4 (compounded quarterly), and t = 2. Calculating this: FV = 10,000 * (1 + 0.06/4)^(4 * 2) = 10,000 * (1.015)^8 = 10,000 * 1.12649 = $11,264.93, which rounds to $11,265. Option B represents annual compounding (10,000 * 1.06^2 = 11,236). Option A represents simple interest (10,000 * (1 + 0.06 * 2) = 11,200).",
+    "interest": "Finance",
+    "difficulty": "Easy",
+    "topics": [
+      "Time Value of Money",
+      "Corporate Finance"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following transaction scenarios would result in an increase in a firm's current assets while keeping total assets unchanged on the Balance Sheet?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A customer pays their outstanding accounts receivable balance in cash.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "The firm issues new long-term bonds to purchase factory machinery.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "The firm purchases inventory on credit from a supplier.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The firm pays cash to settle its accounts payable.",
+        "correct": false
+      }
+    ],
+    "explanation": "When a customer pays their outstanding accounts receivable in cash, cash (a current asset) increases, and accounts receivable (another current asset) decreases by the exact same amount. Thus, total current assets and total assets remain unchanged. Option B increases non-current assets (machinery) and cash/liabilities. Option C increases current assets (inventory) and current liabilities (accounts payable), increasing total assets. Option D decreases current assets (cash) and current liabilities (accounts payable), decreasing total assets.",
+    "interest": "Finance",
+    "difficulty": "Easy",
+    "topics": [
+      "Balance Sheet",
+      "Financial Accounting"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "According to standard capital budgeting theory, a firm should accept an independent project under what Net Present Value (NPV) condition, and what does this indicate about shareholder wealth?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "NPV > 0; it indicates that the project will increase the firm's cost of capital.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "NPV > 0; it indicates that the project will increase shareholder wealth by adding value to the firm.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "NPV = 0; it indicates that the project will maximize the firm's accounting profit margin.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "NPV < 0; it indicates that the project's internal rate of return exceeds the hurdle rate.",
+        "correct": false
+      }
+    ],
+    "explanation": "The Net Present Value (NPV) decision rule states that a firm should accept independent projects with an NPV greater than zero. An NPV > 0 means the present value of the cash inflows exceeds the present value of the cash outflows when discounted at the project's cost of capital. This positive net value directly adds to the value of the firm, thereby increasing shareholder wealth. NPV = 0 is a neutral point where the cost of capital is exactly met, and NPV < 0 indicates value destruction.",
+    "interest": "Finance",
+    "difficulty": "Easy",
+    "topics": [
+      "Capital Budgeting",
+      "NPV"
+    ],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "How is Net Working Capital defined, and which of the following is considered a current liability within its calculation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Net Working Capital = Total Assets - Total Liabilities; Current Liability = Retained Earnings.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Net Working Capital = Current Assets - Current Liabilities; Current Liability = Accounts Payable.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Net Working Capital = Current Assets / Current Liabilities; Current Liability = Commercial Paper.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Net Working Capital = Long-term Debt - Current Assets; Current Liability = Deferred Taxes.",
+        "correct": false
+      }
+    ],
+    "explanation": "Net Working Capital is defined as Current Assets minus Current Liabilities. Current assets typically include cash, accounts receivable, and inventory. Current liabilities include obligations due within one year, such as accounts payable, short-term debt, and accrued liabilities. Option C defines the Current Ratio, not Net Working Capital. Option A defines Net Assets (Equity).",
+    "interest": "Finance",
+    "difficulty": "Easy",
+    "topics": [
+      "Working Capital",
+      "Corporate Finance"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A corporation has a target capital structure of 60% equity and 40% debt. The cost of equity is 12%, and the pre-tax cost of debt is 7%. If the corporate marginal tax rate is 25%, what is the firm's Weighted Average Cost of Capital (WACC)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "10.0%",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "9.3%",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "8.5%",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "7.2%",
+        "correct": false
+      }
+    ],
+    "explanation": "The formula for Weighted Average Cost of Capital (WACC) is WACC = w_e * r_e + w_d * r_d * (1 - T), where w_e and w_d are the weights of equity and debt, r_e and r_d are the cost of equity and cost of debt, and T is the corporate tax rate. Plugging in the values: WACC = (0.60 * 0.12) + (0.40 * 0.07 * (1 - 0.25)) = 0.072 + (0.028 * 0.75) = 0.072 + 0.021 = 0.093 or 9.3%. Option A is incorrect because it ignores the tax shield on debt interest (0.6 * 12 + 0.4 * 7 = 10%).",
+    "interest": "Finance",
+    "difficulty": "Medium",
+    "topics": [
+      "WACC",
+      "Cost of Capital"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "An equity analyst is evaluating a stock with a beta of 1.4. The risk-free rate of return is 3.5%, and the expected return on the market portfolio is 9.5%. Under the Capital Asset Pricing Model (CAPM), what is the stock's required rate of return?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "11.9%",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "13.3%",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "9.5%",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "8.4%",
+        "correct": false
+      }
+    ],
+    "explanation": "The CAPM formula is R_i = R_f + beta_i * (E(R_m) - R_f), where R_f is the risk-free rate, beta_i is the asset's beta, and E(R_m) - R_f is the market risk premium. Here, R_i = 3.5% + 1.4 * (9.5% - 3.5%) = 3.5% + 1.4 * 6.0% = 3.5% + 8.4% = 11.9%. Option B is incorrect as it fails to subtract the risk-free rate from the market return before multiplying by beta (3.5% + 1.4 * 9.5% = 16.8%). Option D is the risk premium contribution alone (8.4%).",
+    "interest": "Finance",
+    "difficulty": "Medium",
+    "topics": [
+      "CAPM",
+      "Asset Pricing"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Under the classic three-step DuPont Analysis framework, what three financial ratios are multiplied together to decompose a firm's Return on Equity (ROE)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Gross Profit Margin, Asset Turnover, and Debt-to-Equity Ratio.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Net Profit Margin, Asset Turnover, and Financial Leverage Multiplier.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Operating Profit Margin, Inventory Turnover, and Current Ratio.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Return on Assets, Equity Multiplier, and Retention Ratio.",
+        "correct": false
+      }
+    ],
+    "explanation": "The three-step DuPont equation decomposes Return on Equity (ROE) into: ROE = Net Profit Margin * Asset Turnover * Financial Leverage (Equity Multiplier). Mathematically: (Net Income / Revenue) * (Revenue / Total Assets) * (Total Assets / Common Equity) = Net Income / Common Equity. This highlights whether a firm's ROE is driven by profitability, efficiency, or financial leverage.",
+    "interest": "Finance",
+    "difficulty": "Medium",
+    "topics": [
+      "DuPont Analysis",
+      "Financial Ratios",
+      "Financial Analysis"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A 10-year corporate bond has a face value of $1,000 and a coupon rate of 6% paid semi-annually. If the market's required yield to maturity (YTM) for similar bonds rises to 7%, what will happen to the bond's current price and how is it classified?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The price will rise above $1,000; the bond will trade at a premium.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The price will remain exactly at $1,000; the bond will trade at par.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "The price will fall below $1,000; the bond will trade at a discount.",
+        "correct": true
+      },
+      {
+        "id": "d",
+        "text": "The price will fall to zero as the bond faces immediate default risk.",
+        "correct": false
+      }
+    ],
+    "explanation": "Bond prices and yields have an inverse relationship. When the market's required Yield to Maturity (YTM) rises above the bond's coupon rate (7% YTM vs. 6% coupon), the bond's coupon payments are less attractive than the market rate. Consequently, the bond price must drop below its par value ($1,000) to provide investors with the required 7% yield. Such a bond trades at a discount. If the YTM were lower than the coupon rate, the bond would trade at a premium.",
+    "interest": "Finance",
+    "difficulty": "Medium",
+    "topics": [
+      "Bond Pricing",
+      "Fixed Income"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the Black-Scholes-Merton option pricing model for a European call option on a non-dividend-paying stock, what does the term N(d2) represent?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The change in the option price relative to a change in the underlying stock price (option Delta).",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The probability that the call option will expire in-the-money under a risk-neutral probability measure.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "The present value of the expected stock price at option expiration.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The sensitivity of option pricing relative to changes in the risk-free rate (Rho).",
+        "correct": false
+      }
+    ],
+    "explanation": "In the Black-Scholes model, the formula for a European call is C = S0 * N(d1) - K * e^(-rT) * N(d2). In this formula, N(d2) represents the risk-neutral probability that the option will expire in-the-money (i.e., stock price exceeds the strike price K at expiration T). N(d1) represents the delta of the option (Option A) and is also the risk-adjusted expectation of the stock price conditional on the option expiring in-the-money. Option D describes Rho.",
+    "interest": "Finance",
+    "difficulty": "Hard",
+    "topics": [
+      "Black-Scholes Model",
+      "Options",
+      "Derivatives Pricing"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An options trader holds a portfolio of equity options and wishes to maintain a delta-neutral position. However, they are highly concerned about large, sudden jumps in the underlying stock price. Which Option Greek should the trader monitor to measure the rate of change in Delta per dollar change in the stock price?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Vega",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "Gamma",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "Theta",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "Vanna",
+        "correct": false
+      }
+    ],
+    "explanation": "Gamma measures the rate of change in an option's Delta for a one-dollar change in the price of the underlying asset. A delta-neutral portfolio with high positive or negative Gamma is highly sensitive to large movements in the underlying stock price because those movements will rapidly alter the Delta, throwing the portfolio out of delta-neutrality. Vega measures sensitivity to volatility (Option A), Theta measures sensitivity to time decay (Option C), and Vanna measures the change in delta with respect to volatility.",
+    "interest": "Finance",
+    "difficulty": "Hard",
+    "topics": [
+      "Options Greeks",
+      "Derivatives",
+      "Risk Management"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "When valuing a firm using a multi-stage discounted cash flow (DCF) model, under what structural conditions is it theoretically more appropriate to use Free Cash Flow to Firm (FCFF) discounted at the WACC, rather than Free Cash Flow to Equity (FCFE) discounted at the Cost of Equity?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "When the firm's capital structure is highly unstable or expected to change significantly over the projection period.",
+        "correct": true
+      },
+      {
+        "id": "b",
+        "text": "When the firm has zero debt in its capital structure.",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "When the firm's leverage ratio is perfectly constant and stable.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "When valuing the equity of a commercial bank with highly regulated capital requirements.",
+        "correct": false
+      }
+    ],
+    "explanation": "FCFF represents the cash flows available to all capital providers (both debt and equity holders) after operating expenses, taxes, and capital investments. FCFE represents cash flows available only to equity holders, which includes net borrowing. If a firm's capital structure is highly leverage-volatile or changing significantly, forecasting net borrowing and interest expenses in FCFE is highly complex and error-prone. Discounting FCFF at WACC is more stable and robust because WACC accounts for the changing weights of capital, and FCFF is independent of leverage changes. Conversely, if leverage is stable, FCFE is highly convenient (making Option C incorrect). Financial institutions like commercial banks are better valued using FCFE or Dividend Discount Models (DDM) because their operating assets and liabilities are financial, making FCFF difficult to define (making Option D incorrect).",
+    "interest": "Finance",
+    "difficulty": "Hard",
+    "topics": [
+      "DCF Valuation",
+      "FCFF",
+      "FCFE",
+      "Corporate Valuation"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Under Modigliani-Miller Proposition II with corporate taxes, how does the cost of equity behave as a firm increases its financial leverage (debt-to-equity ratio)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The cost of equity remains completely constant because the risk is offset by the tax shield.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "The cost of equity increases linearly with the debt-to-equity ratio, but at a slower rate than in a zero-tax environment due to the interest tax shield.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "The cost of equity decreases monotonically because debt is cheaper than equity.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "The cost of equity behaves quadratically, first decreasing then increasing as financial distress costs dominate.",
+        "correct": false
+      }
+    ],
+    "explanation": "Modigliani-Miller Proposition II with taxes states that as leverage (D/E ratio) increases, the cost of equity (re) increases according to the formula: re = r0 + (r0 - rd) * (D/E) * (1 - T), where r0 is the cost of equity for an unlevered firm, rd is the cost of debt, and T is the corporate tax rate. The factor (1 - T) reduces the slope of the increase relative to the no-tax scenario (re = r0 + (r0 - rd) * (D/E)). Thus, the cost of equity rises linearly with leverage, but more slowly than it would without taxes. Option D describes the static trade-off theory (not the pure MM theorem).",
+    "interest": "Finance",
+    "difficulty": "Hard",
+    "topics": [
+      "Modigliani-Miller Theorem",
+      "Capital Structure",
+      "Cost of Equity"
+    ],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "The Black-Litterman asset allocation model improves upon traditional Markowitz Mean-Variance Optimization (MVO). Which of the following describes how the Black-Litterman model achieves more stable, diversified portfolios?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It eliminates the covariance matrix entirely and uses historical variance to estimate returns.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It uses a Bayesian approach that blends market equilibrium returns derived from reverse optimization with subjective investor views and their associated uncertainties.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It forces all asset weights to remain strictly equal, avoiding extreme long-short positions.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It replaces expected return parameters with a multi-factor risk model based purely on macroeconomic variables.",
+        "correct": false
+      }
+    ],
+    "explanation": "Traditional Markowitz Mean-Variance Optimization is highly sensitive to input parameters (expected returns), often leading to highly concentrated and volatile portfolios. The Black-Litterman model solves this by starting with neutral 'equilibrium' expected returns derived from market capitalization weights via reverse optimization. It then uses a Bayesian framework to combine these equilibrium priors with specific, subjective investor views (which can be absolute or relative) along with the investor's level of confidence (uncertainty) in each view. The resulting posterior expected returns are much more stable and yield well-diversified portfolios.",
+    "interest": "Finance",
+    "difficulty": "Expert",
+    "topics": [
+      "Asset Allocation",
+      "Portfolio Theory",
+      "Black-Litterman"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the Fama-French Five-Factor asset pricing model, which factor captures the premium associated with investment style, specifically distinguishing between firms that invest conservatively versus those that invest aggressively?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "HML (High Minus Low)",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "SMB (Small Minus Big)",
+        "correct": false
+      },
+      {
+        "id": "c",
+        "text": "RMW (Robust Minus Weak)",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "CMA (Conservative Minus Aggressive)",
+        "correct": true
+      }
+    ],
+    "explanation": "The Fama-French Five-Factor Model expands the three-factor model by adding Profitability and Investment factors. The five factors are: (1) Market risk premium, (2) SMB (Small Minus Big - size premium), (3) HML (High Minus Low - value premium), (4) RMW (Robust Minus Weak - operating profitability premium), and (5) CMA (Conservative Minus Aggressive - investment style premium). CMA measures the difference between the returns of firms that invest conservatively (low asset growth) and those that invest aggressively (high asset growth).",
+    "interest": "Finance",
+    "difficulty": "Expert",
+    "topics": [
+      "Fama-French Model",
+      "Asset Pricing",
+      "Factor Investing"
+    ],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In fixed income derivatives valuation, bootstrapping is used to construct a zero-coupon yield curve from market interest rates. What is the fundamental financial rationale behind bootstrapping, and what problem does it solve?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It solves the problem of cash flow matching by ensuring all coupon bonds have identical coupon payment frequencies.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "It extracts risk-free zero-coupon discount factors from a series of liquid, coupon-bearing par instruments by recursively solving for the discount factor at each successive maturity.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "It adjusts interest rate swap cash flows for counterparty credit risk (CVA).",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "It eliminates interest rate volatility by locking in a single deterministic forward rate across the entire swap curve.",
+        "correct": false
+      }
+    ],
+    "explanation": "Bootstrapping is a recursive mathematical technique used to build a zero-coupon yield curve (spot curve) from a set of liquid, coupon-bearing market instruments (like Treasury bills, notes, and interest rate swaps) trading at par. Since standard market bonds pay periodic coupons, their yields-to-maturity are not equal to spot rates (which apply to single cash flows). Bootstrapping solves this by starting with the shortest maturity (which has no coupon, or a single payment) to find the first discount factor, and recursively using that discount factor to solve for the next maturity's zero-coupon rate, ensuring no-arbitrage pricing of the coupon-bearing instruments.",
+    "interest": "Finance",
+    "difficulty": "Expert",
+    "topics": [
+      "Yield Curve Bootstrapping",
+      "Fixed Income Pricing",
+      "Derivatives Valuation"
+    ],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In the context of OTC derivatives pricing, how is Credit Valuation Adjustment (CVA) defined, and what are its key components?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "CVA is the adjustment made to the swap rate to account for changes in the risk-free rate; its components are Rho and Gamma.",
+        "correct": false
+      },
+      {
+        "id": "b",
+        "text": "CVA is the expected value of the default risk of the counterparty, calculated as the discounted sum of expected exposure (EE), probability of default (PD), and loss given default (LGD) over the life of the transaction.",
+        "correct": true
+      },
+      {
+        "id": "c",
+        "text": "CVA is the collateral margin required by a central clearinghouse to minimize settlement delay; its components are initial margin and variation margin.",
+        "correct": false
+      },
+      {
+        "id": "d",
+        "text": "CVA is the premium paid to purchase a credit default swap (CDS) to fully hedge a bond portfolio.",
+        "correct": false
+      }
+    ],
+    "explanation": "Credit Valuation Adjustment (CVA) is an adjustment to the fair value (pricing) of an over-the-counter (OTC) derivative contract to account for the credit risk of the counterparty. It is mathematically defined as the present value of expected losses due to counterparty default. The key components of CVA are the Expected Exposure (EE) of the derivative at time t, the marginal Probability of Default (PD) of the counterparty in the interval, and the Loss Given Default (LGD) factor (which is 1 - Recovery Rate). Thus, Option B is correct. Option C defines margin requirements, and Option D refers to CDS premium (or credit spread).",
+    "interest": "Finance",
+    "difficulty": "Expert",
+    "topics": [
+      "Credit Valuation Adjustment",
+      "Derivatives Risk",
+      "Counterparty Credit Risk"
+    ],
+    "bloomLevel": "Analyze"
+  }
+]

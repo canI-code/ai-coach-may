@@ -1,0 +1,450 @@
+[
+  {
+    "text": "An LTI system has an impulse response $h[n] = (0.5)^n u[n]$. Which of the following statements is correct regarding the causality and stability of this system?",
+    "choices": [
+      { "id": "a", "text": "The system is non-causal and unstable because the impulse response does not decay to zero.", "correct": false },
+      { "id": "b", "text": "The system is causal and stable because $h[n] = 0$ for $n < 0$ and the impulse response is absolutely summable.", "correct": true },
+      { "id": "c", "text": "The system is causal but unstable because the poles lie on the unit circle.", "correct": false },
+      { "id": "d", "text": "The system is non-causal but stable because its region of convergence includes the unit circle.", "correct": false }
+    ],
+    "explanation": "An LTI system is causal if its impulse response $h[n] = 0$ for all $n < 0$. Here, $h[n] = (0.5)^n u[n]$ includes the unit step function $u[n]$, which is 0 for $n < 0$, making it causal. An LTI system is stable in the BIBO (Bounded-Input Bounded-Output) sense if its impulse response is absolutely summable: $\\sum_{n=-\\infty}^{\\infty} |h[n]| = \\sum_{n=0}^{\\infty} (0.5)^n = \\frac{1}{1 - 0.5} = 2 < \\infty$. Hence, the system is stable.",
+    "interest": "Signal Processing",
+    "difficulty": "Easy",
+    "topics": ["LTI Systems", "Causality", "Stability"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A continuous-time signal $x(t) = 4\\cos(200\\pi t) + 6\\sin(600\\pi t)$ is sampled. What is the minimum sampling frequency (Nyquist rate) required to avoid aliasing?",
+    "choices": [
+      { "id": "a", "text": "300 Hz", "correct": false },
+      { "id": "b", "text": "600 Hz", "correct": true },
+      { "id": "c", "text": "1200 Hz", "correct": false },
+      { "id": "d", "text": "200 Hz", "correct": false }
+    ],
+    "explanation": "The continuous-time frequencies present in the signal are $f_1 = 200\\pi / 2\\pi = 100$ Hz and $f_2 = 600\\pi / 2\\pi = 300$ Hz. The maximum frequency component is $f_{max} = 300$ Hz. According to the Nyquist-Shannon sampling theorem, the minimum sampling rate to avoid aliasing (Nyquist rate) is $f_s = 2 \\times f_{max} = 2 \\times 300\\text{ Hz} = 600$ Hz.",
+    "interest": "Signal Processing",
+    "difficulty": "Easy",
+    "topics": ["Sampling Theorem", "Nyquist Rate", "Aliasing"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "What is the Discrete-Time Fourier Transform (DTFT) of the sequence $x[n] = a^n u[n]$ for $|a| < 1$?",
+    "choices": [
+      { "id": "a", "text": "$X(e^{j\\omega}) = \\frac{1}{1 - a e^{-j\\omega}}$", "correct": true },
+      { "id": "b", "text": "$X(e^{j\\omega}) = \\frac{1}{1 - a e^{j\\omega}}$", "correct": false },
+      { "id": "c", "text": "$X(e^{j\\omega}) = \\frac{a}{1 - e^{-j\\omega}}$", "correct": false },
+      { "id": "d", "text": "$X(e^{j\\omega}) = \\frac{1}{1 + a e^{-j\\omega}}$", "correct": false }
+    ],
+    "explanation": "The DTFT of a sequence is defined as $X(e^{j\\omega}) = \\sum_{n=-\\infty}^{\\infty} x[n] e^{-j\\omega n}$. For $x[n] = a^n u[n]$, this becomes $\\sum_{n=0}^{\\infty} a^n e^{-j\\omega n} = \\sum_{n=0}^{\\infty} (a e^{-j\\omega})^n$. Since $|a| < 1$, the term $|a e^{-j\\omega}| = |a| < 1$. Using the infinite geometric series formula $\\sum_{n=0}^{\\infty} r^n = \\frac{1}{1-r}$ for $|r| < 1$, we get $X(e^{j\\omega}) = \\frac{1}{1 - a e^{-j\\omega}}$.",
+    "interest": "Signal Processing",
+    "difficulty": "Easy",
+    "topics": ["DTFT", "Fourier Analysis", "Signal Sequences"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "For a discrete-time signal $x[n] = -(0.5)^n u[-n-1]$, what is its z-transform and the corresponding Region of Convergence (ROC)?",
+    "choices": [
+      { "id": "a", "text": "$X(z) = \\frac{1}{1 - 0.5z^{-1}}$ with ROC $|z| > 0.5$", "correct": false },
+      { "id": "b", "text": "$X(z) = \\frac{1}{1 - 0.5z^{-1}}$ with ROC $|z| < 0.5$", "correct": true },
+      { "id": "c", "text": "$X(z) = \\frac{1}{1 - 2z^{-1}}$ with ROC $|z| < 2$", "correct": false },
+      { "id": "d", "text": "$X(z) = \\frac{z}{z - 0.5}$ with ROC $|z| > 0.5$", "correct": false }
+    ],
+    "explanation": "The z-transform is $X(z) = \\sum_{n=-\\infty}^{\\infty} x[n] z^{-n} = \\sum_{n=-\\infty}^{-1} -(0.5)^n z^{-n}$. Let $m = -n$, then the summation becomes $-\\sum_{m=1}^{\\infty} (0.5)^{-m} z^m = -\\sum_{m=1}^{\\infty} (2z)^m$. For this series to converge, we require $|2z| < 1$, which yields $|z| < 0.5$. The sum of the geometric series is $-\\frac{2z}{1 - 2z} = \\frac{2z}{2z - 1} = \\frac{z}{z - 0.5} = \\frac{1}{1 - 0.5z^{-1}}$. This matches the expression with ROC $|z| < 0.5$, which represents a left-sided sequence.",
+    "interest": "Signal Processing",
+    "difficulty": "Easy",
+    "topics": ["z-transform", "Region of Convergence (ROC)", "Left-sided Signals"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Suppose we want to perform linear convolution of a sequence $x[n]$ of length $L = 50$ and an impulse response $h[n]$ of length $M = 30$ using the Discrete Fourier Transform (DFT). What is the minimum length $N$ of the DFTs required to avoid time-domain aliasing when performing circular convolution?",
+    "choices": [
+      { "id": "a", "text": "$N = 50$", "correct": false },
+      { "id": "b", "text": "$N = 79$", "correct": true },
+      { "id": "c", "text": "$N = 80$", "correct": false },
+      { "id": "d", "text": "$N = 1500$", "correct": false }
+    ],
+    "explanation": "Linear convolution of a sequence of length $L$ and another of length $M$ yields a sequence of length $L + M - 1$. To implement linear convolution using circular convolution via DFT/IDFT without time-domain aliasing, the DFT size $N$ must be at least the length of the linear convolution result. Therefore, $N \\ge L + M - 1 = 50 + 30 - 1 = 79$. Distractors like $N=50$ or $N=80$ represent incorrect sizes or power-of-two size suggestions that do not address the absolute minimum required mathematical size.",
+    "interest": "Signal Processing",
+    "difficulty": "Medium",
+    "topics": ["DFT", "Circular Convolution", "Linear Convolution", "Time-domain Aliasing"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Which of the following statements correctly describes the difference between the Direct Form I and Direct Form II structures for implementing a second-order IIR filter?",
+    "choices": [
+      { "id": "a", "text": "Direct Form I is canonical and uses the minimum number of delay elements, whereas Direct Form II requires twice as many delay elements.", "correct": false },
+      { "id": "b", "text": "Direct Form II is canonical and minimizes the number of delay elements by sharing them between the poles and zeros, whereas Direct Form I requires separate delays for inputs and outputs.", "correct": true },
+      { "id": "c", "text": "Direct Form I is less susceptible to coefficient quantization noise than Direct Form II.", "correct": false },
+      { "id": "d", "text": "Direct Form II requires twice as many multipliers as Direct Form I to implement the same transfer function.", "correct": false }
+    ],
+    "explanation": "Direct Form II is canonical because it uses the minimum number of delay elements (integrators/delays) equal to the order of the filter. It achieves this by reversing the order of the cascaded all-pole and all-zero systems from Direct Form I, allowing the delay lines to be shared. Direct Form I is non-canonical and requires separate delay elements for input samples and output samples, which is roughly double the order of the filter. Both forms require the same number of multipliers.",
+    "interest": "Signal Processing",
+    "difficulty": "Medium",
+    "topics": ["Filter Structures", "Direct Form II", "IIR Filters", "Canonical Realization"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In DFT analysis of a continuous-time signal, what is the \"picket fence effect\" and how can it be mitigated?",
+    "choices": [
+      { "id": "a", "text": "The leakage of spectral energy across bins due to truncation; it is mitigated by applying non-rectangular window functions.", "correct": false },
+      { "id": "b", "text": "The inability to resolve two closely spaced frequencies; it is mitigated by increasing the total record length of the acquisition.", "correct": false },
+      { "id": "c", "text": "The phenomenon where peak frequencies that fall between DFT bin centers are attenuated in the display; it is mitigated by zero-padding the time-domain signal to interpolate the DFT spectrum.", "correct": true },
+      { "id": "d", "text": "High-frequency noise folding back into the baseband; it is mitigated by using an analog anti-aliasing filter before sampling.", "correct": false }
+    ],
+    "explanation": "The picket fence effect occurs because the DFT only samples the continuous DTFT at discrete frequency bin centers ($2\\pi k/N$). If a signal's actual frequency peak lies between these bin centers, it is not observed at its true amplitude, appearing attenuated. Zero-padding in the time domain increases the number of points in the DFT, which interpolates the frequency spectrum and provides a denser grid of frequency samples, thereby reducing the picket fence effect. Spectral leakage (option a), frequency resolution (option b), and aliasing (option d) are other DSP phenomena but do not describe the picket fence effect.",
+    "interest": "Signal Processing",
+    "difficulty": "Medium",
+    "topics": ["DFT", "Picket Fence Effect", "Zero-Padding", "Spectral Analysis"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "For a discrete-time filter with frequency response $H(e^{j\\omega}) = e^{-j 3 \\omega}$, what are the phase delay $\\tau_p(\\omega)$ and group delay $\\tau_g(\\omega)$?",
+    "choices": [
+      { "id": "a", "text": "$\\tau_p(\\omega) = 3$ and $\\tau_g(\\omega) = 3$", "correct": true },
+      { "id": "b", "text": "$\\tau_p(\\omega) = 3\\omega$ and $\\tau_g(\\omega) = 3$", "correct": false },
+      { "id": "c", "text": "$\\tau_p(\\omega) = 3$ and $\\tau_g(\\omega) = 0$", "correct": false },
+      { "id": "d", "text": "$\\tau_p(\\omega) = -3$ and $\\tau_g(\\omega) = -3$", "correct": false }
+    ],
+    "explanation": "The phase response of the filter is $\\theta(\\omega) = -3\\omega$. Phase delay is defined as $\\tau_p(\\omega) = -\\frac{\\theta(\\omega)}{\\omega} = -\\frac{-3\\omega}{\\omega} = 3$. Group delay is defined as the negative derivative of phase with respect to frequency: $\\tau_g(\\omega) = -\\frac{d\\theta(\\omega)}{d\\omega} = -\\frac{d(-3\\omega)}{d\\omega} = 3$. For a pure delay system, both phase and group delay are constant and equal to the delay parameter.",
+    "interest": "Signal Processing",
+    "difficulty": "Medium",
+    "topics": ["Group Delay", "Phase Delay", "Filter Phase Response"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "During the design of an analog-to-digital IIR filter using the Bilinear Transform, the mapping $s = \\frac{2}{T_s} \\frac{1 - z^{-1}}{1 + z^{-1}}$ is utilized. Which of the following statements correctly identifies the consequences of this mapping?",
+    "choices": [
+      { "id": "a", "text": "The entire left-half of the $s$-plane maps to the interior of the unit circle in the $z$-plane, and there is a linear relationship between analog and digital frequencies.", "correct": false },
+      { "id": "b", "text": "The imaginary axis of the $s$-plane maps to the unit circle in the $z$-plane, but frequency warping occurs, requiring pre-warping of critical analog frequencies.", "correct": true },
+      { "id": "c", "text": "The right-half of the $s$-plane maps to the interior of the unit circle, resulting in stable analog filters becoming unstable digital filters.", "correct": false },
+      { "id": "d", "text": "Stable analog poles are mapped to stable digital poles, but stable analog zeros can map to unstable digital zeros outside the unit circle.", "correct": false }
+    ],
+    "explanation": "The Bilinear Transform maps the imaginary axis ($s = j\\Omega$) to the unit circle ($z = e^{j\\omega}$). The relationship between analog frequency $\\Omega$ and digital frequency $\\omega$ is non-linear and is given by $\\Omega = \\frac{2}{T_s} \\tan(\\omega/2)$. This non-linear mapping causes \"frequency warping\" (high frequencies in the analog domain are compressed into the range up to the Nyquist limit). To ensure critical frequencies map correctly, they must be pre-warped prior to applying the bilinear transform. It also maps the stable left-half $s$-plane to the stable interior of the $z$-plane $|z| < 1$, preventing any stability degradation of poles.",
+    "interest": "Signal Processing",
+    "difficulty": "Hard",
+    "topics": ["Bilinear Transform", "Frequency Warping", "IIR Filter Design", "s-to-z Mapping"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "Consider a multirate system where a signal is decimated by a factor of $D$ or interpolated by a factor of $I$. To perform sampling rate conversion efficiently, the \"Noble Identities\" are often applied. Which of the following depicts a correct application of the Noble Identities?",
+    "choices": [
+      { "id": "a", "text": "A cascade of a decimator by $D$ followed by a filter $H(z)$ is equivalent to the filter $H(z^D)$ followed by a decimator by $D$.", "correct": true },
+      { "id": "b", "text": "A cascade of a decimator by $D$ followed by a filter $H(z)$ is equivalent to the filter $H(z)$ followed by a decimator by $D$.", "correct": false },
+      { "id": "c", "text": "A cascade of an interpolator by $I$ followed by a filter $H(z)$ is equivalent to the filter $H(z^I)$ followed by an interpolator by $I$.", "correct": false },
+      { "id": "d", "text": "A cascade of a filter $H(z)$ followed by an interpolator by $I$ is equivalent to the filter $H(z)$ followed by an interpolator by $I$.", "correct": false }
+    ],
+    "explanation": "The Noble Identity for decimation states that filtering with $H(z)$ followed by decimation by $D$ is equivalent to decimation by $D$ followed by filtering with the system $H(z^D)$. That is, $H(z) \\rightarrow (\\downarrow D) \\equiv (\\downarrow D) \\rightarrow H(z^D)$. Similarly, the Noble Identity for interpolation states that interpolation by $I$ followed by filtering with $H(z)$ is equivalent to filtering with $H(z^I)$ followed by interpolation by $I$: $(\\uparrow I) \\rightarrow H(z) \\equiv H(z^I) \\rightarrow (\\uparrow I)$. Thus option `a` is correct, as it shows that a filter $H(z^D)$ followed by decimation is equivalent to decimation followed by filter $H(z)$.",
+    "interest": "Signal Processing",
+    "difficulty": "Hard",
+    "topics": ["Multirate DSP", "Noble Identities", "Decimation", "Interpolation"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A zero-mean wide-sense stationary (WSS) random process $X[n]$ with power spectral density $S_{XX}(e^{j\\omega})$ is passed through an LTI system with impulse response $h[n]$ to produce output $Y[n]$. What is the relation between the cross-power spectral density $S_{XY}(e^{j\\omega})$ and the input PSD $S_{XX}(e^{j\\omega})$?",
+    "choices": [
+      { "id": "a", "text": "$S_{XY}(e^{j\\omega}) = H(e^{j\\omega}) S_{XX}(e^{j\\omega})$", "correct": true },
+      { "id": "b", "text": "$S_{XY}(e^{j\\omega}) = |H(e^{j\\omega})|^2 S_{XX}(e^{j\\omega})$", "correct": false },
+      { "id": "c", "text": "$S_{XY}(e^{j\\omega}) = H^*(e^{j\\omega}) S_{XX}(e^{j\\omega})$", "correct": false },
+      { "id": "d", "text": "$S_{XY}(e^{j\\omega}) = H(e^{-j\\omega}) S_{XX}(e^{j\\omega})$", "correct": false }
+    ],
+    "explanation": "The cross-correlation between the input $X[n]$ and output $Y[n]$ is defined as $R_{XY}[k] = E[X[n]Y[n+k]]$. Since $Y[n] = X[n] * h[n] = \\sum_{m} h[m]X[n-m]$, substituting this yields $R_{XY}[k] = R_{XX}[k] * h[k]$. Taking the DTFT of both sides gives the cross-power spectral density: $S_{XY}(e^{j\\omega}) = H(e^{j\\omega}) S_{XX}(e^{j\\omega})$. Note that the output PSD is $S_{YY}(e^{j\\omega}) = |H(e^{j\\omega})|^2 S_{XX}(e^{j\\omega})$ (distractor b), but the cross-PSD $S_{XY}(e^{j\\omega})$ depends linearly on $H(e^{j\\omega})$.",
+    "interest": "Signal Processing",
+    "difficulty": "Hard",
+    "topics": ["Random Processes", "Power Spectral Density (PSD)", "Cross-power Spectral Density", "LTI Systems"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In FIR filter design using the window method, the choice of window function directly impacts the transition band and stopband attenuation. Which of the following best describes the trade-off when moving from a Rectangular window to a Kaiser window or Blackman window?",
+    "choices": [
+      { "id": "a", "text": "The main lobe of the window's Fourier transform becomes narrower, which decreases the transition band, but the side lobe level increases.", "correct": false },
+      { "id": "b", "text": "The main lobe becomes wider, which increases the transition band width, but the side lobe levels decrease significantly, resulting in higher stopband attenuation.", "correct": true },
+      { "id": "c", "text": "The transition band remains constant, but the passband ripple is shifted entirely into the stopband.", "correct": false },
+      { "id": "d", "text": "The Kaiser window allows independent control of passband and stopband frequencies without changing the filter order or window length.", "correct": false }
+    ],
+    "explanation": "Smooth windows (like Hamming, Blackman, or Kaiser with large $\\beta$) taper the time-domain impulse response to zero. This smoothing in the time domain corresponds to a wider main lobe in the frequency domain, which widens the transition band of the designed filter for a fixed filter length $N$. However, the benefit is that it significantly decreases the energy in the side lobes, reducing the Gibbs phenomenon and providing much higher stopband attenuation (less leakage) compared to the Rectangular window, which has the narrowest main lobe but very high side lobes (-13 dB).",
+    "interest": "Signal Processing",
+    "difficulty": "Hard",
+    "topics": ["FIR Filter Design", "Windowing", "Gibbs Phenomenon", "Main Lobe vs Side Lobes"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In the Least Mean Squares (LMS) adaptive filtering algorithm, the filter coefficients are updated according to the relation $\\mathbf{w}[n+1] = \\mathbf{w}[n] + 2\\mu e[n]\\mathbf{x}[n]$. What is the absolute theoretical upper bound on the step-size parameter $\\mu$ to ensure convergence in the mean of the weight vector, where $\\lambda_{\\text{max}}$ is the maximum eigenvalue of the autocorrelation matrix $\\mathbf{R}$ of the input vector?",
+    "choices": [
+      { "id": "a", "text": "$0 < \\mu < \\frac{1}{\\text{Tr}(\\mathbf{R})}$", "correct": false },
+      { "id": "b", "text": "$0 < \\mu < \\frac{2}{\\lambda_{\\text{max}}}$", "correct": true },
+      { "id": "c", "text": "$0 < \\mu < \\frac{1}{\\lambda_{\\text{max}} + \\lambda_{\\text{min}}}$", "correct": false },
+      { "id": "d", "text": "$0 < \\mu < \\frac{2}{\\text{Tr}(\\mathbf{R})}$", "correct": false }
+    ],
+    "explanation": "For the LMS adaptive filter convergence in the mean (i.e., the mean of the weight vector converges to the optimal Wiener solution), the step-size $\\mu$ must satisfy $0 < \\mu < \\frac{2}{\\lambda_{\\text{max}}}$, where $\\lambda_{\\text{max}}$ is the largest eigenvalue of the input autocorrelation matrix $\\mathbf{R}$. To ensure convergence in the mean-square (stability of the weight error covariance matrix), a more restrictive practical bound is often used: $0 < \\mu < \\frac{2}{\\text{Tr}(\\mathbf{R})}$, where $\\text{Tr}(\\mathbf{R}) = \\sum \\lambda_i$ is the total input signal power. However, the absolute theoretical mathematical upper bound for convergence in the mean of the weight vector is indeed $2/\\lambda_{\\text{max}}$.",
+    "interest": "Signal Processing",
+    "difficulty": "Expert",
+    "topics": ["Adaptive Filtering", "LMS Algorithm", "Convergence Analysis", "Eigenvalues"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the update step of a discrete Kalman Filter, which of the following represents the correct mathematical expression for the Kalman Gain $\\mathbf{K}_k$, where $\\mathbf{P}_{k|k-1}$ is the predicted error covariance matrix, $\\mathbf{H}_k$ is the observation model, and $\\mathbf{R}_k$ is the measurement noise covariance matrix?",
+    "choices": [
+      { "id": "a", "text": "$\\mathbf{K}_k = \\mathbf{P}_{k|k-1} \\mathbf{H}_k^T (\\mathbf{H}_k \\mathbf{P}_{k|k-1} \\mathbf{H}_k^T + \\mathbf{R}_k)^{-1}$", "correct": true },
+      { "id": "b", "text": "$\\mathbf{K}_k = (\\mathbf{P}_{k|k-1}^{-1} + \\mathbf{H}_k^T \\mathbf{R}_k^{-1} \\mathbf{H}_k)^{-1} \\mathbf{H}_k^T \\mathbf{R}_k^{-1}$", "correct": false },
+      { "id": "c", "text": "$\\mathbf{K}_k = \\mathbf{H}_k^T (\\mathbf{H}_k \\mathbf{P}_{k|k-1} \\mathbf{H}_k^T + \\mathbf{R}_k)^{-1}$", "correct": false },
+      { "id": "d", "text": "$\\mathbf{K}_k = \\mathbf{P}_{k|k-1} \\mathbf{H}_k (\\mathbf{H}_k^T \\mathbf{P}_{k|k-1} \\mathbf{H}_k + \\mathbf{R}_k)^{-1}$", "correct": false }
+    ],
+    "explanation": "The optimal Kalman Gain $\\mathbf{K}_k$ minimizes the posterior error covariance matrix $\\mathbf{P}_{k|k}$. Setting the derivative of the trace of $\\mathbf{P}_{k|k}$ with respect to $\\mathbf{K}_k$ to zero yields the standard formulation: $\\mathbf{K}_k = \\mathbf{P}_{k|k-1} \\mathbf{H}_k^T (\\mathbf{H}_k \\mathbf{P}_{k|k-1} \\mathbf{H}_k^T + \\mathbf{R}_k)^{-1}$. Option `b` represents an alternative formulation related to the information filter, while options `c` and `d` contain incorrect dimensions or transpose placements that violate matrix multiplication rules.",
+    "interest": "Signal Processing",
+    "difficulty": "Expert",
+    "topics": ["Kalman Filtering", "State-Space Models", "Estimation Theory", "Optimal Gain"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "The Short-Time Fourier Transform (STFT) and the Discrete Wavelet Transform (DWT) both represent signals in a joint time-frequency (or time-scale) space. How do their resolutions in the time and frequency domains compare, relative to the Heisenberg uncertainty principle?",
+    "choices": [
+      { "id": "a", "text": "The STFT has adaptive tiling where the window size varies with frequency, while the DWT has a fixed time and frequency resolution across all scales.", "correct": false },
+      { "id": "b", "text": "The STFT has a fixed resolution tiling where the window width is constant, whereas the DWT has a flexible tiling where the time resolution is high at high frequencies and frequency resolution is high at low frequencies.", "correct": true },
+      { "id": "c", "text": "The DWT violates the Heisenberg uncertainty principle by achieving infinite resolution in both time and frequency simultaneously at low scales.", "correct": false },
+      { "id": "d", "text": "Both STFT and DWT maintain a constant time resolution $\\Delta t$ at all frequencies, but DWT increases frequency resolution $\\Delta f$ logarithmically.", "correct": false }
+    ],
+    "explanation": "The STFT uses a fixed window function, which means the time resolution $\\Delta t$ and frequency resolution $\\Delta f$ are constant across the entire time-frequency plane (fixed tiling). The DWT, on the other hand, uses modulated and scaled versions of a mother wavelet. This multi-resolution analysis results in a dyadic grid where the time window is narrow at high frequencies (providing excellent time resolution to capture transient events) and wide at low frequencies (providing excellent frequency resolution to capture slow-varying harmonics). The area of the resolution cell ($\\Delta t \\cdot \\Delta f \\ge 1/4\\pi$) remains bounded by the Heisenberg uncertainty principle.",
+    "interest": "Signal Processing",
+    "difficulty": "Expert",
+    "topics": ["Wavelet Transform", "STFT", "Time-Frequency Resolution", "Multi-resolution Analysis"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A discrete-time stable LTI system has a transfer function $H(z)$. If the system is a \"minimum-phase system\", which of the following properties must it possess?",
+    "choices": [
+      { "id": "a", "text": "All its poles lie inside the unit circle, but its zeros can lie anywhere in the $z$-plane.", "correct": false },
+      { "id": "b", "text": "Both its poles and its zeros lie strictly inside the unit circle, which minimizes the phase lag and ensures the inverse system $1/H(z)$ is also causal and stable.", "correct": true },
+      { "id": "c", "text": "The phase of the system is flat (zero phase) across the entire Nyquist band.", "correct": false },
+      { "id": "d", "text": "It has the maximum possible group delay for a given magnitude response.", "correct": false }
+    ],
+    "explanation": "A system is defined as minimum-phase if both its poles and zeros lie strictly inside the unit circle ($|z| < 1$). Since the poles are inside, the system is stable and causal. Since the zeros are also inside, the inverse system $1/H(z)$ (whose poles are the zeros of $H(z)$) is also stable and causal. For a given magnitude response, the minimum-phase system has the minimum phase shift (or minimum group delay) and the fastest energy buildup in the time domain (maximum energy delay property). Maximum-phase systems (distractor d) have zeros outside the unit circle.",
+    "interest": "Signal Processing",
+    "difficulty": "Expert",
+    "topics": ["Minimum-Phase Systems", "System Poles and Zeros", "Inverse Systems", "Group Delay"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A conventional double-sideband full-carrier Amplitude Modulated (AM) transmitter operates with a modulation index of $m = 0.8$. What percentage of the total transmitted power is contained in the sidebands (which carry the actual message information)?",
+    "choices": [
+      { "id": "a", "text": "80.0%", "correct": false },
+      { "id": "b", "text": "24.2%", "correct": true },
+      { "id": "c", "text": "32.0%", "correct": false },
+      { "id": "d", "text": "50.0%", "correct": false }
+    ],
+    "explanation": "The total power $P_t$ of a conventional AM signal is given by $P_t = P_c (1 + \\frac{m^2}{2})$, where $P_c$ is the carrier power. The power in the sidebands is $P_{sb} = P_c \\frac{m^2}{2}$. The efficiency $\\eta$ (the ratio of sideband power to total power) is $\\eta = \\frac{P_{sb}}{P_t} = \\frac{m^2/2}{1 + m^2/2} = \\frac{m^2}{2 + m^2}$. For $m = 0.8$, $\\eta = \\frac{0.8^2}{2 + 0.8^2} = \\frac{0.64}{2.64} \\approx 0.2424$, or 24.2%.",
+    "interest": "Communication Systems",
+    "difficulty": "Easy",
+    "topics": ["Amplitude Modulation", "Modulation Efficiency", "Power Distribution"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A frequency modulated (FM) signal is represented by $s(t) = 10\\cos(2\\pi \\times 10^6 t + 8\\sin(2\\pi \\times 10^3 t))$. According to Carson's rule, what is the approximate transmission bandwidth of this FM wave?",
+    "choices": [
+      { "id": "a", "text": "16 kHz", "correct": false },
+      { "id": "b", "text": "18 kHz", "correct": true },
+      { "id": "c", "text": "9 kHz", "correct": false },
+      { "id": "d", "text": "36 kHz", "correct": false }
+    ],
+    "explanation": "The general equation of an FM wave is $s(t) = A_c \\cos(2\\pi f_c t + \\beta \\sin(2\\pi f_m t))$. Comparing the equations, the modulation index is $\\beta = 8$, and the message frequency is $f_m = 10^3\\text{ Hz} = 1\\text{ kHz}$. Carson's rule states that the bandwidth is $B_T = 2(\\beta + 1)f_m$. Substituting the values: $B_T = 2(8 + 1) \\times 1\\text{ kHz} = 18$ kHz.",
+    "interest": "Communication Systems",
+    "difficulty": "Easy",
+    "topics": ["Frequency Modulation", "Carson's Rule", "FM Bandwidth"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a binary digital communication system operating over an Additive White Gaussian Noise (AWGN) channel, which modulation scheme achieves the lowest probability of bit error ($P_b$) for a given bit energy-to-noise power spectral density ratio ($E_b/N_0$)?",
+    "choices": [
+      { "id": "a", "text": "Coherent Binary Amplitude Shift Keying (BASK)", "correct": false },
+      { "id": "b", "text": "Coherent Binary Frequency Shift Keying (BFSK)", "correct": false },
+      { "id": "c", "text": "Coherent Binary Phase Shift Keying (BPSK)", "correct": true },
+      { "id": "d", "text": "Non-coherent Binary Frequency Shift Keying (NC-BFSK)", "correct": false }
+    ],
+    "explanation": "The probability of bit error for BPSK is $P_b = Q(\\sqrt{\\frac{2E_b}{N_0}})$. For coherent BFSK, it is $P_b = Q(\\sqrt{\\frac{E_b}{N_0}})$. For BASK, it is also $P_b = Q(\\sqrt{\\frac{E_b}{2N_0}})$. BPSK has the largest distance between constellation points ($2\\sqrt{E_b}$) compared to BFSK ($\\sqrt{2E_b}$) and BASK ($\\sqrt{E_b}$) for the same average energy. This makes BPSK the most power-efficient binary modulation scheme, yielding the lowest bit error rate for a given $E_b/N_0$.",
+    "interest": "Communication Systems",
+    "difficulty": "Easy",
+    "topics": ["Digital Modulation", "BPSK", "Bit Error Rate (BER)", "AWGN"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "An amplifier has an input signal-to-noise ratio (SNR) of 20 dB and an output SNR of 14 dB. What is the Noise Figure (F) of this amplifier in decibels?",
+    "choices": [
+      { "id": "a", "text": "34 dB", "correct": false },
+      { "id": "b", "text": "6 dB", "correct": true },
+      { "id": "c", "text": "1.43 dB", "correct": false },
+      { "id": "d", "text": "2.8 dB", "correct": false }
+    ],
+    "explanation": "The Noise Factor ($F$) is defined as the ratio of input SNR to output SNR: $F = \\frac{\\text{SNR}_{in}}{\\text{SNR}_{out}}$. In decibels, the Noise Figure (NF) is $\\text{NF (dB)} = 10\\log_{10}(F) = \\text{SNR}_{in}\\text{ (dB)} - \\text{SNR}_{out}\\text{ (dB)}$. Here, $\\text{NF} = 20\\text{ dB} - 14\\text{ dB} = 6$ dB. Other options represent arithmetic errors or incorrect formulas.",
+    "interest": "Communication Systems",
+    "difficulty": "Easy",
+    "topics": ["Noise Figure", "SNR", "Receiver Noise", "Amplifiers"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A superheterodyne receiver is tuned to a station at $f_s = 1000$ kHz. The local oscillator frequency $f_{LO}$ is chosen such that $f_{LO} > f_s$ (high-side injection) and the intermediate frequency is $f_{IF} = 455$ kHz. What is the image frequency $f_{image}$ of this receiver?",
+    "choices": [
+      { "id": "a", "text": "545 kHz", "correct": false },
+      { "id": "b", "text": "1455 kHz", "correct": false },
+      { "id": "c", "text": "1910 kHz", "correct": true },
+      { "id": "d", "text": "1455 kHz or 545 kHz", "correct": false }
+    ],
+    "explanation": "In high-side injection, the local oscillator frequency is $f_{LO} = f_s + f_{IF} = 1000\\text{ kHz} + 455\\text{ kHz} = 1455$ kHz. The image frequency is the frequency on the other side of $f_{LO}$ that will also mix to the same intermediate frequency $f_{IF}$. Mathematically, $f_{image} = f_{LO} + f_{IF} = f_s + 2f_{IF}$. Substituting the values: $f_{image} = 1000\\text{ kHz} + 2(455\\text{ kHz}) = 1910$ kHz. $1455$ kHz is the local oscillator frequency (option b), and $545$ kHz is for low-side injection.",
+    "interest": "Communication Systems",
+    "difficulty": "Medium",
+    "topics": ["Superheterodyne Receiver", "Image Frequency", "Intermediate Frequency (IF)", "Local Oscillator"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a Phase-Locked Loop (PLL), what is the primary distinction between the \"lock range\" and the \"capture range\"?",
+    "choices": [
+      { "id": "a", "text": "The lock range is always smaller than the capture range because the loop filter limits high-frequency acquisition.", "correct": false },
+      { "id": "b", "text": "The lock range is the range of frequencies over which the PLL can maintain phase-lock once established, whereas the capture range is the range of frequencies over which the PLL can acquire lock from an unlocked state.", "correct": true },
+      { "id": "c", "text": "The capture range is the frequency range where the VCO can operate, whereas the lock range is determined by the input phase detector's range.", "correct": false },
+      { "id": "d", "text": "The lock range is determined by the loop filter bandwidth, while the capture range depends purely on the VCO tuning sensitivity.", "correct": false }
+    ],
+    "explanation": "The lock range (or tracking range) is the frequency range over which the loop can maintain lock once locked. The capture range (or acquisition range) is the frequency range over which the loop can acquire lock from an unlocked condition. Because of the low-pass nature of the loop filter, it is harder for the PLL to establish lock initially than to maintain it. Therefore, the capture range is always less than or equal to the lock range, making option `b` the correct and accurate statement.",
+    "interest": "Communication Systems",
+    "difficulty": "Medium",
+    "topics": ["Phase-Locked Loops (PLL)", "Lock Range", "Capture Range", "VCO"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A discrete memoryless source emits 3 symbols with probabilities $P(s_1) = 0.7$, $P(s_2) = 0.2$, and $P(s_3) = 0.1$. What is the Shannon entropy $H(X)$ of this source in bits/symbol?",
+    "choices": [
+      { "id": "a", "text": "1.157 bits/symbol", "correct": true },
+      { "id": "b", "text": "1.500 bits/symbol", "correct": false },
+      { "id": "c", "text": "0.961 bits/symbol", "correct": false },
+      { "id": "d", "text": "1.000 bits/symbol", "correct": false }
+    ],
+    "explanation": "The Shannon entropy is calculated as $H(X) = -\\sum_{i} P(s_i) \\log_2 P(s_i)$. Substituting values: $H(X) = - [0.7\\log_2(0.7) + 0.2\\log_2(0.2) + 0.1\\log_2(0.1)]$. Converting to base-2: $\\log_2(0.7) \\approx -0.5146$, $\\log_2(0.2) \\approx -2.3219$, $\\log_2(0.1) \\approx -3.3219$. Summing up: $H(X) = - [0.7(-0.5146) + 0.2(-2.3219) + 0.1(-3.3219)] = - [-0.3602 - 0.4644 - 0.3322] \\approx 1.157$ bits/symbol.",
+    "interest": "Communication Systems",
+    "difficulty": "Medium",
+    "topics": ["Information Theory", "Shannon Entropy", "Source Coding"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Consider a 16-QAM constellation with a minimum Euclidean distance between constellation points of $2d$. What is the average energy per symbol ($E_{avg}$) of this constellation, assuming all symbols are equally likely?",
+    "choices": [
+      { "id": "a", "text": "$10d^2$", "correct": true },
+      { "id": "b", "text": "$4d^2$", "correct": false },
+      { "id": "c", "text": "$6d^2$", "correct": false },
+      { "id": "d", "text": "$8d^2$", "correct": false }
+    ],
+    "explanation": "A standard square 16-QAM constellation has constellation points at coordinates $(x, y)$ where $x, y \\in \\{-3d, -d, d, 3d\\}$. The energy of a symbol at $(x, y)$ is $x^2 + y^2$. The 16 points can be partitioned into three rings based on their distance from the origin: 4 inner points at $(\\pm d, \\pm d)$ with energy $2d^2$, 8 middle points at $(\\pm 3d, \\pm d)$ and $(\\pm d, \\pm 3d)$ with energy $10d^2$, and 4 outer points at $(\\pm 3d, \\pm 3d)$ with energy $18d^2$. The average energy per symbol is $E_{avg} = \\frac{4(2d^2) + 8(10d^2) + 4(18d^2)}{16} = \\frac{8d^2 + 80d^2 + 72d^2}{16} = \\frac{160d^2}{16} = 10d^2$.",
+    "interest": "Communication Systems",
+    "difficulty": "Medium",
+    "topics": ["QAM", "Constellation Energy", "Euclidean Distance", "Digital Modulation"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A continuous-time communication channel has a bandwidth of $W = 1$ MHz and is corrupted by additive Gaussian noise with a non-flat power spectral density $N(f) = N_0 |f|/W$ (colored noise). To maximize the channel capacity under a total transmit power constraint $P$, which of the following techniques should be applied?",
+    "choices": [
+      { "id": "a", "text": "Equal power allocation across all frequencies, since the noise is symmetric.", "correct": false },
+      { "id": "b", "text": "The Water-Filling (Water-Pouring) algorithm, allocating more power to frequencies where the noise spectral density is lower.", "correct": true },
+      { "id": "c", "text": "Pre-emphasis filtering to boost the high frequencies before transmission to overcome the noise.", "correct": false },
+      { "id": "d", "text": "High-pass filtering to completely reject the low-frequency noise.", "correct": false }
+    ],
+    "explanation": "According to information theory, to maximize the mutual information (and thus channel capacity) over a continuous channel with frequency-dependent colored noise under a total power constraint, we apply the water-filling (water-pouring) algorithm. The optimal power spectral density of the transmitted signal $S(f)$ satisfies $S(f) + N(f) = K$ (a constant) for all $f$ where $S(f) > 0$, and $S(f) = 0$ where $N(f) \\ge K$. This allocates more power to frequency bands with lower noise levels, optimizing overall capacity. Equal power allocation is sub-optimal because it wastes power in highly corrupted frequency bands.",
+    "interest": "Communication Systems",
+    "difficulty": "Hard",
+    "topics": ["Channel Capacity", "Water-Filling Algorithm", "Colored Noise", "Information Theory"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "A $(7, 4)$ linear block code is defined by a generator matrix $\\mathbf{G} = [\\mathbf{I}_4 \\,|\\, \\mathbf{P}]$, where $\\mathbf{P}$ is a $4 \\times 3$ parity check matrix. If the minimum Hamming distance of the code is $d_{min} = 3$, which of the following statements is true regarding its error-correcting and error-detecting capabilities?",
+    "choices": [
+      { "id": "a", "text": "The code can correct up to 2 random errors and detect up to 3 random errors per codeword.", "correct": false },
+      { "id": "b", "text": "The code can correct exactly 1 random error and detect up to 2 random errors per codeword.", "correct": true },
+      { "id": "c", "text": "The code can correct up to 3 random errors but cannot detect any uncorrected errors.", "correct": false },
+      { "id": "d", "text": "The code can only detect errors but lacks any error-correction capability.", "correct": false }
+    ],
+    "explanation": "For a code with minimum Hamming distance $d_{min}$: 1) The error-detecting capability $t_{detect}$ is the maximum number of errors the code can guarantee to detect, given by $t_{detect} = d_{min} - 1$. For $d_{min} = 3$, $t_{detect} = 3 - 1 = 2$. 2) The error-correcting capability $t_{correct}$ is the maximum number of errors the code can guarantee to correct, given by $t_{correct} = \\lfloor \\frac{d_{min} - 1}{2} \\rfloor$. For $d_{min} = 3$, $t_{correct} = \\lfloor \\frac{3 - 1}{2} \\rfloor = 1$. Thus, the code can correct exactly 1 error and detect up to 2 errors.",
+    "interest": "Communication Systems",
+    "difficulty": "Hard",
+    "topics": ["Error Control Coding", "Linear Block Codes", "Hamming Distance", "Error Correction"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In an Orthogonal Frequency Division Multiplexing (OFDM) system, what is the primary role of the Cyclic Prefix (CP) and how is its length determined?",
+    "choices": [
+      { "id": "a", "text": "The CP is used to increase the peak-to-average power ratio (PAPR) for better transmission efficiency; its length is equal to the number of subcarriers.", "correct": false },
+      { "id": "b", "text": "The CP acts as a guard interval to prevent Inter-Symbol Interference (ISI) and preserve subcarrier orthogonality; its length must be greater than or equal to the maximum delay spread of the multipath channel.", "correct": true },
+      { "id": "c", "text": "The CP performs channel estimation by placing pilot symbols at specific frequencies; its length depends on the Doppler spread.", "correct": false },
+      { "id": "d", "text": "The CP reduces the out-of-band spectral leakage by windowing the edges of the symbol; its length is fixed at 10% of the symbol duration.", "correct": false }
+    ],
+    "explanation": "The Cyclic Prefix (CP) is created by copying the end of an OFDM symbol and appending it to the beginning of the symbol. This serves two main purposes: 1) It acts as a guard band to prevent Inter-Symbol Interference (ISI) from the previous symbol, and 2) it converts the linear convolution of the multipath channel into a circular convolution, preserving the orthogonality of the subcarriers in a frequency-selective fading channel. To completely eliminate ISI, the duration of the CP must be at least as long as the maximum channel delay spread.",
+    "interest": "Communication Systems",
+    "difficulty": "Hard",
+    "topics": ["OFDM", "Cyclic Prefix", "ISI", "Multipath Channel", "Delay Spread"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A Direct Sequence Spread Spectrum (DSSS) system operates with a message bit rate of $R_b = 10$ kbps and a chip rate of $R_c = 10$ Mchips/s. If the receiver requires a minimum energy-per-bit to noise-power density ratio of $E_b/N_0 = 10$ dB for a target bit error rate, what is the maximum jamming margin (in dB) that this system can tolerate against a single-tone jammer?",
+    "choices": [
+      { "id": "a", "text": "30 dB", "correct": false },
+      { "id": "b", "text": "20 dB", "correct": true },
+      { "id": "c", "text": "40 dB", "correct": false },
+      { "id": "d", "text": "10 dB", "correct": false }
+    ],
+    "explanation": "The processing gain $G_p$ of a DSSS system is the ratio of the chip rate to the bit rate: $G_p = \\frac{R_c}{R_b} = \\frac{10 \\times 10^6}{10 \\times 10^3} = 1000$. In decibels, the processing gain is $G_p \\text{ (dB)} = 10\\log_{10}(1000) = 30$ dB. The jamming margin ($M_j$) represents the capability of the system to suppress jammer noise. It is calculated as $M_j \\text{ (dB)} = G_p \\text{ (dB)} - [E_b/N_0 \\text{ (dB)} + L_{sys} \\text{ (dB)}]$, where $L_{sys}$ represents system losses (assumed to be 0 dB if not specified). Thus, $M_j = 30\\text{ dB} - 10\\text{ dB} = 20$ dB.",
+    "interest": "Communication Systems",
+    "difficulty": "Hard",
+    "topics": ["Spread Spectrum", "DSSS", "Processing Gain", "Jamming Margin"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a Multiple-Input Multiple-Output (MIMO) wireless system, there is a fundamental trade-off between spatial multiplexing gain and spatial diversity gain. Which of the following statements correctly evaluates the performance of the Alamouti Space-Time Block Code (STBC) in this context?",
+    "choices": [
+      { "id": "a", "text": "Alamouti STBC achieves full spatial multiplexing gain equal to the number of transmit antennas, but offers no spatial diversity.", "correct": false },
+      { "id": "b", "text": "Alamouti STBC achieves a spatial multiplexing rate of 1 (transmitting 1 symbol/channel use) and a diversity order of $2 N_r$ (for $2$ transmit and $N_r$ receive antennas), providing full transmit diversity without requiring feedback.", "correct": true },
+      { "id": "c", "text": "Alamouti STBC requires channel state information at the transmitter (CSIT) to achieve its optimal diversity gain.", "correct": false },
+      { "id": "d", "text": "Alamouti STBC is only applicable to systems with an equal number of transmit and receive antennas ($N_t = N_r$).", "correct": false }
+    ],
+    "explanation": "The Alamouti scheme is a space-time block coding technique designed for $2$ transmit antennas. It achieves a code rate of 1 (transmitting 2 complex symbols over 2 time slots) and provides a full spatial diversity order of $2 N_r$ (where $N_r$ is the number of receive antennas). It does not require any Channel State Information at the Transmitter (CSIT), only at the receiver (CSIR). It represents a diversity-maximizing scheme rather than a multiplexing-maximizing scheme (like spatial multiplexing/V-BLAST).",
+    "interest": "Communication Systems",
+    "difficulty": "Expert",
+    "topics": ["MIMO", "Alamouti Code", "Space-Time Block Coding (STBC)", "Spatial Diversity"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In cognitive radio networks, spectrum sensing is critical to identify white spaces without causing harmful interference to primary users (PUs). Under high noise uncertainty (where the noise power is not precisely known), which of the following spectrum sensing techniques suffers from a \"noise uncertainty wall\" where the sensing performance cannot be improved even by increasing the observation time?",
+    "choices": [
+      { "id": "a", "text": "Energy Detection", "correct": true },
+      { "id": "b", "text": "Cyclostationary Feature Detection", "correct": false },
+      { "id": "c", "text": "Matched Filter Detection", "correct": false },
+      { "id": "d", "text": "Covariance-based Detection", "correct": false }
+    ],
+    "explanation": "Energy Detection requires precise knowledge of the noise power spectral density to set the threshold. If there is noise uncertainty, a threshold set too low leads to high false alarm rates, and a threshold set too high leads to high missed detection rates. Below a certain SNR (called the \"noise uncertainty wall\"), energy detection fails completely, and no amount of increase in sensing time can overcome this limitation. In contrast, cyclostationary feature detection is highly robust to noise uncertainty because noise is wide-sense stationary and does not exhibit periodic spectral correlation.",
+    "interest": "Communication Systems",
+    "difficulty": "Expert",
+    "topics": ["Cognitive Radio", "Spectrum Sensing", "Energy Detection", "Noise Uncertainty"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "Direct-conversion (zero-IF) receivers are popular due to their highly integrated low-cost architecture, but they are highly susceptible to In-Phase/Quadrature (I/Q) imbalances. Suppose there is an amplitude mismatch $g$ and a phase mismatch $\\phi$ between the local oscillator paths of the I and Q branches. What is the impact of this mismatch on the received signal constellation?",
+    "choices": [
+      { "id": "a", "text": "The constellation is rotated by a constant angle $\\phi$, but the shape remains perfectly square.", "correct": false },
+      { "id": "b", "text": "The constellation becomes scaled along the Q-axis but remains orthogonal, resulting in no leakage between branches.", "correct": false },
+      { "id": "c", "text": "The orthogonality is lost, leading to inter-carrier or inter-symbol cross-talk (leakage of the signal onto its own image or conjugate), which degrades the Error Vector Magnitude (EVM).", "correct": true },
+      { "id": "d", "text": "The DC offset of the system is amplified exponentially, saturating the baseband analog-to-digital converters (ADCs).", "correct": false }
+    ],
+    "explanation": "I/Q imbalance arises from mismatches in amplitude and phase between the physical paths of the In-phase (I) and Quadrature (Q) mixers. This mismatch breaks the orthogonal relationship between the cosine and sine carriers. Mathematically, the received signal $r(t)$ gets mixed with its conjugate, causing the positive frequency components to leak into the negative frequencies and vice versa. This manifests as image leakage in the frequency domain, causing cross-talk between symmetric subcarriers (e.g. in OFDM) and distorting the constellation shape, which increases the Error Vector Magnitude (EVM) and degrades BER.",
+    "interest": "Communication Systems",
+    "difficulty": "Expert",
+    "topics": ["Receiver Architectures", "I/Q Imbalance", "Image Leakage", "Direct Conversion"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "For a bandlimited communication channel with severe Inter-Symbol Interference (ISI), the optimal receiver employs Maximum Likelihood Sequence Estimation (MLSE) via the Viterbi Algorithm rather than symbol-by-symbol equalization. If a system transmits $M$-ary symbols over a channel whose discrete-time equivalent impulse response has a memory of $L$ symbol intervals (i.e. length of impulse response is $L+1$), how many states are required in the Viterbi decoder's trellis diagram?",
+    "choices": [
+      { "id": "a", "text": "$M^L$ states", "correct": true },
+      { "id": "b", "text": "$M(L+1)$ states", "correct": false },
+      { "id": "c", "text": "$M^{L+1}$ states", "correct": false },
+      { "id": "d", "text": "$2^M L$ states", "correct": false }
+    ],
+    "explanation": "The state in a trellis diagram represents the memory of the channel. The output symbol at any time depends on the current input symbol and the $L$ preceding input symbols. Since each symbol can take one of $M$ values (from the $M$-ary alphabet), the number of possible states (representing the history of the previous $L$ symbols) is $M^L$. The transition from one state to another is driven by the current input symbol, resulting in $M$ branches exiting each state and $M$ branches entering each state.",
+    "interest": "Communication Systems",
+    "difficulty": "Expert",
+    "topics": ["Equalization", "Viterbi Algorithm", "MLSE", "Trellis Diagram", "ISI"],
+    "bloomLevel": "Analyze"
+  }
+]

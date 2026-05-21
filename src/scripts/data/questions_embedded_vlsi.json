@@ -1,0 +1,450 @@
+[
+  {
+    "text": "In microcontroller hardware design, what is the primary difference between configuring a General Purpose Input/Output (GPIO) pin in open-drain mode versus push-pull mode?",
+    "choices": [
+      { "id": "a", "text": "Push-pull mode can only source current, while open-drain mode can only sink current.", "correct": false },
+      { "id": "b", "text": "Push-pull mode utilizes active transistors to drive the line both high and low, whereas open-drain mode can only actively drive the line low and requires an external pull-up resistor to pull it high.", "correct": true },
+      { "id": "c", "text": "Open-drain mode operates at twice the frequency of push-pull mode due to the absence of pull-up transistors.", "correct": false },
+      { "id": "d", "text": "Push-pull mode requires external pull-down resistors for logic high states, whereas open-drain is self-terminating.", "correct": false }
+    ],
+    "explanation": "In push-pull configuration, the GPIO pin uses a PMOS transistor connected to VDD and an NMOS transistor connected to VSS. When driving a logic high, the PMOS turns on and sources current; when driving a logic low, the NMOS turns on and sinks current. In contrast, an open-drain configuration has only an NMOS transistor connected to ground. When outputting a logic low, the NMOS turns on, pulling the pin to ground. When outputting a logic high, the NMOS is turned off, leaving the pin in a high-impedance (floating) state. To achieve a logic high level, an external or internal pull-up resistor is required. Option A is incorrect because push-pull can both source and sink current. Option C is incorrect because open-drain configurations are generally slower due to the RC rise-time constant associated with the pull-up resistor. Option D is incorrect because push-pull does not require external resistors to establish logic states.",
+    "interest": "Embedded Systems",
+    "difficulty": "Easy",
+    "topics": ["GPIO", "hardware-interfaces", "microcontroller-basics"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A UART (Universal Asynchronous Receiver-Transmitter) connection is configured for '8N1' transmission. If the transmitter sends a stream of bytes, what is the exact layout of a single frame from the transition of the idle line to its return to idle?",
+    "choices": [
+      { "id": "a", "text": "1 low start bit, 8 data bits (LSB first), 0 parity bits, 1 high stop bit.", "correct": true },
+      { "id": "b", "text": "1 high start bit, 8 data bits (MSB first), 1 parity bit, 1 low stop bit.", "correct": false },
+      { "id": "c", "text": "1 low start bit, 8 data bits (MSB first), 0 parity bits, 2 high stop bits.", "correct": false },
+      { "id": "d", "text": "1 high start bit, 8 data bits (LSB first), 0 parity bits, 1 high stop bit.", "correct": false }
+    ],
+    "explanation": "UART standard asynchronous serial frames start with a transition from the idle high state to a low state for exactly one bit period, which represents the 'start bit'. In the standard configuration '8N1' (8 data bits, No parity, 1 stop bit), the 8 data bits are transmitted after the start bit, starting with the Least Significant Bit (LSB) first by default. No parity bit is appended because parity is set to None ('N'). The frame terminates with a stop bit, which is driven high for at least one bit period to return the line to the idle high state. Option B is incorrect because start bits are low and stop bits are high, and 8N1 specifies 0 parity bits. Option C is incorrect as it describes 2 stop bits and MSB-first. Option D is incorrect because the start bit must be low (0) to signal the beginning of a frame.",
+    "interest": "Embedded Systems",
+    "difficulty": "Easy",
+    "topics": ["UART", "serial-communication", "protocols"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "Which of the following operations is considered a critical anti-pattern when executed inside an Interrupt Service Routine (ISR) in a bare-metal embedded system?",
+    "choices": [
+      { "id": "a", "text": "Modifying a global variable declared with the 'volatile' qualifier.", "correct": false },
+      { "id": "b", "text": "Reading the state of a GPIO input register directly through memory-mapped I/O.", "correct": false },
+      { "id": "c", "text": "Acquiring a blocking mutex or using a high-latency delay loop like 'delay_ms()'.", "correct": true },
+      { "id": "d", "text": "Clearing the pending interrupt flag in the peripheral's status register.", "correct": false }
+    ],
+    "explanation": "An Interrupt Service Routine (ISR) must be highly deterministic, fast, and non-blocking because it runs at a high priority level, often blocking other interrupts or the main program execution loop. Executing blocking operations, such as calling a delay function (e.g., 'delay_ms()') or waiting to acquire a blocking mutex, can cause priority inversion, missed interrupts, and severe watchdog timer timeouts. Modifying a global volatile variable (Option A), reading GPIO status (Option B), and clearing the pending interrupt status flag (Option D) are standard, correct, and often mandatory operations within an ISR.",
+    "interest": "Embedded Systems",
+    "difficulty": "Easy",
+    "topics": ["interrupts", "ISR-constraints", "bare-metal"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "A 16-bit timer on a microcontroller is clocked by an internal peripheral clock running at 16 MHz. If a prescaler of 256 is applied, what is the maximum overflow period of this timer?",
+    "choices": [
+      { "id": "a", "text": "1.0485 seconds", "correct": true },
+      { "id": "b", "text": "4.0960 seconds", "correct": false },
+      { "id": "c", "text": "0.2621 seconds", "correct": false },
+      { "id": "d", "text": "1.0240 seconds", "correct": false }
+    ],
+    "explanation": "The frequency entering the 16-bit timer after the prescaler is F_timer = F_clk / Prescaler = 16,000,000 / 256 = 62,500 Hz. A 16-bit timer can count from 0 to 2^16 - 1 = 65,535. An overflow occurs when the timer transitions from 65,535 back to 0, which requires exactly 2^16 = 65,536 clock cycles. The overflow period T_overflow is calculated as: T_overflow = Cycles / F_timer = 65,536 / 62,500 = 1.048576 seconds. Option B represents a 16-bit timer with a prescaler of 1024. Option C represents a prescaler of 64. Option D represents an incorrect calculation using 64,000 instead of 65,536.",
+    "interest": "Embedded Systems",
+    "difficulty": "Easy",
+    "topics": ["timers", "prescaler", "registers"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "When comparing the Serial Peripheral Interface (SPI) and Inter-Integrated Circuit (I2C) communication protocols, which of the following statements correctly identifies a key structural trade-off?",
+    "choices": [
+      { "id": "a", "text": "I2C uses a push-pull physical layer allowing for higher speeds, whereas SPI uses open-drain outputs with pull-up resistors.", "correct": false },
+      { "id": "b", "text": "SPI requires 4 wires regardless of the number of slave devices, whereas I2C requires more wires as the number of devices increases.", "correct": false },
+      { "id": "c", "text": "I2C uses explicit slave-select hardware lines to address nodes, whereas SPI uses 7-bit software addresses transmitted in-band.", "correct": false },
+      { "id": "d", "text": "I2C requires only 2 wires (SDA/SCL) and supports multi-master arbitration in hardware, but incurs higher protocol overhead than the simpler, faster, shift-register-based SPI.", "correct": true }
+    ],
+    "explanation": "I2C is a 2-wire, synchronous, multi-master/multi-slave, open-drain bus with pull-up resistors that supports hardware collision detection and arbitration, but introduces protocol overhead (start/stop bits, addressing, and ACK/NACK handshake bits). SPI is a high-speed, full-duplex, push-pull, point-to-multipoint bus that uses dedicated hardware Chip Select (CS) lines for device addressing. Because SPI lacks addressing overhead and has push-pull outputs, it can operate at much higher speeds (often tens of MHz) compared to standard I2C (typical limits are 100kbps, 400kbps, or 3.4Mbps). Option A is inverted; I2C is open-drain and SPI is push-pull. Option B is incorrect because SPI wire count increases as more slaves are added due to dedicated Chip Select lines (unless daisy-chained). Option C is also inverted; SPI uses hardware slave select lines and I2C uses in-band software addressing.",
+    "interest": "Embedded Systems",
+    "difficulty": "Medium",
+    "topics": ["SPI", "I2C", "serial-communication", "protocols"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In microcontrollers with Direct Memory Access (DMA) controllers, what is the role of the 'cycle-stealing' transfer mode relative to CPU operation?",
+    "choices": [
+      { "id": "a", "text": "The DMA controller locks the system bus completely, forcing the CPU into a deep sleep state until the entire block transfer completes.", "correct": false },
+      { "id": "b", "text": "The DMA controller transfers one data word per request, immediately yielding bus ownership back to the CPU after each transfer, thereby minimizing CPU bus starvation.", "correct": true },
+      { "id": "c", "text": "The DMA controller operates only when the CPU is executing branch instructions, avoiding bus conflicts entirely.", "correct": false },
+      { "id": "d", "text": "The CPU steals execution clock cycles from the DMA controller by forcing software-based interrupts during block moves.", "correct": false }
+    ],
+    "explanation": "DMA controllers typically support three transfer modes: burst mode, block mode, and cycle-stealing (single transfer) mode. In cycle-stealing mode, the DMA controller obtains control of the system bus, transfers a single data word, and immediately releases the bus back to the CPU. If another DMA request is generated, it steals another cycle. This prevents the DMA from starving the CPU of bus access, ensuring the CPU can continue processing instructions in parallel, albeit with slight delay. Burst/block mode (Option A) locks the bus for the duration of a multi-word transfer. Options C and D are incorrect descriptions of bus access and DMA-CPU interaction.",
+    "interest": "Embedded Systems",
+    "difficulty": "Medium",
+    "topics": ["DMA", "bus-architecture", "memory-management"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In C programming for embedded systems, why is the 'volatile' keyword critical when declaring variables shared between an interrupt service routine (ISR) and the main background loop?",
+    "choices": [
+      { "id": "a", "text": "It instructs the compiler to allocate the variable inside the CPU's internal register bank for faster execution.", "correct": false },
+      { "id": "b", "text": "It prevents the compiler from optimizing reads and writes to the variable, forcing it to read the value directly from memory every time it is accessed.", "correct": true },
+      { "id": "c", "text": "It automatically applies a hardware semaphore lock to prevent concurrent write operations by the processor.", "correct": false },
+      { "id": "d", "text": "It instructs the linker to place the variable within the non-volatile Flash memory rather than RAM.", "correct": false }
+    ],
+    "explanation": "The 'volatile' keyword tells the compiler that the variable's value can be changed by actions outside the local execution context (such as a hardware peripheral or an ISR). Consequently, the compiler is prohibited from optimizing reads or writes to this variable (such as caching the value in a CPU register or removing 'redundant' writes). This ensures that every read or write actually accesses the physical RAM address. Option A is incorrect because it describes the register keyword. Option C is incorrect; volatile does not provide thread safety or hardware/software mutual exclusion. Option D is incorrect; volatile variables must reside in RAM because their values are read/write, unlike Flash memory.",
+    "interest": "Embedded Systems",
+    "difficulty": "Medium",
+    "topics": ["volatile-C", "compilation-optimization", "ISR"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "What is the key functional difference between a Windowed Watchdog Timer (WWDT) and a standard Watchdog Timer (WDT) in safety-critical embedded systems?",
+    "choices": [
+      { "id": "a", "text": "A standard WDT reset is triggered only by underflow, whereas a WWDT reset can be triggered by both underflow and overflow.", "correct": false },
+      { "id": "b", "text": "A standard WDT can only be serviced by software, whereas a WWDT can be serviced dynamically by external hardware inputs.", "correct": false },
+      { "id": "c", "text": "A WWDT requires the software to refresh ('kick') the watchdog only within a specific, predefined time window; refreshing it too early or too late will trigger a system reset.", "correct": true },
+      { "id": "d", "text": "A WWDT operates on an independent clock domain, whereas a standard WDT must share the primary CPU phase-locked loop (PLL) clock.", "correct": false }
+    ],
+    "explanation": "A standard Watchdog Timer (WDT) simply counts down (or up) and triggers a system reset if it is not refreshed before it expires (underflow/overflow). This ensures that if the software crashes or hangs in an infinite loop, the system resets. However, if the software is stuck in a loop that incorrectly refreshes the watchdog continuously (a 'fast-loop' failure), a standard WDT won't detect it. A Windowed Watchdog Timer (WWDT) addresses this by defining a refresh window. The software must refresh the timer within this window. If the software refreshes it too early (before the window opens) or too late (after the window closes), the WWDT triggers a reset. This detects both slow hangs and incorrect fast loop restarts. Options A, B, and D are technically incorrect or irrelevant to the core functional distinction.",
+    "interest": "Embedded Systems",
+    "difficulty": "Medium",
+    "topics": ["watchdog-timer", "safety-critical", "WWDT"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a real-time operating system (RTOS), a low-priority task holds a shared resource using a mutex. A high-priority task preempts the low-priority task and attempts to acquire the resource, blocking on the mutex. A medium-priority task, which does not require the resource, then starts and preempts the low-priority task. This prevents the low-priority task from releasing the resource, thereby indefinitely blocking the high-priority task. What is this phenomenon called, and how does the Priority Inheritance Protocol resolve it?",
+    "choices": [
+      { "id": "a", "text": "Deadlock; resolved by forcibly aborting the medium-priority task and releasing the resource.", "correct": false },
+      { "id": "b", "text": "Unbounded Priority Inversion; resolved by temporarily boosting the priority of the low-priority task holding the mutex to match the priority of the blocked high-priority task.", "correct": true },
+      { "id": "c", "text": "Starvation; resolved by assigning round-robin execution time-slices to all tasks holding mutexes.", "correct": false },
+      { "id": "d", "text": "Priority Creep; resolved by disabling interrupts whenever a high-priority task is blocked on a resource.", "correct": false }
+    ],
+    "explanation": "This classic scenario is known as unbounded priority inversion. A low-priority task is preempted by a medium-priority task, preventing the low-priority task from finishing its critical section and releasing the resource that a high-priority task is waiting on. As a result, a medium-priority task indirectly blocks a high-priority task indefinitely. The Priority Inheritance Protocol resolves this by temporarily raising the priority of the low-priority task holding the mutex to the priority level of the highest-priority task waiting on that mutex (the blocked high-priority task). This prevents the medium-priority task from preempting the low-priority task, allowing the low-priority task to run, complete its work, release the mutex, and drop back to its original priority level, at which point the high-priority task immediately preempts and runs. Option A describes deadlock, which is a circular dependency. Option C describes starvation and round-robin scheduling, which does not solve priority inversion. Option D is a fabricated term and incorrect mitigation.",
+    "interest": "Embedded Systems",
+    "difficulty": "Hard",
+    "topics": ["RTOS", "priority-inversion", "priority-inheritance", "mutex"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "On an ARM Cortex-M7 microcontroller equipped with an enabled L1 Data Cache (D-Cache), a DMA channel is configured to transfer data from an external ADC peripheral into a buffer located in the internal SRAM. After the DMA transfer completes successfully, the CPU reads the buffer but gets stale, incorrect data. What is the root cause of this issue, and what is the correct software mitigation?",
+    "choices": [
+      { "id": "a", "text": "The DMA controller was clocked too fast; the frequency must be reduced to allow cache lines to synchronize automatically.", "correct": false },
+      { "id": "b", "text": "The D-Cache does not monitor peripheral DMA writes, resulting in cache incoherency; the CPU must invalidate the D-Cache line corresponding to the buffer before reading it.", "correct": true },
+      { "id": "c", "text": "The SRAM memory controller defaulted to a Write-Through cache policy; the policy must be changed to Write-Back for external transfers.", "correct": false },
+      { "id": "d", "text": "A hardware interrupt did not trigger after the DMA finished; the DMA complete interrupt must manually execute a data memory barrier.", "correct": false }
+    ],
+    "explanation": "On many high-performance microcontrollers like the ARM Cortex-M7, the CPU's L1 Data Cache (D-Cache) is not hardware-coherent with DMA transfers (lack of hardware cache snooping). When the DMA controller writes data directly to RAM, the D-Cache has no awareness of this modification. If the CPU subsequently attempts to read that memory address, it may experience a cache hit and read old ('stale') data from the L1 cache instead of the updated data in physical RAM. To resolve this, the software must perform a cache invalidation on the buffer area before the CPU accesses it. This marks the cache lines as invalid, forcing the CPU to fetch the fresh data from RAM on the next read. (Alternatively, the buffer memory region can be configured as Non-Cacheable using the MPU). Option A is incorrect because bus speed does not solve structural cache incoherency. Option C is incorrect; changing to Write-Back would worsen the issue for CPU-to-peripheral transfers and does not automatically snoop DMA-to-RAM transfers. Option D is incorrect because a software memory barrier does not invalidate cache lines.",
+    "interest": "Embedded Systems",
+    "difficulty": "Hard",
+    "topics": ["Cortex-M7", "L1-cache", "cache-coherency", "DMA"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Under Rate Monotonic Scheduling (RMS) for periodic, independent tasks in a real-time system, what is the maximum execution utilization bound guaranteed to schedule *any* set of n tasks without missing deadlines?",
+    "choices": [
+      { "id": "a", "text": "U <= 1.0 (100% utilization)", "correct": false },
+      { "id": "b", "text": "U <= n(2^(1/n) - 1)", "correct": true },
+      { "id": "c", "text": "U <= ln(2) approx 0.693 as n approaches infinity", "correct": false },
+      { "id": "d", "text": "U <= 1 - 1/e approx 0.632", "correct": false }
+    ],
+    "explanation": "Rate Monotonic Scheduling (RMS) is a static priority preemptive scheduling algorithm where task priority is inversely proportional to task period. In their seminal 1973 paper, Liu and Layland proved that a set of n periodic, independent tasks is guaranteed to be schedulable if the total CPU utilization U satisfies: U <= n(2^(1/n) - 1). As the number of tasks n approaches infinity, this utilization bound converges to ln(2) approx 0.69315 (Option C). However, the general formula for any n tasks is n(2^(1/n) - 1) (Option B). Option A is the bound for Earliest Deadline First (EDF) dynamic scheduling. Option D is an incorrect mathematical distractor.",
+    "interest": "Embedded Systems",
+    "difficulty": "Hard",
+    "topics": ["RTOS", "scheduling", "Rate-Monotonic-Scheduling", "Liu-Layland"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "An ultra-low-power wireless sensor node operates on a 3.3V battery and executes a cyclic task every 10 seconds. The node's current profile is as follows: Active mode (processing and transmitting) consumes 45 mA for 100 milliseconds; Sleep mode consumes 5 microamps for the remaining duration. Neglecting transient startup currents, what is the average current consumption of this node?",
+    "choices": [
+      { "id": "a", "text": "450.05 microamps", "correct": false },
+      { "id": "b", "text": "454.95 microamps", "correct": true },
+      { "id": "c", "text": "4.5050 mA", "correct": false },
+      { "id": "d", "text": "225.25 microamps", "correct": false }
+    ],
+    "explanation": "To calculate the average current consumption (I_avg), we find the total charge consumed during a single 10-second cycle (T_total = 10 s) and divide by T_total. 1. Active time (T_active) = 100 ms = 0.1 s. Active current (I_active) = 45 mA = 45,000 microamps. 2. Sleep time (T_sleep) = 10 s - 0.1 s = 9.9 s. Sleep current (I_sleep) = 5 microamps. 3. Charge active (Q_active) = I_active * T_active = 45 mA * 0.1 s = 4.5 mAs = 4500 microamp-seconds. 4. Charge sleep (Q_sleep) = I_sleep * T_sleep = 5 microamps * 9.9 s = 49.5 microamp-seconds. 5. Total charge (Q_total) = 4500 + 49.5 = 4549.5 microamp-seconds. 6. Average current (I_avg) = Q_total / T_total = 4549.5 microamp-seconds / 10 s = 454.95 microamps. Option A incorrectly assumes sleep duration is 10 seconds instead of 9.9 seconds. Option C is off by a factor of 10. Option D is half the correct value.",
+    "interest": "Embedded Systems",
+    "difficulty": "Hard",
+    "topics": ["low-power", "energy-budgeting", "embedded-design"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In an ARM Cortex-M4 microcontroller running a safety-critical real-time kernel, you are designing a stack overflow detection mechanism using the Memory Protection Unit (MPU). The target task has an 8KB stack that must be placed in SRAM. Which MPU configuration and memory layout strategy will detect a stack overflow with zero execution overhead and prompt a HardFault?",
+    "choices": [
+      { "id": "a", "text": "Configure the MPU to monitor the entire SRAM and trigger an interrupt every time the stack pointer register (SP) is updated.", "correct": false },
+      { "id": "b", "text": "Place a 32-byte non-writable, no-access MPU 'guard region' directly adjacent to the bottom (limit) of the task stack, aligned to a 32-byte address boundary, and assign the task stack directly above it.", "correct": true },
+      { "id": "c", "text": "Define an MPU region that covers the top of the stack and program the DMA controller to continuously snoop the CPU's stack pointer.", "correct": false },
+      { "id": "d", "text": "Configure the MPU to enable Write-Through cache policy on the task's stack region and compare the stack address with the link register (LR) on every function call.", "correct": false }
+    ],
+    "explanation": "The MPU in ARM Cortex-M4 operates based on regions defined by starting address and size. Since the stack on Cortex-M grows downwards (towards lower memory addresses), a stack overflow occurs when the stack pointer (SP) decreases beyond the allocated memory bounds. To catch this in hardware with zero CPU execution overhead, we place a small MPU region configured with no access permissions ('guard region') directly below the lowest address of the task's stack. The guard region's size must be a power of 2 (minimum 32 bytes on Cortex-M4) and aligned to its own size. When the stack grows too deep and the CPU attempts to push data (such as a stack frame) into this guard region, the MPU instantly blocks the write and triggers a MemManage or HardFault exception. Option A is incorrect because monitoring SP updates in software on every instruction is impossible or extremely slow. Option C is incorrect; DMA cannot snoop internal CPU register states. Option D is incorrect; cache policy changes do not enforce boundary checks, and LR checking adds significant execution overhead.",
+    "interest": "Embedded Systems",
+    "difficulty": "Expert",
+    "topics": ["Cortex-M4", "MPU", "guard-region", "stack-overflow"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "During a context switch in a custom RTOS kernel running on an ARM Cortex-M4 with hardware Floating Point Unit (FPU) enabled, which of the following statements accurately describes the mechanism of stack pointer manipulation and register preservation inside the PendSV handler?",
+    "choices": [
+      { "id": "a", "text": "The CPU automatically pushes all registers R0-R15, PSR, and FPU registers to the Main Stack Pointer (MSP) before executing PendSV.", "correct": false },
+      { "id": "b", "text": "The CPU automatically pushes R0-R3, R12, LR, PC, xPSR (and FPU registers if active) onto the Process Stack Pointer (PSP) upon entering PendSV. The software must then manually save R4-R11 (and S16-S31 if active) onto the PSP, update the task's stack pointer, load the new task's PSP, restore its R4-R11 (and S16-S31), and return using an EXC_RETURN code.", "correct": true },
+      { "id": "c", "text": "PendSV must run entirely on the MSP and manually copy all registers via DMA to prevent stack corruption.", "correct": false },
+      { "id": "d", "text": "The software must disable all interrupts using PRIMASK, manually push all 32 core registers, and swap the MSP and PSP pointers directly.", "correct": false }
+    ],
+    "explanation": "On ARM Cortex-M4 with hardware floating-point, context switching takes advantage of hardware co-operation. When an exception like PendSV is taken while running a user task (which uses the Process Stack Pointer, PSP), the processor hardware automatically pushes the basic stack frame (R0-R3, R12, LR, PC, and xPSR) onto the active PSP. If the task has executed floating-point instructions, the FPU registers (S0-S15 and FPSCR) are also automatically stacked. The software inside the PendSV handler must manually preserve the remaining registers that are NOT saved automatically (the 'callee-saved' registers: R4-R11, and if FPU was active, S16-S31). It does this by reading the current PSP, pushing these registers, saving the resulting pointer into the task control block (TCB), loading the new task's saved stack pointer, popping its R4-R11 (and S16-S31), writing the new pointer back to PSP, and returning with a special EXC_RETURN value (e.g., 0xFFFFFFFD) which triggers hardware unstacking of the automatic frame. Option A is incorrect because the CPU does not save all registers (specifically R4-R11 are not automatically stacked) and uses PSP, not MSP, for task contexts. Option C is incorrect; DMA cannot stack CPU registers. Option D is incorrect; disabling all interrupts via PRIMASK is unsafe for long periods, and manual saving of all 32 registers is not how the hardware architecture is designed.",
+    "interest": "Embedded Systems",
+    "difficulty": "Expert",
+    "topics": ["PendSV", "Cortex-M4", "context-switch", "FPU-stacking"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In the Controller Area Network (CAN 2.0B) protocol, how does the combination of bit stuffing and CSMA/CD with Non-Destructive Bitwise Arbitration resolve bus contention when two nodes attempt to transmit frames simultaneously?",
+    "choices": [
+      { "id": "a", "text": "Both nodes detect a collision, cease transmission, transmit an error frame, and back off for a randomized interval like Ethernet.", "correct": false },
+      { "id": "b", "text": "The node transmitting a logic '1' (recessive) in the arbitration field detects that the bus is pulled to logic '0' (dominant) by the other node; it immediately switches to receiver mode without altering the dominant node's transmission.", "correct": true },
+      { "id": "c", "text": "The node transmitting a logic '0' (recessive) detects a logic '1' (dominant) on the RX line and executes a high-speed software reset of the CAN controller.", "correct": false },
+      { "id": "d", "text": "The CAN controller disables bit stuffing during the arbitration phase, allowing the node with the longest data payload to win bus access.", "correct": false }
+    ],
+    "explanation": "CAN bus uses wired-AND logic where a 'dominant' bit (logic '0') overrides a 'recessive' bit (logic '1'). During the arbitration phase, multiple nodes can transmit their identifiers bit-by-bit simultaneously. Each node monitors the bus level (via RX) and compares it with the bit it is transmitting (via TX). If a node transmits a recessive bit (logic '1') but senses a dominant bit (logic '0') on the bus, it realizes that another node with a higher-priority identifier (which has a lower numerical value) is transmitting. This node immediately ceases transmission of its arbitration field and becomes a receiver, without corrupting the transmission of the winning node. This is called non-destructive bitwise arbitration. Bit stuffing (inserting an opposite polarity bit after 5 consecutive identical bits) is used to maintain synchronization but is unrelated to the arbitration priority itself. Option A describes the CSMA/CD back-off mechanism used in Ethernet, which is destructive. Option C is incorrect because dominant is '0' and recessive is '1', and no software reset is needed. Option D is incorrect because bit stuffing is still active (except in fixed-form fields) and payload length does not determine arbitration success.",
+    "interest": "Embedded Systems",
+    "difficulty": "Expert",
+    "topics": ["CAN-bus", "bitwise-arbitration", "bit-stuffing", "protocols"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In an IoT device designed with a Secure Boot process, how does the Hardware Root of Trust (RoT) verify the integrity of the second-stage bootloader (SBL) before execution, and what physical countermeasure prevents side-channel power analysis during signature verification?",
+    "choices": [
+      { "id": "a", "text": "The RoT uses a software-defined hashing algorithm stored in partition tables and relies on clock jitter to hide power spikes.", "correct": false },
+      { "id": "b", "text": "The RoT utilizes a public key cryptographically fused into read-only hardware (e.g., OTP eFuses) to verify the digital signature (e.g., RSA or ECDSA) of the SBL; power analysis is mitigated by incorporating constant-time cryptographic implementations and injecting random dummy operations (masking/shuffling).", "correct": true },
+      { "id": "c", "text": "The RoT transmits the entire SBL image to a secure cloud server for verification via TLS, using randomized packet padding to obscure energy profiles.", "correct": false },
+      { "id": "d", "text": "The SBL is decrypted using a symmetric AES key stored in volatile SRAM, and power analysis is mitigated by turning off the internal peripheral clock during decryption.", "correct": false }
+    ],
+    "explanation": "A Hardware Root of Trust (RoT) starts with an immutable component, typically a public key hash or key pair permanently stored (fused) in On-Chip One-Time Programmable (OTP) eFuses or ROM. During Secure Boot, the RoT uses this immutable public key to verify the cryptographic signature (such as ECDSA or RSA) of the second-stage bootloader (SBL) stored in external Flash. If verification succeeds, the SBL is trusted and executed. To protect this cryptographic operation against side-channel attacks like Differential Power Analysis (DPA), implementations must use constant-time algorithms (to prevent execution-time variance), cryptographic masking (adding random values to intermediate variables), and shuffling or dummy operations to obscure the power consumption signature of the hardware crypto accelerator. Option A is incorrect because a software hashing algorithm is not immutable and clock jitter alone does not prevent DPA. Option C is incorrect because Secure Boot must happen locally before network stacks are operational. Option D is incorrect; SRAM is volatile (meaning it loses keys on power-down) and turning off the clock would halt the decryption process entirely.",
+    "interest": "Embedded Systems",
+    "difficulty": "Expert",
+    "topics": ["secure-boot", "Root-of-Trust", "side-channel-attacks", "cryptography"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a standard symmetric CMOS inverter, where the threshold voltages (Vtn = |Vtp|) and the transconductance parameters (beta_n = beta_p) are perfectly matched, at what input voltage (Vin) does the switching threshold (Vsp) occur, and what is the state of the NMOS and PMOS transistors at this point?",
+    "choices": [
+      { "id": "a", "text": "Vin = 0 V; both transistors are in the Cutoff region.", "correct": false },
+      { "id": "b", "text": "Vin = VDD / 2; both transistors are in the Saturation region.", "correct": true },
+      { "id": "c", "text": "Vin = VDD; both transistors are in the Linear region.", "correct": false },
+      { "id": "d", "text": "Vin = VDD / 2; the NMOS is in the Linear region and the PMOS is in Saturation.", "correct": false }
+    ],
+    "explanation": "For a symmetric CMOS inverter, the transconductance ratios and threshold voltages are matched (beta_n = beta_p and Vtn = |Vtp|). The switching threshold (Vsp or VM), defined as the point where Vin = Vout, occurs exactly at VDD / 2. At this transition point, both the NMOS and PMOS transistors have maximum gate-to-source voltages (VGS = VDD/2) and drain-to-source voltages (VDS = VDD/2), which are greater than their respective overdrive voltages (VGS - Vt). Therefore, both transistors are operating in the saturation region. Option A describes the inverter when Vin = 0, where PMOS is linear and NMOS is cutoff. Option C describes Vin = VDD, where NMOS is linear and PMOS is cutoff. Option D describes an asymmetric state.",
+    "interest": "VLSI Design",
+    "difficulty": "Easy",
+    "topics": ["CMOS-inverter", "switching-threshold", "transistor-regions"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "In sequential digital circuit timing, what are the formal definitions of Setup Time (Tsu) and Hold Time (Th) for a standard D-flip-flop?",
+    "choices": [
+      { "id": "a", "text": "Setup time is the time required to charge the output node, and hold time is the time required to discharge it.", "correct": false },
+      { "id": "b", "text": "Setup time is the minimum duration the D input must remain stable before the active clock edge, and hold time is the minimum duration the D input must remain stable after the active clock edge.", "correct": true },
+      { "id": "c", "text": "Setup time is the clock propagation delay, and hold time is the data propagation delay through the flip-flop.", "correct": false },
+      { "id": "d", "text": "Setup time is the time interval between the clock edge and the output transition, and hold time is the clock cycle period.", "correct": false }
+    ],
+    "explanation": "Setup time (Tsu) is the minimum time window before the active clock edge during which the data input (D) must be stable to ensure the latching mechanism correctly captures the new state. Hold time (Th) is the minimum time window after the active clock edge during which the data input must remain unchanged to prevent the internal state from being corrupted. Option A describes rising/falling times. Option C describes internal latch delays (T_C-to-Q and latency). Option D describes propagation delay (T_C-to-Q) and clock period.",
+    "interest": "VLSI Design",
+    "difficulty": "Easy",
+    "topics": ["timing-analysis", "setup-time", "hold-time", "flip-flops"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "To implement a static CMOS 2-input NOR gate, how must the pull-up network (PUN) and pull-down network (PDN) be structured using PMOS and NMOS transistors?",
+    "choices": [
+      { "id": "a", "text": "PDN: two NMOS in series; PUN: two PMOS in parallel.", "correct": false },
+      { "id": "b", "text": "PDN: two NMOS in parallel; PUN: two PMOS in series.", "correct": true },
+      { "id": "c", "text": "PDN: two NMOS in series; PUN: two PMOS in series.", "correct": false },
+      { "id": "d", "text": "PDN: two NMOS in parallel; PUN: two PMOS in parallel.", "correct": false }
+    ],
+    "explanation": "In static CMOS design, the pull-down network (PDN) uses NMOS transistors and the pull-up network (PUN) uses PMOS transistors in a dual/complementary topology. The logical output of a NOR gate is Y = ~(A + B). For the output to be pulled low (logic 0), either input A OR B must be high. This requires NMOS transistors connected in parallel between the output and ground. For the output to be pulled high (logic 1), both inputs A AND B must be low. This requires PMOS transistors connected in series between the output and VDD. Therefore, the correct configuration is parallel NMOS for PDN and series PMOS for PUN. Option A describes a 2-input NAND gate configuration.",
+    "interest": "VLSI Design",
+    "difficulty": "Easy",
+    "topics": ["static-CMOS", "logic-gates", "NOR-gate"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During the physical verification phase of a VLSI design flow, what are the primary checks performed by Design Rule Checking (DRC) and Layout Versus Schematic (LVS) tools?",
+    "choices": [
+      { "id": "a", "text": "DRC verifies the chip's maximum clock frequency, while LVS checks the packaging thermal constraints.", "correct": false },
+      { "id": "b", "text": "DRC checks the geometric layout constraints (spacing, width, enclosure) dictated by the foundry, while LVS verifies that the physical layout matches the electrical netlist of the schematic.", "correct": true },
+      { "id": "c", "text": "DRC checks the electromigration limits of power grids, while LVS calculates the logical effort of the gate paths.", "correct": false },
+      { "id": "d", "text": "DRC verifies the logical synthesis boundaries, while LVS checks for stuck-at faults in scan chains.", "correct": false }
+    ],
+    "explanation": "Design Rule Checking (DRC) is a physical verification process that ensures the layout geometries (such as metal trace widths, spacings, active region overlaps, and well enclosures) comply with the manufacturing rules defined by the semiconductor foundry. Violating these rules can lead to physical manufacturing defects. Layout Versus Schematic (LVS) compares the netlist extracted from the layout file (gdsII/OASIS) with the golden schematic/RTL netlist to ensure that the transistors, ports, and interconnections match exactly. Options A, C, and D describe timing analysis, thermal analysis, reliability, and DFT steps, which are not DRC or LVS.",
+    "interest": "VLSI Design",
+    "difficulty": "Easy",
+    "topics": ["physical-verification", "DRC", "LVS", "layout"],
+    "bloomLevel": "Remember"
+  },
+  {
+    "text": "In a synchronous digital circuit, two flip-flops (FF1 and FF2) are connected in a shift-register structure. The clock signals arrive at the flip-flops with a clock skew (Tskew = Tclk2 - Tclk1). If the flip-flops have a propagation delay of TC-to-Q, a combinational logic delay of Tcomb, and a hold time requirement of Thold, which inequality must be satisfied to prevent a hold time violation at FF2?",
+    "choices": [
+      { "id": "a", "text": "TC-to-Q + Tcomb >= Thold + Tskew", "correct": true },
+      { "id": "b", "text": "TC-to-Q + Tcomb <= Thold - Tskew", "correct": false },
+      { "id": "c", "text": "TC-to-Q + Tcomb + Tskew >= Thold", "correct": false },
+      { "id": "d", "text": "TC-to-Q + Tcomb >= Thold - Tskew", "correct": false }
+    ],
+    "explanation": "A hold time violation occurs if the data launched by the clock edge at FF1 propagates and changes the input of FF2 too quickly, before FF2 can safely latch its current data. The time it takes for data to change at the input of FF2 after the clock edge at FF1 is TC-to-Q + Tcomb. The hold window at FF2 begins when the clock edge arrives at FF2 (which is Tskew relative to the clock edge at FF1) and lasts for Thold. Therefore, the data must remain stable until Tskew + Thold after the clock edge at FF1. Thus, the propagation path must satisfy the inequality: TC-to-Q + Tcomb >= Tskew + Thold. If clock skew is positive (Tskew > 0), it increases the risk of hold time violations. Option A represents this correct formulation. Option B is mathematically incorrect. Options C and D are incorrect rearrangements.",
+    "interest": "VLSI Design",
+    "difficulty": "Medium",
+    "topics": ["timing-analysis", "clock-skew", "hold-violation", "registers"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "A digital block is designed to operate at a clock frequency of 2 GHz with a supply voltage of 1.0 V. The total effective switching capacitance of the block is 500 pF, the average switching activity factor is 0.1, and the leakage current is 10 mA. What is the total power dissipation of this block?",
+    "choices": [
+      { "id": "a", "text": "100 mW", "correct": false },
+      { "id": "b", "text": "110 mW", "correct": true },
+      { "id": "c", "text": "210 mW", "correct": false },
+      { "id": "d", "text": "1.01 W", "correct": false }
+    ],
+    "explanation": "Total power dissipation (P_total) in CMOS circuits is the sum of dynamic power (P_dynamic) and static power (P_static): 1. Dynamic Power: P_dynamic = alpha * C_eff * V_DD^2 * f. Here, alpha = 0.1, C_eff = 500 pF = 500 * 10^-12 F, V_DD = 1.0 V, f = 2 GHz = 2 * 10^9 Hz. P_dynamic = 0.1 * (500 * 10^-12) * (1.0)^2 * (2 * 10^9) = 0.1 * 500 * 10^-12 * 2 * 10^9 = 0.1 * 1000 * 10^-3 = 0.1 W = 100 mW. 2. Static (Leakage) Power: P_static = I_leakage * V_DD. Here, I_leakage = 10 mA = 0.01 A, V_DD = 1.0 V. P_static = 10 mA * 1.0 V = 10 mW. 3. Total Power: P_total = P_dynamic + P_static = 100 mW + 10 mW = 110 mW. Option A represents dynamic power only. Option C is off by an arithmetic factor. Option D is an incorrect calculation.",
+    "interest": "VLSI Design",
+    "difficulty": "Medium",
+    "topics": ["power-dissipation", "dynamic-power", "leakage", "CMOS-circuits"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "Using the Method of Logical Effort, a circuit designer wants to size a path consisting of 3 gates to drive a load that is 64 times the input capacitance of the first gate. If the path logical effort (G) is 1.5 and the path branching effort (B) is 1.0, what is the path effort (F), and what is the optimal stage effort (f) to minimize the total path delay?",
+    "choices": [
+      { "id": "a", "text": "F = 96; optimal stage effort f approx 4.58", "correct": true },
+      { "id": "b", "text": "F = 64; optimal stage effort f = 4.00", "correct": false },
+      { "id": "c", "text": "F = 42.66; optimal stage effort f approx 3.50", "correct": false },
+      { "id": "d", "text": "F = 96; optimal stage effort f approx 32.00", "correct": false }
+    ],
+    "explanation": "The Method of Logical Effort is a model used to estimate the delay of digital CMOS paths. The parameters are: Path Electrical Effort (or gain) H = C_out / C_in = 64, Path Logical Effort G = 1.5, Path Branching Effort B = 1.0. The total path effort F is the product of the path logical, branching, and electrical efforts: F = G * B * H = 1.5 * 1.0 * 64 = 96. To minimize the path delay, the effort should be distributed equally among the stages. For a path with N stages (here, N = 3), the optimal stage effort f is: f = F^(1/N) = 96^(1/3) approx 4.5788 approx 4.58. Option A correctly calculates these values. Option B assumes G=1.0. Option C divides instead of multiplies. Option D incorrectly divides the total effort by 3 instead of taking the cube root.",
+    "interest": "VLSI Design",
+    "difficulty": "Medium",
+    "topics": ["logical-effort", "delay-optimization", "sizing"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In Verilog HDL, what is the critical functional hazard of using blocking assignments (=) instead of non-blocking assignments (<=) inside a sequential always @(posedge clk) block?",
+    "choices": [
+      { "id": "a", "text": "It causes syntax compilation errors in standard HDL simulators.", "correct": false },
+      { "id": "b", "text": "It leads to simulation-synthesis mismatches and creates unwanted race conditions where multiple registers latch data within the same clock cycle, acting like combinational feed-through.", "correct": true },
+      { "id": "c", "text": "It forces the compiler to instantiate tri-state buffers at the inputs of all registers.", "correct": false },
+      { "id": "d", "text": "It disables clock gating optimization, leading to massive dynamic power consumption.", "correct": false }
+    ],
+    "explanation": "In Verilog, blocking assignments (=) execute sequentially in the active event queue, updating the LHS variable immediately before moving to the next statement. If multiple sequential flip-flops are modeled using blocking assignments in the same clock edge block, the output of the first register changes immediately, and the second register will capture this new value on the exact same clock edge instead of holding its previous state. This simulates as a combinational pass-through (like a buffer) instead of a register chain, causing race conditions and severe simulation-synthesis mismatches. Standard practice mandates using non-blocking assignments (<=) for sequential logic (which schedules updates to the end of the time step) and blocking assignments (=) only for combinational block modeling. Options A, C, and D are incorrect.",
+    "interest": "VLSI Design",
+    "difficulty": "Medium",
+    "topics": ["Verilog-HDL", "blocking-nonblocking", "simulation-synthesis", "sequential-logic"],
+    "bloomLevel": "Understand"
+  },
+  {
+    "text": "During Clock Tree Synthesis (CTS) in physical design, a designer must choose between an H-tree topology and a clock mesh network. Which of the following statements correctly evaluates the trade-offs between these two methodologies?",
+    "choices": [
+      { "id": "a", "text": "An H-tree consumes significantly more power and area than a clock mesh, but suffers from higher local clock skew.", "correct": false },
+      { "id": "b", "text": "A clock mesh provides highly robust immunity against process-voltage-temperature (PVT) variations and minimal clock skew due to redundant grid routes, but incurs extreme power, routing resource, and area overhead compared to a balanced H-tree.", "correct": true },
+      { "id": "c", "text": "An H-tree relies on passive RC networks without buffers, whereas a clock mesh uses active current-mirrors to distribute clock phases.", "correct": false },
+      { "id": "d", "text": "A clock mesh is only viable for low-frequency designs (< 100 MHz) due to inductive resonance effects, while H-trees are used exclusively for high-performance processors.", "correct": false }
+    ],
+    "explanation": "An H-tree is a tree structure where clock branches are matched recursively, achieving low skew under nominal conditions with relatively low power consumption. However, it is sensitive to local process-voltage-temperature (PVT) variation since there is no redundancy in the routing paths. A clock mesh (or clock grid) distributes the clock signal to a network of interconnected wires driven by a grid of buffers. This grid structure offers exceptional immunity to local PVT variations, load imbalances, and on-chip variation (OCV), maintaining minimal skew. The main drawback of a clock mesh is its high power consumption (due to high capacitive load of the redundant mesh) and massive routing resource and area overhead. Option A is inverted. Option C is incorrect because both H-tree and clock mesh topologies require active buffers to maintain signal transition speeds. Option D is incorrect; clock meshes are typically used in high-frequency, high-performance processors where clock skew is critical.",
+    "interest": "VLSI Design",
+    "difficulty": "Hard",
+    "topics": ["Clock-Tree-Synthesis", "H-tree", "clock-mesh", "skew-mitigation"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In multi-clock VLSI designs, when data is transferred from a fast clock domain (CLK_fast) to an asynchronous slow clock domain (CLK_slow), why is a simple two-flip-flop (2-FF) synchronizer insufficient for multi-bit data buses, and what is the proper architectural solution?",
+    "choices": [
+      { "id": "a", "text": "The 2-FF synchronizer cannot resolve metastability in the slow domain, leading to clock skew; the solution is an H-tree clock buffer.", "correct": false },
+      { "id": "b", "text": "Different bits of the multi-bit bus can experience different routing delays (skew), causing the synchronizer to capture mixed states (partially old and partially new data); the solution is to use an asynchronous FIFO or a handshake protocol (e.g., toggle synchronizer with gray-coded bus).", "correct": true },
+      { "id": "c", "text": "2-FF synchronizers can only operate if both clocks are integer multiples of each other; the solution is a phase-locked loop (PLL) frequency divider.", "correct": false },
+      { "id": "d", "text": "The 2-FF synchronizer generates thermal hot-spots due to high switching activity; the solution is dynamic voltage scaling of the receiver domain.", "correct": false }
+    ],
+    "explanation": "A 2-FF synchronizer works exceptionally well for single-bit signals to prevent metastability from propagating into downstream logic. However, for a multi-bit data bus, individual signals will experience slightly different routing delays (skew). If we attempt to synchronize each bit of a bus independently using separate 2-FF synchronizers, some bits may change state and be captured on the current clock cycle of CLK_slow, while other bits are captured on the subsequent cycle. This results in the receiver domain latching corrupted, mixed-state data. To safely transfer multi-bit buses across asynchronous clock domains, we must use structures that guarantee data integrity, such as an Asynchronous FIFO (where gray code is used for read/write pointers since gray code changes by only one bit at a time) or a formal closed-loop handshake protocol. Option A is incorrect because a 2-FF synchronizer does resolve metastability, and clock trees do not solve CDC bus skew. Option C is incorrect; asynchronous clocks by definition are not phase-matched or integer multiples. Option D is irrelevant.",
+    "interest": "VLSI Design",
+    "difficulty": "Hard",
+    "topics": ["Static-Timing-Analysis", "metastability", "synchronizers", "asynchronous-FIFO"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "When implementing a scan-based Design for Testability (DFT) strategy, standard combinational flip-flops are replaced with scan flip-flops. During 'Capture' mode, what is the exact flow of data through the scan chain, and how is it used to detect stuck-at faults?",
+    "choices": [
+      { "id": "a", "text": "In Capture mode, the scan flip-flop bypasses the clock tree and feeds data directly to the chip outputs via JTAG boundary pins.", "correct": false },
+      { "id": "b", "text": "In Capture mode, the scan multiplexer selects the normal functional data path from the combinational logic; the flip-flops capture the logical response of the combinational logic to the shifted-in test pattern on a single clock edge, which is then shifted out in 'Shift' mode for comparison.", "correct": true },
+      { "id": "c", "text": "In Capture mode, the flip-flops are forced to logic high ('stuck-at-1') or logic low ('stuck-at-0') to calibrate the thermal sensors.", "correct": false },
+      { "id": "d", "text": "Capture mode disables the combinational logic to measure static leakage current (IDDQ) of the scan chain.", "correct": false }
+    ],
+    "explanation": "A scan flip-flop contains a multiplexer at its input, controlled by a Scan Enable (SE) signal. DFT testing involves two primary phases: Shift and Capture. In Shift mode (SE = 1), the scan flip-flops are chained together in serial shift registers, and an ATPG-generated test pattern (stimulus) is shifted in bit-by-bit. In Capture mode (SE = 0), the multiplexer selects the normal functional D-input coming from the combinational logic. A single clock pulse is applied, causing the flip-flops to capture the response of the combinational logic to the stimulus. Then, the mode is switched back to Shift (SE = 1), and the captured state is shifted out and compared against the expected golden response to identify stuck-at-0 or stuck-at-1 faults. Option A is incorrect because JTAG is for boundary scan, not internal core scan chains. Option C describes a failure mode, not a test execution procedure. Option D describes IDDQ testing, which is a different test methodology altogether.",
+    "interest": "VLSI Design",
+    "difficulty": "Hard",
+    "topics": ["DFT", "scan-chain", "ATPG", "stuck-at-fault"],
+    "bloomLevel": "Apply"
+  },
+  {
+    "text": "In a classic 6-transistor (6T) SRAM cell, how must the relative driving strengths (transistor sizing ratios) of the Access, Pull-Up (PU), and Pull-Down (PD) transistors be designed to guarantee both Read Stability and Writeability?",
+    "choices": [
+      { "id": "a", "text": "Access Transistor > Pull-Down Transistor > Pull-Up Transistor", "correct": false },
+      { "id": "b", "text": "Pull-Down Transistor > Access Transistor > Pull-Up Transistor", "correct": true },
+      { "id": "c", "text": "Pull-Up Transistor > Pull-Down Transistor > Access Transistor", "correct": false },
+      { "id": "d", "text": "Access Transistor > Pull-Up Transistor > Pull-Down Transistor", "correct": false }
+    ],
+    "explanation": "To ensure a 6T SRAM cell operates correctly, we have two competing constraints: 1. Read Stability: When reading, the word line is activated and the precharged bit lines pull up the internal node storing a '0'. To prevent this voltage spike from rising above the threshold voltage of the opposite inverter (which would flip the cell state), the Pull-Down (NMOS) transistor must be much stronger than the Access (NMOS) transistor. This ratio (beta_PD / beta_Access) is called the Cell Ratio (CR) and must be greater than 1 (typically 1.2 to 2). 2. Writeability: During a write operation, one bit line is pulled to 0, and we must force the internal node storing a '1' to go low. To achieve this, the Access transistor must be stronger than the Pull-Up (PMOS) transistor to successfully pull the internal node down against the PU transistor's pull-up current. This ratio (beta_Access / beta_PU) is called the Pull-up Ratio (PR) and must be greater than 1. This leads to the fundamental sizing inequality: Pull-Down (NMOS) > Access (NMOS) > Pull-Up (PMOS). Option B represents this relationship. All other options violate either the read stability or writeability conditions, rendering the SRAM dysfunctional.",
+    "interest": "VLSI Design",
+    "difficulty": "Hard",
+    "topics": ["6T-SRAM", "read-margin", "write-margin", "transistor-sizing"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "During high-speed physical design sign-off at sub-7nm process nodes, how does the combination of crosstalk-induced delay (delta delay) and dynamic IR drop affect timing closure on setup and hold paths?",
+    "choices": [
+      { "id": "a", "text": "Dynamic IR drop increases carrier mobility, which decreases logic delay and causes setup violations, while crosstalk delta delay cancels it out.", "correct": false },
+      { "id": "b", "text": "Crosstalk delta delay can either speed up or slow down a signal depending on the switching direction of neighboring aggressors; dynamic IR drop lowers the local supply voltage, which increases gate propagation delay, potentially causing setup violations on slow paths and hold violations on fast clock networks.", "correct": true },
+      { "id": "c", "text": "Crosstalk only affects sequential setup times, while dynamic IR drop is entirely filtered by decapping cells, leaving hold paths unaffected.", "correct": false },
+      { "id": "d", "text": "Dynamic IR drop shifts the transistor threshold voltages higher, causing all paths to experience latch-up.", "correct": false }
+    ],
+    "explanation": "At advanced sub-7nm nodes, signal integrity issues are prominent. Crosstalk delay (or delta delay) occurs when parasitic capacitance between adjacent wires (victim and aggressor) causes the switching transition of the victim to speed up (in-phase switching, same direction) or slow down (out-of-phase switching, opposite direction). Dynamic IR drop is a transient voltage drop in the power distribution network (PDN) caused by high simultaneous switching activity. A lower local VDD reduces the driving capability of transistors, increasing gate delays. If a data path experiences out-of-phase crosstalk and dynamic IR drop, its delay increases significantly, causing setup timing violations. Conversely, if a clock path experiences dynamic IR drop or crosstalk, it can alter clock arrival times (skew/jitter), which may lead to hold timing violations on fast paths where data propagation is too fast. Option B correctly identifies these complex timing dynamics. Option A is incorrect because dynamic IR drop decreases carrier velocity and increases delay. Option C is incorrect because hold paths are affected. Option D describes latch-up, which is a physical parasitic SCR structure activation, not a timing delay shift.",
+    "interest": "VLSI Design",
+    "difficulty": "Expert",
+    "topics": ["signal-integrity", "crosstalk", "IR-drop", "timing-closure"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "In a multi-voltage domain SOC designed using UPF (Unified Power Format), when a high-performance CPU block is put into a deep sleep state via power gating (shutting off VDD), what is the exact function of 'Retention Cells' and 'Isolation Cells', and how are they powered?",
+    "choices": [
+      { "id": "a", "text": "Retention cells act as decoupling capacitors to absorb voltage spikes, while isolation cells disconnect the ground plane; both are powered by the gated VDD rail.", "correct": false },
+      { "id": "b", "text": "Retention cells preserve the internal state of critical registers using an auxiliary, always-on supply (VDD_alwayson) during shut down; Isolation cells prevent floating output nodes of the gated domain from propagating intermediate, undefined voltage levels to the active downstream domains, and they are powered by the always-on supply.", "correct": true },
+      { "id": "c", "text": "Isolation cells act as analog level-shifters to amplify logic signals, while retention cells are used to store DRAM refresh commands; both are powered by the sleep transistor's virtual ground.", "correct": false },
+      { "id": "d", "text": "Retention cells are non-volatile EEPROM cells that store the entire register file, while isolation cells are dynamic pass-gates that require active clocking during sleep.", "correct": false }
+    ],
+    "explanation": "Power gating is a low-power design technique that disconnects a circuit block from the power grid when it is inactive, minimizing leakage current. However, this introduces two challenges: retaining state and preventing signal degradation at the boundaries. 1. Retention Cells: These are special register cells designed with a shadow latch. When the main power rail (VDD) is gated off, the shadow latch remains connected to a secondary, always-on power rail (VDD_alwayson). This preserves the state of the registers so the CPU can resume immediately without a full reboot sequence. 2. Isolation Cells: When a domain is powered down, its outputs can float to intermediate voltage levels. If these floating nodes are connected directly to active downstream domains, they can turn on both NMOS and PMOS transistors in the receiver gates, causing massive short-circuit current. Isolation cells (e.g., AND/OR gates or clamp cells) are placed at the boundary of the gated domain. Powered by the always-on rail, they clamp the floating inputs to a defined logic state (0 or 1) when the domain is asleep. Option B correctly describes this mechanism. Option A is incorrect because gated power rails cannot power cells that must operate during sleep. Options C and D contain technically flawed descriptions of these cells' operations.",
+    "interest": "VLSI Design",
+    "difficulty": "Expert",
+    "topics": ["low-power", "UPF", "power-gating", "isolation-cells", "retention-cells"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "What is the physical mechanism behind the 'Antenna Effect' during the manufacturing routing phase of a VLSI chip, and how does 'diode insertion' resolve this issue?",
+    "choices": [
+      { "id": "a", "text": "The antenna effect is electromagnetic radiation from long copper interconnects that interferes with the RF transceiver; it is resolved by placing copper shielding diodes around the metal lines.", "correct": false },
+      { "id": "b", "text": "During plasma etching, long metal interconnects act as antennas, collecting electrostatic charge from the plasma. If this charge has no path to ground, it builds up a high voltage that can rupture the thin gate oxide of connected MOSFETs; it is resolved by inserting a reverse-biased diode close to the victim gate to safely discharge the current into the substrate.", "correct": true },
+      { "id": "c", "text": "The antenna effect refers to parasitic inductive coupling between high-frequency clock networks; it is resolved by placing Schottky diodes at the load pins.", "correct": false },
+      { "id": "d", "text": "During chemical mechanical polishing (CMP), mechanical vibrations generate static electricity that burns out transistors; it is resolved by connecting transient voltage suppressors (TVS) to the pad ring.", "correct": false }
+    ],
+    "explanation": "The Antenna Effect (also called plasma-induced gate oxide damage) occurs during the fabrication of VLSI chips. During the plasma etching process of metal layers, charges from the plasma accumulate on the metal wires. A long metal wire connected to a small transistor gate acts as an 'antenna' collecting these charges. Because the gate is insulated by a thin layer of oxide, the accumulated charge has no exit pathway, creating a high electrostatic potential. If this voltage exceeds the breakdown voltage of the oxide, it ruptures the gate dielectric, permanently destroying the transistor. The standard physical design mitigations are routing layer hopping (moving the wire to a higher layer so the collector antenna is disconnected during gate layer etch) or diode insertion. An antenna diode is a small diode connected close to the victim gate, with its anode/cathode configured to be reverse-biased during normal circuit operation. During fabrication, the diode provides a safe, low-resistance path to the silicon substrate, discharging the accumulated plasma charge before it can damage the thin gate oxide. Option B accurately explains this physical and electrical mechanism. Option A is incorrect as it describes RF EM interference. Option C and D describe different physical phenomena and incorrect solutions.",
+    "interest": "VLSI Design",
+    "difficulty": "Expert",
+    "topics": ["physical-design", "antenna-effect", "plasma-etching", "diode-insertion"],
+    "bloomLevel": "Analyze"
+  },
+  {
+    "text": "As technology nodes scaled below 16nm, planar MOSFETs were largely replaced by FinFETs, and subsequently by Gate-All-Around (GAA) Nanosheet FETs at sub-3nm nodes. Which of the following statements correctly details the electrostatic and physical reasons for these transitions?",
+    "choices": [
+      { "id": "a", "text": "FinFETs utilize a planar gate that increases gate oxide thickness to reduce quantum tunneling, whereas GAAFETs eliminate gate capacitance entirely.", "correct": false },
+      { "id": "b", "text": "Scaling planar MOSFETs causes severe Short-Channel Effects (SCEs) because the drain's electric field competes with the gate's field over the channel, leading to high subthreshold leakage and Drain-Induced Barrier Lowering (DIBL). FinFETs mitigate this by wrapping the gate around a 3D channel fin on three sides to improve electrostatic control. GAAFETs maximize this control by completely surrounding the nanosheet channel on all four sides, enabling further gate length scaling and lower operating voltages.", "correct": true },
+      { "id": "c", "text": "Planar transistors are limited by their high thermal resistance, while GAAFETs use carbon nanotubes to achieve high-speed ballistic transport at room temperature.", "correct": false },
+      { "id": "d", "text": "FinFETs operate on secondary majority carriers to prevent hot-carrier injection, whereas GAAFETs use negative-bias temperature instability (NBTI) to dynamically adjust threshold voltage.", "correct": false }
+    ],
+    "explanation": "As the channel length (Lg) of planar MOSFETs is scaled down, the drain-to-source distance decreases. The drain's depletion region begins to dominate the channel, reducing the gate's control over the channel barrier. This leads to Short-Channel Effects (SCEs), such as Drain-Induced Barrier Lowering (DIBL), high subthreshold leakage current (I_off), and a degraded subthreshold swing (SS). To restore electrostatic control, the industry transitioned to FinFETs, where a 3D silicon fin is wrapped by the gate on three sides, drastically narrowing the channel width and blocking leakage paths. At sub-3nm nodes, even FinFETs face scaling limits because the fin width cannot be shrunk further without causing performance degradation. Gate-All-Around (GAA) Nanosheet FETs solve this by suspending multiple thin nanosheets horizontally and wrapping the gate completely around all four sides of each nanosheet. This maximizes the electrostatic gate control over the channel, minimizes leakage, lowers the subthreshold swing close to the theoretical limit of ~60 mV/dec at room temperature, and enables further scaling of operating voltages (VDD). Option B is the technically accurate explanation of this architectural shift. Option A is physically incorrect as GAAFETs have finite gate capacitance. Option C is incorrect; GAAFETs are silicon-based nanosheets, not carbon nanotubes. Option D contains incorrect device physics.",
+    "interest": "VLSI Design",
+    "difficulty": "Expert",
+    "topics": ["FinFET", "GAAFET", "short-channel-effects", "electrostatics", "DIBL"],
+    "bloomLevel": "Analyze"
+  }
+]
