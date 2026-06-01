@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Header, Container, Section, SectionHeader, FeatureCard, AmbientGlow, Button } from './components/ui';
 import { 
   Mic, 
@@ -14,6 +15,37 @@ import {
 } from 'lucide-react';
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/status');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) {
+            setIsLoggedIn(true);
+            setUserRole(data.user.role);
+          }
+        }
+      } catch (err) {
+        console.error('Home Auth Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  const getDashboardLink = () => {
+    if (userRole === 'admin') return '/admin';
+    if (userRole === 'superadmin') return '/superadmin';
+    if (userRole === 'mentor') return '/dashboard/mentor';
+    return '/dashboard/b2c';
+  };
+
   return (
     <div className="min-h-screen bg-grid">
       <AmbientGlow color="amber" size="xl" position="top-left" className="z-0" />
@@ -42,16 +74,28 @@ export default function Home() {
                 video, and responses to give you real-time feedback.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0 animate-delay-300">
-                <Link href="/signup">
-                  <Button size="lg" icon={<ArrowRight className="w-5 h-5" />}>
-                    Start Free Trial
-                  </Button>
-                </Link>
-                <Link href="/features">
-                  <Button variant="ghost" size="lg">
-                    See Features
-                  </Button>
-                </Link>
+                {loading ? (
+                  <div className="w-40 h-12 bg-white/5 animate-pulse rounded-xl" />
+                ) : isLoggedIn ? (
+                  <Link href={getDashboardLink()}>
+                    <Button size="lg" icon={<ArrowRight className="w-5 h-5" />}>
+                      Go to Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/signup">
+                      <Button size="lg" icon={<ArrowRight className="w-5 h-5" />}>
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                    <Link href="/features">
+                      <Button variant="ghost" size="lg">
+                        See Features
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </Container>

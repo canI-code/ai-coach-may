@@ -12,7 +12,7 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { username } = await req.json();
+    const { username, email } = await req.json();
     if (!username) {
       return NextResponse.json({ error: 'Username is required' }, { status: 400 });
     }
@@ -21,6 +21,8 @@ export async function PATCH(req: Request) {
     if (!trimmedUsername) {
       return NextResponse.json({ error: 'Username cannot be empty' }, { status: 400 });
     }
+
+    const trimmedEmail = email ? String(email).trim().toLowerCase() : undefined;
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -44,6 +46,7 @@ export async function PATCH(req: Request) {
         fullName: user.fullName,
         dob: user.dob,
         username: trimmedUsername,
+        email: trimmedEmail,
         createdAt: new Date(),
         updatedAt: new Date(),
         completed: false,
@@ -60,6 +63,7 @@ export async function PATCH(req: Request) {
     } else {
       const updateData: any = {
         username: trimmedUsername,
+        email: trimmedEmail,
         updatedAt: new Date(),
       };
       
@@ -80,6 +84,14 @@ export async function PATCH(req: Request) {
         { userId: user._id },
         { $set: updateData }
       );
+
+      // Sync email to primary users collection if provided
+      if (trimmedEmail) {
+        await db.collection('users').updateOne(
+          { _id: user._id },
+          { $set: { email: trimmedEmail } }
+        );
+      }
       
       profile = { ...profile, ...updateData };
     }

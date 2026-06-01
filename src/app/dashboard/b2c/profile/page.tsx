@@ -7,7 +7,7 @@ import { Button } from '@/app/components/ui/Button';
 import { Input, Select } from '@/app/components/ui/Input';
 import { AmbientGlow } from '@/app/components/ui/AmbientGlow';
 import { 
-  User, GraduationCap, Target, Lock, Unlock, Clock, Save, Info, Loader2, Check 
+  User, GraduationCap, Target, Lock, Unlock, Clock, Save, Info, Loader2, Check, Camera, Mic 
 } from 'lucide-react';
 import { INTERESTS_TAXONOMY, MAIN_FIELDS } from '@/lib/taxonomy';
 
@@ -23,6 +23,53 @@ export default function ProfilePage() {
   const [savingInt, setSavingInt] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Device Selection States
+  const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
+  const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
+  const [selectedCamId, setSelectedCamId] = useState('');
+  const [selectedMicId, setSelectedMicId] = useState('');
+  const [deviceError, setDeviceError] = useState<string | null>(null);
+  const [deviceSuccess, setDeviceSuccess] = useState('');
+
+  // Device Selection Effect
+  useEffect(() => {
+    async function loadDevices() {
+      try {
+        if (typeof navigator !== 'undefined' && navigator.mediaDevices) {
+          await navigator.mediaDevices.getUserMedia({ audio: true, video: true }).catch(() => {});
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cams = devices.filter((d) => d.kind === 'videoinput');
+          const mics = devices.filter((d) => d.kind === 'audioinput');
+          setVideoDevices(cams);
+          setAudioDevices(mics);
+
+          const cachedCam = localStorage.getItem('preferred_webcam_id') || cams[0]?.deviceId || '';
+          const cachedMic = localStorage.getItem('preferred_mic_id') || mics[0]?.deviceId || '';
+          setSelectedCamId(cachedCam);
+          setSelectedMicId(cachedMic);
+        }
+      } catch (err: any) {
+        console.error('Error loading devices in profile:', err);
+        setDeviceError('Could not access media devices. Check permissions.');
+      }
+    }
+    loadDevices();
+  }, []);
+
+  const handleSaveDevices = (e: React.FormEvent) => {
+    e.preventDefault();
+    setDeviceError(null);
+    setDeviceSuccess('');
+    try {
+      if (selectedCamId) localStorage.setItem('preferred_webcam_id', selectedCamId);
+      if (selectedMicId) localStorage.setItem('preferred_mic_id', selectedMicId);
+      setDeviceSuccess('Hardware device configurations saved successfully!');
+      setTimeout(() => setDeviceSuccess(''), 4000);
+    } catch (err: any) {
+      setDeviceError('Failed to save device configurations.');
+    }
+  };
 
   // Profile data from backend
   const [profile, setProfile] = useState<any>(null);
@@ -275,18 +322,14 @@ export default function ProfilePage() {
                 <span className="text-[#a1a1aa] text-xs">Date of Birth</span>
                 <span className="text-white font-medium">{profile?.dob ? new Date(profile.dob).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'Not set'}</span>
               </div>
-              {account?.phone && (
-                <div className="flex justify-between items-center px-1">
-                  <span className="text-[#a1a1aa] text-xs">Registered Phone</span>
-                  <span className="text-white font-medium">{account.phone}</span>
-                </div>
-              )}
-              {account?.email && (
-                <div className="flex justify-between items-center px-1">
-                  <span className="text-[#a1a1aa] text-xs">Email Address</span>
-                  <span className="text-white font-medium">{account.email}</span>
-                </div>
-              )}
+              <div className="flex justify-between items-center px-1">
+                <span className="text-[#a1a1aa] text-xs">Registered Phone</span>
+                <span className="text-white font-medium">{account?.phone || 'Not linked'}</span>
+              </div>
+              <div className="flex justify-between items-center px-1">
+                <span className="text-[#a1a1aa] text-xs">Email Address</span>
+                <span className="text-white font-medium truncate max-w-[150px]">{account?.email || 'Not provided'}</span>
+              </div>
               <div className="flex justify-between items-center px-1">
                 <span className="text-[#a1a1aa] text-xs">Account Tier</span>
                 <span className="text-emerald-400 font-semibold uppercase text-xs tracking-wider flex items-center gap-1">
@@ -490,6 +533,82 @@ export default function ProfilePage() {
                   className="bg-amber-500 text-black hover:bg-amber-600 font-bold min-w-[140px]"
                 >
                   {savingInt ? 'Saving...' : 'Save Interests'}
+                </Button>
+              </div>
+            </form>
+          </GlassCard>
+
+          {/* Hardware & Device Settings Card */}
+          <GlassCard className="relative overflow-hidden border-white/5 shadow-xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-white/5 text-white">
+                <Camera size={20} />
+              </div>
+              <div>
+                <CardTitle className="text-xl">Hardware & Devices Settings</CardTitle>
+                <CardDescription className="text-xs">
+                  Configure your preferred webcam and microphone for live mock interview sessions.
+                </CardDescription>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveDevices} className="space-y-5 relative">
+              {deviceError && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                  {deviceError}
+                </div>
+              )}
+              {deviceSuccess && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                  {deviceSuccess}
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Camera</label>
+                  <select
+                    value={selectedCamId}
+                    onChange={(e) => setSelectedCamId(e.target.value)}
+                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  >
+                    {videoDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label || `Camera ${d.deviceId.slice(0, 5)}`}
+                      </option>
+                    ))}
+                    {videoDevices.length === 0 && (
+                      <option value="">No Camera Detected</option>
+                    )}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Microphone</label>
+                  <select
+                    value={selectedMicId}
+                    onChange={(e) => setSelectedMicId(e.target.value)}
+                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  >
+                    {audioDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label || `Microphone ${d.deviceId.slice(0, 5)}`}
+                      </option>
+                    ))}
+                    {audioDevices.length === 0 && (
+                      <option value="">No Microphone Detected</option>
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button 
+                  type="submit" 
+                  icon={<Save size={16} />}
+                  className="bg-amber-500 text-black hover:bg-amber-600 font-bold min-w-[140px]"
+                >
+                  Save Devices
                 </Button>
               </div>
             </form>

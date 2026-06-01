@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Container, GlassCard, Button, Header, AmbientGlow, Section, SectionHeader } from '../components/ui';
 import LogoutButton from '@/app/components/LogoutButton';
-import { CheckCircle, XCircle, AlertTriangle, Building, Mail, Phone, User } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Building, Mail, Phone, User, Flag } from 'lucide-react';
 
 export default function AdminPage() {
   const [institutions, setInstitutions] = useState<any[]>([]);
   const [flaggedUsers, setFlaggedUsers] = useState<any[]>([]);
+  const [questionFlags, setQuestionFlags] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [selectedInst, setSelectedInst] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'institutions' | 'flagged'>('institutions');
+  const [activeTab, setActiveTab] = useState<'institutions' | 'flagged' | 'questions'>('institutions');
 
   const fetchInstitutions = async () => {
     try {
@@ -36,9 +37,20 @@ export default function AdminPage() {
     }
   };
 
+  const fetchQuestionFlags = async () => {
+    try {
+      const res = await fetch('/api/admin/question-flags');
+      const data = await res.json();
+      if (res.ok) setQuestionFlags(data.flags || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchInstitutions();
     fetchFlaggedUsers();
+    fetchQuestionFlags();
   }, []);
 
   const handleApprove = async (id: string) => {
@@ -102,6 +114,26 @@ export default function AdminPage() {
     }
   };
 
+  const handleMarkQuestionSafe = async (questionId: string) => {
+    setMessage('Marking question safe...');
+    try {
+      const res = await fetch('/api/admin/question-flags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questionId, action: 'mark-safe' }),
+      });
+      if (res.ok) {
+        setMessage('Question marked safe!');
+        fetchQuestionFlags();
+      } else {
+        const data = await res.json();
+        setMessage('Error: ' + data.error);
+      }
+    } catch (err) {
+      setMessage('Failed to update question');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-grid">
       <AmbientGlow color="amber" size="lg" position="top-left" className="z-0" />
@@ -145,6 +177,17 @@ export default function AdminPage() {
               <AlertTriangle className="w-5 h-5 inline mr-2" />
               Flagged Accounts ({flaggedUsers.length})
             </button>
+            <button
+              onClick={() => setActiveTab('questions')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                activeTab === 'questions'
+                  ? 'bg-amber-500 text-black'
+                  : 'glass-card text-white/60 hover:text-white'
+              }`}
+            >
+              <Flag className="w-5 h-5 inline mr-2" />
+              Question Flags ({questionFlags.length})
+            </button>
           </div>
 
           {activeTab === 'institutions' && (
@@ -153,7 +196,7 @@ export default function AdminPage() {
                 <div className="p-4 border-b border-white/10">
                   <h2 className="text-lg font-semibold text-white">Registration Requests</h2>
                 </div>
-                <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto">
+                <div className="p-4 space-y-3 max-h-125 overflow-y-auto">
                   {loading ? (
                     <p className="text-muted">Loading...</p>
                   ) : institutions.length === 0 ? (
@@ -286,6 +329,46 @@ export default function AdminPage() {
                             Deactivate
                           </Button>
                         </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </GlassCard>
+          )}
+
+          {activeTab === 'questions' && (
+            <GlassCard padding="none">
+              <div className="p-4 border-b border-amber-500/20 bg-amber-500/5">
+                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <Flag className="w-5 h-5 text-amber-400" />
+                  Flagged Questions
+                </h2>
+              </div>
+              <div className="p-4 space-y-3">
+                {questionFlags.length === 0 ? (
+                  <p className="text-muted text-center py-8">No flagged questions.</p>
+                ) : (
+                  questionFlags.map((item: any) => (
+                    <div key={item.questionId} className="glass-card rounded-xl p-4 border border-white/10">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-white font-medium">{item.questionText}</span>
+                            <span className="text-xs px-2 py-1 rounded-full bg-amber-500/10 text-amber-400">{item.flagCount} flags</span>
+                          </div>
+                          <div className="text-sm text-muted flex flex-wrap gap-3">
+                            <span>Interest: {item.interest || 'N/A'}</span>
+                            <span>Difficulty: {item.difficulty || 'N/A'}</span>
+                            <span>Users: {item.users}</span>
+                          </div>
+                          <div className="text-sm text-red-300">
+                            {(item.samples || []).filter(Boolean).slice(0, 3).join(' • ') || 'No sample reason provided.'}
+                          </div>
+                        </div>
+                        <Button size="sm" variant="secondary" onClick={() => handleMarkQuestionSafe(item.questionId)}>
+                          Mark Safe
+                        </Button>
                       </div>
                     </div>
                   ))

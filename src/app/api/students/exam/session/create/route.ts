@@ -4,6 +4,7 @@ import clientPromise from '@/lib/mongodb';
 import { QuestionSelector } from '@/lib/question-pool/question-selector';
 import { ProficiencyEngine } from '@/lib/proficiency/proficiency-engine';
 import { ObjectId } from 'mongodb';
+import { getUserOpenFlaggedQuestionIds } from '@/lib/question-flags';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
+    const blockedQuestionIds = await getUserOpenFlaggedQuestionIds(db, user._id);
 
     // Get user's multi-dimensional proficiency profile
     const profile = await ProficiencyEngine.getUserProficiency(user._id);
@@ -53,7 +55,7 @@ export async function POST(req: Request) {
         interest,
         userAbilityRating: ip.effectiveRating || ip.abilityRating,
         count: questionsPerInterest,
-        excludeQuestionIds: [],
+        excludeQuestionIds: blockedQuestionIds,
         difficultyTier
       });
       return selectedQs.map(q => q._id as ObjectId);
@@ -107,12 +109,15 @@ export async function POST(req: Request) {
     const orderedQs = allQuestionIds.map(id => {
       const q = qsMap.get(id.toString());
       if (!q) return null;
+      const correctChoice = q.choices.find((c: any) => c.correct);
       return {
         _id: q._id,
         text: q.text,
-        choices: q.choices.map((c: any) => ({ id: c.id, text: c.text })), // Strip correct choice for client security
+        choices: q.choices.map((c: any) => ({ id: c.id, text: c.text })),
         interest: q.interest,
-        difficulty: q.difficulty
+        difficulty: q.difficulty,
+        explanation: q.explanation || null,
+        correctChoiceId: correctChoice?.id || null
       };
     }).filter((q): q is any => q !== null);
 

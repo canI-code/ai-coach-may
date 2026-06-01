@@ -41,6 +41,8 @@ export async function PATCH(req: Request) {
       }
     }
 
+    const isFirstTime = !profile || !profile.interests || profile.interests.length < 3;
+
     const interestsData = {
       mainField: String(mainField).trim(),
       interests: interests.map(i => String(i).trim()).filter(i => i.length > 0)
@@ -58,7 +60,7 @@ export async function PATCH(req: Request) {
         ...interestsData,
         createdAt: new Date(),
         updatedAt: new Date(),
-        lastInterestsEditAt: new Date(), // Set lock timestamp
+        // Don't set lastInterestsEditAt on first creation
         completed: false,
       };
       
@@ -74,8 +76,12 @@ export async function PATCH(req: Request) {
       const updateData: any = {
         ...interestsData,
         updatedAt: new Date(),
-        lastInterestsEditAt: new Date(), // Set lock timestamp
       };
+
+      // Only apply lock if it's NOT the first time setting interests
+      if (!isFirstTime) {
+        updateData.lastInterestsEditAt = new Date();
+      }
       
       const tempProfile = { ...profile, ...updateData };
       const { isComplete } = evaluateProfileCompletion(tempProfile);

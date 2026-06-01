@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb';
 import clientPromise from '../mongodb';
 import { PoolQuestion } from '../assessment';
 import { redis } from '../redis';
-import { QualityGate } from './quality-gate';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -137,17 +136,20 @@ export class QuestionSelector {
       }
     }
 
-    // Strategy B: Cross-interest parent domain backup (e.g., Database Management if Relational database is empty)
-    const overarchingDomain = QualityGate.getOverarchingDomain(interest);
-    console.log(`   🔄 Fallback Strategy B: Querying same domain "${overarchingDomain}"...`);
-    const domainCandidates = await db.collection('questions_ai')
-      .find({ domain: overarchingDomain, difficulty: difficultyTier, status: 'active' })
-      .toArray() as unknown as PoolQuestion[];
+    // Strategy B: Same interest, any difficulty (broader net than adjacent-only)
+    const otherDifficulties = difficultyTiers.filter(d => d !== difficultyTier && !adjacentTiers.includes(d));
+    for (const otherDiff of otherDifficulties) {
+      console.log(`   🔄 Fallback Strategy B: Checking other difficulty "${otherDiff}" for same interest...`);
+      const otherCandidates = await db.collection('questions_ai')
+        .find({ interest, difficulty: otherDiff, status: 'active' })
+        .toArray() as unknown as PoolQuestion[];
 
-    const domainEligible = domainCandidates.filter(q => q._id && !excludeSet.has(q._id.toString()));
-    if (domainEligible.length > 0) {
-      eligible = [...eligible, ...domainEligible.slice(0, count - eligible.length)];
-      if (eligible.length >= count) return eligible.slice(0, count);
+      const otherEligible = otherCandidates.filter(q => q._id && !excludeSet.has(q._id.toString()));
+      if (otherEligible.length > 0) {
+        const spaceLeft = count - eligible.length;
+        eligible = [...eligible, ...otherEligible.slice(0, spaceLeft)];
+        if (eligible.length >= count) return eligible.slice(0, count);
+      }
     }
 
     // Strategy C: Pull from questions under review or curation draft
@@ -162,9 +164,9 @@ export class QuestionSelector {
       if (eligible.length >= count) return eligible.slice(0, count);
     }
 
-    // Strategy D: Last resort - serve whatever is left in this interest (even if answered before)
-    console.log(`   ⚠️ Fallback Strategy D: Recycling previously answered questions...`);
-    const recycled = candidates.slice(0, count - eligible.length);
+    // Strategy D: Last resort - serve whatever is left in this interest, but still respect exclusions
+    console.log(`   ⚠️ Fallback Strategy D: Recycling previously answered questions while respecting exclusions...`);
+    const recycled = candidates.filter(q => q._id && !excludeSet.has(q._id.toString())).slice(0, count - eligible.length);
     eligible = [...eligible, ...recycled];
 
     return eligible.slice(0, count);

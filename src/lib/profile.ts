@@ -6,6 +6,7 @@ export interface UserProfile {
   fullName: string;
   dob: string;
   username?: string;
+  email?: string;
   education?: {
     degree: string;
     course: string;

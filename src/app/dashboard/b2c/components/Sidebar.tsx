@@ -32,6 +32,21 @@ export function Sidebar() {
   }, []);
 
   const handleLogout = async () => {
+    // Intercept logout during active exam
+    if (typeof window !== 'undefined' && (window as any).__ACTIVE_EXAM_SESSION) {
+      const event = new CustomEvent('EXAM_LEAVE_ATTEMPT', { detail: { path: 'LOGOUT' } });
+      window.dispatchEvent(event);
+      return;
+    }
+
+    // Intercept logout during active interview — same lockdown contract as the exam
+    // so the candidate cannot silently abandon a session and re-attempt later.
+    if (typeof window !== 'undefined' && (window as any).__ACTIVE_INTERVIEW_SESSION) {
+      const event = new CustomEvent('INTERVIEW_LEAVE_ATTEMPT', { detail: { path: 'LOGOUT' } });
+      window.dispatchEvent(event);
+      return;
+    }
+
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       router.push('/');
@@ -94,6 +109,18 @@ export function Sidebar() {
                 key={item.name}
                 disabled={isLocked && item.name !== 'Dashboard' && item.name !== 'Profile'}
                 onClick={() => {
+                  // Global check for active exam session
+                  if (typeof window !== 'undefined' && (window as any).__ACTIVE_EXAM_SESSION) {
+                    const event = new CustomEvent('EXAM_LEAVE_ATTEMPT', { detail: { path: item.path } });
+                    window.dispatchEvent(event);
+                    return;
+                  }
+                  // Global check for active interview session — mirrors exam lockdown.
+                  if (typeof window !== 'undefined' && (window as any).__ACTIVE_INTERVIEW_SESSION) {
+                    const event = new CustomEvent('INTERVIEW_LEAVE_ATTEMPT', { detail: { path: item.path } });
+                    window.dispatchEvent(event);
+                    return;
+                  }
                   router.push(item.path);
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${

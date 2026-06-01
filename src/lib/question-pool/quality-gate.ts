@@ -46,7 +46,7 @@ export class QualityGate {
   ): Promise<{ insertedCount: number; duplicateCount: number; questionIds: ObjectId[] }> {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
-    const poolCol = db.collection('questions_pool');
+    const poolCol = db.collection('questions_ai');
 
     let insertedCount = 0;
     let duplicateCount = 0;

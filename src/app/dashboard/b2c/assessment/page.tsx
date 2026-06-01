@@ -7,7 +7,7 @@ import { GlassCard, CardTitle, CardDescription } from '@/app/components/ui/Glass
 import { Button } from '@/app/components/ui/Button';
 import { 
   Loader2, ChevronRight, Clock, Target, CheckCircle2, 
-  AlertCircle, ArrowRight, Trophy, Zap
+  AlertCircle, ArrowRight, Trophy, Zap, Shield, X
 } from 'lucide-react';
 
 export default function InitialAssessment() {
@@ -29,6 +29,125 @@ export default function InitialAssessment() {
   const [submitting, setSubmitting] = useState(false);
   const [finished, setFinished] = useState(false);
   const [results, setResults] = useState<any>(null);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [pendingPath, setPendingPath] = useState<string | null>(null);
+  const [hasConsented, setHasConsented] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
+
+  // Intercept Browser Back Button (popstate)
+  useEffect(() => {
+    if (!hasConsented || finished || loading || error || preparing) return;
+
+    window.history.pushState({ trap: true }, '');
+
+    const handlePopState = (e: PopStateEvent) => {
+      setShowLeaveModal(true);
+      window.history.pushState({ trap: true }, '');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [hasConsented, finished, loading, error, preparing]);
+
+  // Global Session Tracking & Sidebar Interception
+  useEffect(() => {
+    if (!hasConsented || finished || loading || error || preparing) {
+      if (typeof window !== 'undefined') (window as any).__ACTIVE_EXAM_SESSION = false;
+      return;
+    }
+
+    if (typeof window !== 'undefined') (window as any).__ACTIVE_EXAM_SESSION = true;
+
+    const handleSidebarLeave = (e: any) => {
+      setPendingPath(e.detail.path);
+      setShowLeaveModal(true);
+    };
+
+    window.addEventListener('EXAM_LEAVE_ATTEMPT', handleSidebarLeave);
+
+    return () => {
+      if (typeof window !== 'undefined') (window as any).__ACTIVE_EXAM_SESSION = false;
+      window.removeEventListener('EXAM_LEAVE_ATTEMPT', handleSidebarLeave);
+    };
+  }, [hasConsented, finished, loading, error, preparing]);
+
+  // Disable text selection and copying
+  useEffect(() => {
+    if (!hasConsented || finished || loading || error || preparing) return;
+
+    const preventCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    const preventRightClick = (e: MouseEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    document.addEventListener('copy', preventCopy);
+    document.addEventListener('contextmenu', preventRightClick);
+    
+    const style = document.createElement('style');
+    style.id = 'disable-selection-style-assessment';
+    style.innerHTML = `
+      body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.removeEventListener('copy', preventCopy);
+      document.removeEventListener('contextmenu', preventRightClick);
+      const styleElement = document.getElementById('disable-selection-style-assessment');
+      if (styleElement) styleElement.remove();
+    };
+  }, [hasConsented, finished, loading, error, preparing]);
+
+  // Browser back/refresh guard
+  useEffect(() => {
+    if (!hasConsented || finished || loading || error || preparing) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasConsented, finished, loading, error, preparing]);
+
+  const handleAutoSubmit = async () => {
+    setSubmitting(true);
+    try {
+      // 1. Auto-submit assessment
+      await fetch('/api/students/assessment/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assessmentId })
+      });
+
+      // 2. Handle redirection or logout
+      if (pendingPath === 'LOGOUT') {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        router.push('/');
+        router.refresh();
+      } else if (pendingPath) {
+        router.push(pendingPath);
+      } else {
+        router.push('/dashboard/b2c');
+      }
+    } catch (err) {
+      console.error('Auto-submit failed:', err);
+      router.push('/dashboard/b2c');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProfileInterests = async () => {
@@ -220,6 +339,84 @@ export default function InitialAssessment() {
     );
   }
 
+  if (!hasConsented) {
+    return (
+      <div className="fixed inset-0 z-[100] bg-[#0a0a0b] flex items-center justify-center p-4">
+        <AmbientGlow color="amber" size="xl" position="center" />
+        <div className="w-full max-w-xl animate-in zoom-in-95 duration-300">
+          <GlassCard className="border-amber-500/30 overflow-hidden relative" padding="lg">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500" />
+            
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400">
+                <Shield size={28} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white leading-tight">Assessment Lockdown Protocol</h2>
+                <p className="text-amber-500/80 text-sm font-semibold uppercase tracking-wider">Mandatory Consent Required</p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-8 text-[#a1a1aa]">
+              <div className="flex gap-3 items-start p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="mt-1 p-1 rounded-md bg-amber-500/20 text-amber-500">
+                  <Clock size={14} />
+                </div>
+                <p className="text-sm"><span className="text-white font-medium">Session Locked:</span> This assessment is critical for your personalized coaching. Once you start, the sidebar and browser back navigation will be restricted.</p>
+              </div>
+              
+              <div className="flex gap-3 items-start p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="mt-1 p-1 rounded-md bg-amber-500/20 text-amber-500">
+                  <AlertCircle size={14} />
+                </div>
+                <p className="text-sm"><span className="text-white font-medium">Auto-Submission:</span> If you attempt to leave or sign out mid-session, your assessment will be <span className="text-amber-400 font-bold uppercase">Submitted Automatically</span> with your current progress.</p>
+              </div>
+
+              <div className="flex gap-3 items-start p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="mt-1 p-1 rounded-md bg-amber-500/20 text-amber-500">
+                  <X size={14} />
+                </div>
+                <p className="text-sm"><span className="text-white font-medium">No External Help:</span> Text selection, copying, and right-click menus are disabled to maintain the accuracy of your proficiency evaluation.</p>
+              </div>
+            </div>
+
+            <label className="flex items-start gap-3 p-4 rounded-2xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/[0.08] transition-colors group mb-8">
+              <input 
+                type="checkbox" 
+                checked={consentChecked}
+                onChange={(e) => setConsentChecked(e.target.checked)}
+                className="mt-1.5 w-5 h-5 rounded border-white/20 bg-black/40 text-amber-500 focus:ring-amber-500/40 accent-amber-500"
+              />
+              <span className="text-sm text-white font-medium leading-relaxed group-hover:text-white transition-colors">
+                I understand that this is a timed, locked assessment. I agree that any attempt to leave or sign out will result in an automatic submission of my results.
+              </span>
+            </label>
+
+            <div className="flex gap-3">
+              <Button 
+                variant="ghost" 
+                fullWidth 
+                onClick={() => router.push('/dashboard/b2c')}
+              >
+                Back to Dashboard
+              </Button>
+              <Button 
+                variant="primary" 
+                fullWidth 
+                disabled={!consentChecked}
+                className="bg-amber-500 hover:bg-amber-600 text-black border-none font-bold"
+                onClick={() => setHasConsented(true)}
+                icon={<ArrowRight size={18} />}
+              >
+                Start Assessment
+              </Button>
+            </div>
+          </GlassCard>
+        </div>
+      </div>
+    );
+  }
+
   const currentQuestion = questions[currentIndex];
   const progress = ((currentIndex + 1) / questions.length) * 100;
 
@@ -254,6 +451,14 @@ export default function InitialAssessment() {
         />
       </div>
 
+      {/* Lockdown Disclaimer */}
+      <div className="bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 text-center">
+        <p className="text-xs md:text-sm text-amber-500 font-medium flex items-center justify-center gap-2">
+          <AlertCircle size={14} className="animate-pulse" />
+          <span><b>Assessment Locked:</b> Leaving or signing out will auto-submit your current progress.</span>
+        </p>
+      </div>
+
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8">
         <AmbientGlow />
         
@@ -262,7 +467,7 @@ export default function InitialAssessment() {
             <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-widest">
               {currentQuestion.interest}
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold leading-tight">
+            <h2 className="text-xl md:text-2xl font-semibold text-white/80 leading-relaxed">
               {currentQuestion.text}
             </h2>
           </div>
@@ -312,7 +517,7 @@ export default function InitialAssessment() {
             </Button>
             <Button
               size="lg"
-              className="min-w-[160px] h-14 text-lg"
+              className="min-w-[160px] h-14 text-lg bg-amber-500 hover:bg-amber-600 text-black border-none font-bold"
               disabled={!selectedChoiceId || submitting}
               onClick={() => handleNext(false)}
               icon={submitting ? <Loader2 className="animate-spin" size={20} /> : <ChevronRight size={20} />}
@@ -322,6 +527,52 @@ export default function InitialAssessment() {
           </div>
         </div>
       </main>
+
+      {/* Exit Confirmation Modal */}
+      {showLeaveModal && (
+        <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="w-full max-w-md rounded-3xl border border-red-500/20 bg-[#111113] shadow-2xl p-8 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-amber-500 to-red-500" />
+            
+            <div className="w-20 h-20 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 mx-auto mb-6">
+              <AlertCircle size={40} />
+            </div>
+            
+            <h3 className="text-2xl font-bold text-white mb-2">Leave Assessment?</h3>
+            <p className="text-[#a1a1aa] mb-8 leading-relaxed">
+              Your progress will be <span className="text-white font-semibold">automatically submitted</span>. 
+              The remaining <span className="text-amber-400 font-semibold">{questions.length - currentIndex} questions</span> will be marked as skipped and your level will be calculated based on current data.
+            </p>
+
+            <div className="space-y-3">
+              <Button
+                fullWidth
+                variant="danger"
+                size="lg"
+                onClick={handleAutoSubmit}
+                disabled={submitting}
+                icon={submitting ? <Loader2 className="animate-spin" size={20} /> : <ArrowRight size={20} />}
+                className="h-14 font-bold"
+              >
+                {submitting ? 'Submitting...' : 'Confirm & Leave'}
+              </Button>
+              <Button
+                fullWidth
+                variant="ghost"
+                size="lg"
+                onClick={() => {
+                  setShowLeaveModal(false);
+                  setPendingPath(null);
+                }}
+                disabled={submitting}
+                className="h-14"
+              >
+                Continue Assessment
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

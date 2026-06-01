@@ -4,11 +4,6 @@ import { ObjectId } from 'mongodb';
 
 export async function getCurrentUser() {
   try {
-    if (process.env.TEST_USER_ID) {
-      const client = await clientPromise;
-      const db = client.db('aicoach');
-      return await db.collection('users').findOne({ _id: new ObjectId(process.env.TEST_USER_ID) });
-    }
     const cookieStore = await cookies();
     const token = cookieStore.get('auth_token')?.value;
 

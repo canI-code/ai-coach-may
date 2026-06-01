@@ -13,11 +13,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { attemptId, questionId, chosenChoiceId, timeSpentSeconds = 0 } = await req.json();
+    const { attemptId, questionId, chosenChoiceId, timeSpentSeconds = 0, revealed } = await req.json();
 
     if (!attemptId || !questionId || !chosenChoiceId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+
+    const isRevealed = revealed === true;
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -35,11 +37,11 @@ export async function POST(req: Request) {
     // Check if the answer is correct
     const correctChoice = question.choices.find((c: any) => c.correct);
     const isSkipped = chosenChoiceId === 'skipped';
-    const isCorrect = !isSkipped && correctChoice && chosenChoiceId === correctChoice.id;
+    const isCorrect = !isRevealed && !isSkipped && correctChoice && chosenChoiceId === correctChoice.id;
 
     // Trigger continuous dynamic Elo and proficiency updates in real-time!
     let updatedProfile = null;
-    if (!isSkipped) {
+    if (!isSkipped && !isRevealed) {
       updatedProfile = await ProficiencyEngine.updateRating(
         user._id,
         question.interest,
@@ -88,7 +90,8 @@ export async function POST(req: Request) {
             timeSpentSeconds,
             difficulty_at_time,
             isCorrect,
-            isSkipped
+            isSkipped,
+            ...(isRevealed ? { revealed: true } : {})
           } 
         } 
       } as any
@@ -101,6 +104,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ 
       received: true, 
       isCorrect,
+      revealed: isRevealed,
       currentElo: updatedProfile ? updatedProfile.interestProfiles[question.interest]?.abilityRating : null
     });
 

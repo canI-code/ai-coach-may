@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-type GlowColor = 'amber' | 'teal' | 'purple' | 'emerald';
+type GlowColor = 'amber' | 'teal' | 'purple' | 'emerald' | 'red';
 
 interface AmbientGlowProps {
   color?: GlowColor;
@@ -37,6 +37,7 @@ export function AmbientGlow({
     teal: 'bg-teal-500/5',
     purple: 'bg-purple-500/5',
     emerald: 'bg-emerald-500/5',
+    red: 'bg-red-500/5',
   };
 
   const gradients: Record<GlowColor, string> = {
@@ -44,6 +45,7 @@ export function AmbientGlow({
     teal: 'radial-gradient(circle, rgba(20,184,166,0.08) 0%, transparent 70%)',
     purple: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
     emerald: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
+    red: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)',
   };
 
   return (
@@ -70,6 +72,7 @@ export function FloatingBlob({
     teal: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%)',
     purple: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)',
     emerald: 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)',
+    red: 'radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%)',
   };
 
   return (

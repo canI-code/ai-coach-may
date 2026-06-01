@@ -3,6 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
 import { QuestionSelector } from '@/lib/question-pool/question-selector';
 import { ObjectId } from 'mongodb';
+import { getUserOpenFlaggedQuestionIds } from '@/lib/question-flags';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -20,6 +21,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ session
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
+    const blockedQuestionIds = await getUserOpenFlaggedQuestionIds(db, user._id);
 
     // 1. Fetch the original session config
     const originalSession = await db.collection('exam_sessions').findOne({
@@ -147,7 +149,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ session
         interest,
         userAbilityRating: targetRating,
         count: questionsPerInterest,
-        excludeQuestionIds: [],
+        excludeQuestionIds: blockedQuestionIds,
         difficultyTier
       });
       return selectedQs.map(q => q._id as ObjectId);

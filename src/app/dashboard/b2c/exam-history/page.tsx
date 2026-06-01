@@ -22,10 +22,18 @@ interface AttemptDetails {
   isArchived?: boolean; // True if retrieved from local storage
 }
 
+interface InterestStat {
+  interest: string;
+  correct: number;
+  total: number;
+  percentage: number;
+}
+
 interface SessionGroup {
   sessionId: string | null;
   sessionType: 'initial' | 'practice';
   interests: string[];
+  interestStats?: InterestStat[];
   totalQuestionCount: number;
   canRetake: boolean;
   attempts: AttemptDetails[];
@@ -34,6 +42,7 @@ interface SessionGroup {
 export default function ExamHistoryPage() {
   const router = useRouter();
   const [sessions, setSessions] = useState<SessionGroup[]>([]);
+  const [interestStats, setInterestStats] = useState<InterestStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [retakingSessionId, setRetakingSessionId] = useState<string | null>(null);
@@ -85,6 +94,8 @@ export default function ExamHistoryPage() {
       const res = await fetch('/api/students/exam/history');
       if (!res.ok) throw new Error('Failed to fetch exam history');
       const data = await res.json();
+
+      setInterestStats(data.interestStats || []);
       
       const serverGroups: SessionGroup[] = data.attempts || [];
 
@@ -314,6 +325,51 @@ export default function ExamHistoryPage() {
           </div>
         )}
 
+        {/* Knowledge by Interest Stats */}
+        {interestStats.length > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Target size={18} className="text-amber-400" />
+              <h2 className="text-lg font-bold text-white/90">Knowledge by Interest</h2>
+              <span className="text-[10px] text-[#a1a1aa] bg-white/5 px-2 py-0.5 rounded-full">
+                Across all sessions & retakes
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+              {interestStats.map(stat => {
+                const scoreColor = stat.percentage >= 80 ? 'text-emerald-400' :
+                  stat.percentage >= 60 ? 'text-amber-400' :
+                  stat.percentage >= 40 ? 'text-orange-400' : 'text-rose-400';
+                const barColor = stat.percentage >= 80 ? 'bg-emerald-500/30' :
+                  stat.percentage >= 60 ? 'bg-amber-500/30' :
+                  stat.percentage >= 40 ? 'bg-orange-500/30' : 'bg-rose-500/30';
+                const fillColor = stat.percentage >= 80 ? 'bg-emerald-400' :
+                  stat.percentage >= 60 ? 'bg-amber-400' :
+                  stat.percentage >= 40 ? 'bg-orange-400' : 'bg-rose-400';
+                return (
+                  <GlassCard key={stat.interest} padding="sm" className="bg-[#0a0a0b]/40 border-white/5">
+                    <div className="text-[11px] text-[#a1a1aa] font-medium truncate mb-2" title={stat.interest}>
+                      {stat.interest}
+                    </div>
+                    <div className={`text-2xl font-bold mb-1 ${scoreColor}`}>
+                      {stat.percentage}%
+                    </div>
+                    <div className="w-full h-1.5 rounded-full bg-white/5 mb-2 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${fillColor}`}
+                        style={{ width: `${stat.percentage}%` }}
+                      />
+                    </div>
+                    <div className="text-[10px] text-[#a1a1aa]/70">
+                      {stat.correct}/{stat.total} correct
+                    </div>
+                  </GlassCard>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Sessions Grouped Timeline List */}
         <div className="space-y-6">
           {totalSessionsCount > 0 ? (
@@ -366,16 +422,28 @@ export default function ExamHistoryPage() {
                           </div>
                         </div>
 
-                        {/* Covered Topics Pills */}
+                        {/* Per-Interest Score Chips (aggregated across all retakes) */}
                         <div className="flex flex-wrap gap-1.5 pt-1">
-                          {session.interests.map((interest) => (
-                            <span 
-                              key={interest} 
-                              className="px-2 py-0.5 rounded-md bg-white/5 border border-white/5 text-[11px] text-[#a1a1aa]"
-                            >
-                              {interest}
-                            </span>
-                          ))}
+                          {(session.interestStats && session.interestStats.length > 0
+                            ? session.interestStats
+                            : session.interests.map(i => ({ interest: i, correct: 0, total: 0, percentage: 0 }))
+                          ).map(stat => {
+                            const chipColor = stat.total > 0
+                              ? stat.percentage >= 80 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                                : stat.percentage >= 60 ? 'bg-amber-500/10 border-amber-500/20 text-amber-400'
+                                : stat.percentage >= 40 ? 'bg-orange-500/10 border-orange-500/20 text-orange-400'
+                                : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+                              : 'bg-white/5 border-white/5 text-[#a1a1aa]';
+                            return (
+                              <span
+                                key={stat.interest}
+                                className={`px-2 py-0.5 rounded-md border text-[11px] font-medium ${chipColor}`}
+                                title={`${stat.correct}/${stat.total} correct in this session`}
+                              >
+                                {stat.interest}{stat.total > 0 ? ` ${stat.percentage}%` : ''}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
 

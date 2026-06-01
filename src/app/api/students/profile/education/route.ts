@@ -37,6 +37,8 @@ export async function PATCH(req: Request) {
       }
     }
 
+    const isFirstTime = !profile || !profile.education;
+
     const education = { 
       degree: String(degree).trim(), 
       course: String(course).trim(), 
@@ -51,7 +53,7 @@ export async function PATCH(req: Request) {
         education,
         createdAt: new Date(),
         updatedAt: new Date(),
-        lastEducationEditAt: new Date(), // Set lock timestamp
+        // Don't set lastEducationEditAt on first creation
         completed: false,
       };
       
@@ -67,8 +69,12 @@ export async function PATCH(req: Request) {
       const updateData: any = {
         education,
         updatedAt: new Date(),
-        lastEducationEditAt: new Date(), // Set lock timestamp
       };
+
+      // Only apply lock if it's NOT the first time setting education
+      if (!isFirstTime) {
+        updateData.lastEducationEditAt = new Date();
+      }
       
       const tempProfile = { ...profile, ...updateData };
       const { isComplete } = evaluateProfileCompletion(tempProfile);

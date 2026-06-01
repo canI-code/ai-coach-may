@@ -38,7 +38,7 @@ export async function GET() {
       profile,
       user: {
         phone: user.phone || '',
-        email: user.email || '',
+        email: user.email || profile.email || '',
         role: user.role,
         accountType: user.accountType
       },

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 interface NavLinkProps {
@@ -27,6 +27,37 @@ interface HeaderProps {
 }
 
 export function Header({ children, showNav = true, className = '' }: HeaderProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/status');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) {
+            setIsLoggedIn(true);
+            setUserRole(data.user.role);
+          }
+        }
+      } catch (err) {
+        console.error('Header Auth Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  const getDashboardLink = () => {
+    if (userRole === 'admin') return '/admin';
+    if (userRole === 'superadmin') return '/superadmin';
+    if (userRole === 'mentor') return '/dashboard/mentor';
+    return '/dashboard/b2c';
+  };
+
   return (
     <header className={`nav-glass ${className}`}>
       <div className="flex items-center justify-between w-full">
@@ -45,18 +76,31 @@ export function Header({ children, showNav = true, className = '' }: HeaderProps
         
         {children || (
           <div className="flex items-center gap-4">
-            <Link 
-              href="/login" 
-              className="text-white/60 hover:text-white transition-colors duration-200 hidden sm:block"
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/signup" 
-              className="btn-primary !py-2 !px-4 text-sm"
-            >
-              Get Started
-            </Link>
+            {loading ? (
+              <div className="w-20 h-8 bg-white/5 animate-pulse rounded-lg" />
+            ) : isLoggedIn ? (
+              <Link 
+                href={getDashboardLink()} 
+                className="btn-primary !py-2 !px-4 text-sm"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link 
+                  href="/login" 
+                  className="text-white/60 hover:text-white transition-colors duration-200 hidden sm:block"
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  href="/signup" 
+                  className="btn-primary !py-2 !px-4 text-sm"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
