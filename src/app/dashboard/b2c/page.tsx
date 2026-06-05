@@ -19,6 +19,7 @@ export default function B2CDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showRecoveredToast, setShowRecoveredToast] = useState(false);
 
   const fetchDashboardData = async () => {
     try {
@@ -38,6 +39,13 @@ export default function B2CDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('recovered') === 'true') {
+        setShowRecoveredToast(true);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -126,6 +134,13 @@ if (isLocked) {
 
   return (
     <>
+      {showRecoveredToast && (
+        <div className="fixed top-6 right-6 z-50 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-5 py-3 rounded-2xl text-xs flex items-center gap-2.5 shadow-[0_4px_25px_rgba(16,185,129,0.2)]">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+          <span>Welcome back! Your account deletion request has been cancelled, and your account is fully restored.</span>
+          <button onClick={() => setShowRecoveredToast(false)} className="ml-2 text-emerald-400/50 hover:text-emerald-400 text-sm font-bold">×</button>
+        </div>
+      )}
       {/* Main Content */}
       <main className="flex-1 min-w-0 p-8 pb-12 relative overflow-y-auto">
         <AmbientGlow />

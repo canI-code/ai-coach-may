@@ -11,7 +11,7 @@
  * Next.js 16 Client Component — owns form state and the start request.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Video,
@@ -29,6 +29,8 @@ import { Button } from '@/app/components/ui/Button';
 import { Select } from '@/app/components/ui/Input';
 import { INTERESTS_TAXONOMY } from '@/lib/taxonomy';
 import { DURATION_OPTIONS } from '@/lib/interview/duration';
+import type { DashboardMetrics } from '@/lib/interview/dashboard-metrics';
+import type { UserProficiency } from '@/lib/assessment';
 
 // The three valid interviewer styles (Req: Persona).
 const PERSONAS = [
@@ -45,6 +47,12 @@ const DIFFICULTIES = [
   { value: '5', label: 'Expert' },
 ];
 
+const CUSTOM_DIFFICULTIES = [
+  { value: '1', label: 'Beginner' },
+  { value: '3', label: 'Intermediate' },
+  { value: '5', label: 'Expert' },
+];
+
 // Difficulty bands explored adaptively around the chosen starting difficulty.
 const DIFFICULTY_MIN = 1;
 const DIFFICULTY_MAX = 5;
@@ -52,23 +60,97 @@ const DIFFICULTY_MAX = 5;
 export default function InterviewSetupPage() {
   const router = useRouter();
 
-  // Flattened role list from the central taxonomy (e.g. "Computer Science · Algorithms").
-  const roleOptions = useMemo(() => {
-    const opts: { value: string; label: string }[] = [];
-    for (const [field, skills] of Object.entries(INTERESTS_TAXONOMY)) {
-      for (const skill of skills) {
-        opts.push({ value: skill, label: `${field} · ${skill}` });
-      }
-    }
-    return opts;
-  }, []);
-
   const [role, setRole] = useState<string>('');
   const [persona, setPersona] = useState<string>('general_recruiter');
-  const [difficulty, setDifficulty] = useState<number>(3);
+  const [difficultyMode, setDifficultyMode] = useState<'automatic' | 'custom'>('automatic');
+  const [customDifficulty, setCustomDifficulty] = useState<number>(3);
   const [durationMinutes, setDurationMinutes] = useState<number>(DURATION_OPTIONS[0]);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
+  const [userInterests, setUserInterests] = useState<string[] | null>(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [proficiencyProfile, setProficiencyProfile] = useState<UserProficiency | null>(null);
+
+  useEffect(() => {
+    async function loadAllData() {
+      try {
+        const [profileRes, metricsRes, proficiencyRes] = await Promise.all([
+          fetch('/api/students/profile'),
+          fetch('/api/interview/dashboard'),
+          fetch('/api/user/proficiency'),
+        ]);
+
+        if (profileRes.ok) {
+          const data = await profileRes.json();
+          if (data.profile?.interests && data.profile.interests.length > 0) {
+            setUserInterests(data.profile.interests);
+          } else {
+            setUserInterests([]);
+            setError('You have not selected any skills in your profile settings. Please select your interests under Profile Settings first.');
+          }
+        } else {
+          setError('Failed to fetch your profile interests.');
+        }
+
+        if (metricsRes.ok) {
+          const data = await metricsRes.json();
+          if (data.success && data.metrics) {
+            setMetrics(data.metrics);
+          }
+        }
+
+        if (proficiencyRes.ok) {
+          const data = await proficiencyRes.json();
+          if (data.success && data.profile) {
+            setProficiencyProfile(data.profile);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading setup data:', err);
+        setError('Error loading configuration settings.');
+      } finally {
+        setLoadingProfile(false);
+      }
+    }
+    loadAllData();
+  }, []);
+
+  const autoDifficulty = useMemo<number>(() => {
+    if (!metrics || !proficiencyProfile) return 3;
+
+    const totalSessions = metrics.totalSessions ?? 0;
+    if (totalSessions === 0) {
+      const level = (role && proficiencyProfile.interestProfiles?.[role]?.currentLevel) || proficiencyProfile.overallLevel;
+      if (level === 'Beginner') return 1;
+      if (level === 'Intermediate' || level === 'Advanced') return 3;
+      if (level === 'Expert') return 5;
+      return 3;
+    } else {
+      const ci = metrics.confidenceIndex;
+      if (ci === null || ci === undefined) return 3;
+      if (ci < 60) return 1;
+      if (ci <= 80) return 3;
+      return 5;
+    }
+  }, [metrics, proficiencyProfile, role]);
+
+  const resolvedDifficulty = difficultyMode === 'automatic' ? autoDifficulty : customDifficulty;
+
+  // Flattened role list from the central taxonomy (e.g. "Computer Science · Algorithms"),
+  // filtered to only include user's selected interests.
+  const roleOptions = useMemo(() => {
+    if (userInterests === null) return [];
+    const opts: { value: string; label: string }[] = [];
+    for (const [field, skills] of Object.entries(INTERESTS_TAXONOMY)) {
+      for (const skill of skills) {
+        if (userInterests.includes(skill)) {
+          opts.push({ value: skill, label: `${field} · ${skill}` });
+        }
+      }
+    }
+    return opts;
+  }, [userInterests]);
 
   const handleStart = async () => {
     if (!role) {
@@ -84,7 +166,7 @@ export default function InterviewSetupPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           role,
-          difficulty,
+          difficulty: resolvedDifficulty,
           durationMinutes,
           aiPersona: persona,
           difficultyMin: DIFFICULTY_MIN,
@@ -141,10 +223,11 @@ export default function InterviewSetupPage() {
               </CardDescription>
               <Select
                 label="Role"
-                placeholder="Select a role…"
+                placeholder={loadingProfile ? 'Loading your skills…' : 'Select a role…'}
                 options={roleOptions}
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                disabled={loadingProfile}
               />
             </GlassCard>
 
@@ -172,12 +255,57 @@ export default function InterviewSetupPage() {
               <CardDescription className="mb-6">
                 The interview adapts up or down from here as you answer.
               </CardDescription>
-              <Select
-                label="Difficulty"
-                options={DIFFICULTIES}
-                value={String(difficulty)}
-                onChange={(e) => setDifficulty(parseInt(e.target.value, 10))}
-              />
+
+              <div className="flex gap-2 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
+                <button
+                  type="button"
+                  onClick={() => setDifficultyMode('automatic')}
+                  className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
+                    difficultyMode === 'automatic'
+                      ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30 font-semibold'
+                      : 'text-white/70 hover:text-white border border-transparent'
+                  }`}
+                >
+                  Automatic
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDifficultyMode('custom')}
+                  className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
+                    difficultyMode === 'custom'
+                      ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30 font-semibold'
+                      : 'text-white/70 hover:text-white border border-transparent'
+                  }`}
+                >
+                  Custom
+                </button>
+              </div>
+
+              {difficultyMode === 'automatic' ? (
+                <div className="p-4 rounded-xl border border-teal-500/20 bg-teal-500/5">
+                  <div className="text-xs uppercase tracking-wider text-teal-400 font-bold mb-1">
+                    Auto-selected starting difficulty
+                  </div>
+                  <div className="text-xl font-bold flex items-center gap-2">
+                    {DIFFICULTIES.find((d) => d.value === String(autoDifficulty))?.label || 'Intermediate'}
+                    <span className="text-sm font-normal text-white/50">
+                      (Level {autoDifficulty})
+                    </span>
+                  </div>
+                  <p className="text-xs text-white/60 mt-2">
+                    {metrics?.totalSessions === 0
+                      ? `Based on your exam results for the selected skill (${(role && proficiencyProfile?.interestProfiles?.[role]?.currentLevel) || proficiencyProfile?.overallLevel || 'Intermediate'})`
+                      : `Based on your latest interview Confidence Index score (${metrics?.confidenceIndex ?? 'N/A'}%)`}
+                  </p>
+                </div>
+              ) : (
+                <Select
+                  label="Difficulty"
+                  options={CUSTOM_DIFFICULTIES}
+                  value={String(customDifficulty)}
+                  onChange={(e) => setCustomDifficulty(parseInt(e.target.value, 10))}
+                />
+              )}
             </GlassCard>
 
             <GlassCard padding="lg">
@@ -227,7 +355,7 @@ export default function InterviewSetupPage() {
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-[#a1a1aa]">Difficulty</span>
                   <span className="font-bold text-white">
-                    {DIFFICULTIES.find((d) => d.value === String(difficulty))?.label}
+                    {DIFFICULTIES.find((d) => d.value === String(resolvedDifficulty))?.label}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-sm">

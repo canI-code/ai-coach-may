@@ -55,6 +55,16 @@ export default function Login() {
     return () => clearInterval(interval);
   }, [resendTimer]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('deleted') === 'true') {
+        setMessage('Your account has been scheduled for deletion. It will be permanently deleted after 30 days. You can log back in at any time within these 30 days to cancel this request and fully recover your account.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, []);
+
   const handleCategorySelection = (cat: string) => {
     setCategory(cat);
     setStep(1.5);
@@ -207,7 +217,7 @@ export default function Login() {
 
       const loginData = await loginRes.json();
       if (loginRes.ok) {
-        if (isB2C) router.push('/dashboard/b2c');
+        if (isB2C) router.push(loginData.recovered ? '/dashboard/b2c?recovered=true' : '/dashboard/b2c');
         else if (userType === 'mentee') router.push('/dashboard/b2b');
         else if (userType === 'mentor') router.push('/dashboard/mentor');
       } else {

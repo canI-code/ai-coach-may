@@ -189,6 +189,8 @@ const SessionConfigInputSchema = z
     institutionCode: z.string().optional(),
     sessionType: z.enum(['full', 'targeted']).optional().default('full'),
     focusTags: z.array(z.string()).optional(),
+    parentSessionId: z.string().optional(),
+    attemptNumber: z.number().optional(),
   })
   .strip();
 
@@ -506,7 +508,7 @@ export async function createSession(
   const _id = newId();
   const sessionId = _id.toHexString();
   const createdAt = now();
-  const { institutionCode, ...configCore } = config;
+  const { institutionCode, parentSessionId, attemptNumber, ...configCore } = config;
 
   const sessionDoc: InterviewSessionDoc = {
     _id,
@@ -514,6 +516,8 @@ export async function createSession(
     status: 'seeding',
     config: configCore,
     ...(institutionCode ? { institutionCode } : {}),
+    ...(parentSessionId ? { parentSessionId: toObjectId(parentSessionId) ?? undefined } : {}),
+    ...(attemptNumber !== undefined ? { attemptNumber } : {}),
     currentQuestionIndex: 0,
     currentDifficulty: config.difficulty,
     pool: [],

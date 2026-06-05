@@ -10,8 +10,15 @@ import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
  * All geometry is hand-rolled inline SVG; features responsive hover tooltips,
  * coordinates guides, and interactive scale zoom controls (X and Y axis).
  */
+export interface LineChartSeries {
+  name: string;
+  color: string;
+  points: { date?: Date; label: string; value: number }[];
+}
+
 export interface LineChartProps {
-  points: { label: string; value: number }[];
+  points?: { date?: Date; label: string; value: number }[];
+  series?: LineChartSeries[];
   /** Rendered/intrinsic height in px. Default 200. */
   height?: number;
   /** Line / fill / dot color. Default amber `#f59e0b`. */
@@ -19,6 +26,7 @@ export interface LineChartProps {
   /** Top of the y-axis scale (bottom is always 0). Default 100. */
   max?: number;
   className?: string;
+  levelMapping?: (value: number) => string;
 }
 
 const VIEW_W = 720;
@@ -42,33 +50,66 @@ function truncate(label: string, maxChars: number): string {
 
 export function LineChart({
   points,
+  series,
   height = 200,
   accent = '#f59e0b',
   max = 100,
   className = '',
+  levelMapping,
 }: LineChartProps): JSX.Element {
   const uid = React.useId().replace(/[:]/g, '');
-  const gradientId = `lc-area-${uid}`;
 
   // Interactive Zoom States
   const [xZoomLevel, setXZoomLevel] = useState(0); // 0 = show all, 1 = show 75%, 2 = show 50%, 3 = show 25% (min 3)
   const [yZoomMax, setYZoomMax] = useState(max);
 
   // Hover states
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredLabelIndex, setHoveredLabelIndex] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // X-zoom points filter
-  const visiblePoints = useMemo(() => {
-    if (!points || points.length === 0) return [];
-    if (xZoomLevel <= 0 || points.length <= 3) return points;
-    const keepCount = Math.max(3, Math.ceil(points.length * (1 - xZoomLevel * 0.25)));
-    return points.slice(-keepCount);
-  }, [points, xZoomLevel]);
+  const activeSeries = useMemo<LineChartSeries[]>(() => {
+    if (series) return series;
+    if (points) {
+      return [{
+        name: 'Overall',
+        color: accent,
+        points: points
+      }];
+    }
+    return [];
+  }, [series, points, accent]);
+
+  // Resolve unique sorted labels based on dates
+  const allLabels = useMemo(() => {
+    const datesMap = new Map<string, Date>();
+    
+    const addPt = (p: { date?: Date; label: string }) => {
+      if (p.date) {
+        datesMap.set(p.label, p.date);
+      } else {
+        const parsed = new Date(p.label);
+        datesMap.set(p.label, Number.isNaN(parsed.getTime()) ? new Date() : parsed);
+      }
+    };
+
+    activeSeries.forEach(s => s.points.forEach(addPt));
+
+    const list = Array.from(datesMap.entries()).map(([label, date]) => ({ label, date }));
+    list.sort((a, b) => a.date.getTime() - b.date.getTime());
+    return list.map(item => item.label);
+  }, [activeSeries]);
+
+  // X-zoom labels filter
+  const visibleLabels = useMemo(() => {
+    if (xZoomLevel <= 0 || allLabels.length <= 3) return allLabels;
+    const keepCount = Math.max(3, Math.ceil(allLabels.length * (1 - xZoomLevel * 0.25)));
+    return allLabels.slice(-keepCount);
+  }, [allLabels, xZoomLevel]);
 
   // Empty state check
-  if (!points || points.length === 0) {
+  const hasData = activeSeries.some(s => s.points && s.points.length > 0);
+  if (!hasData) {
     return (
       <div
         className={`flex items-center justify-center rounded-2xl border border-white/5 bg-white/[0.02] text-sm text-[#a1a1aa] ${className}`}
@@ -91,11 +132,11 @@ export function LineChart({
   const plotWidth = plotRight - plotLeft;
   const plotHeight = plotBottom - plotTop;
 
-  const n = visiblePoints.length;
-
-  const xOf = (index: number): number => {
-    if (n === 1) return (plotLeft + plotRight) / 2;
-    return plotLeft + (index / (n - 1)) * plotWidth;
+  const xOf = (label: string): number => {
+    const idx = visibleLabels.indexOf(label);
+    if (idx === -1) return plotLeft;
+    if (visibleLabels.length === 1) return (plotLeft + plotRight) / 2;
+    return plotLeft + (idx / (visibleLabels.length - 1)) * plotWidth;
   };
 
   const yOf = (value: number): number => {
@@ -103,84 +144,108 @@ export function LineChart({
     return plotBottom - (v / safeMax) * plotHeight;
   };
 
-  const visibleCoords = visiblePoints.map((p, i) => ({
-    x: xOf(i),
-    y: yOf(p.value),
-    label: p.label,
-    value: p.value,
-  }));
+  const seriesWithVisiblePoints = useMemo(() => {
+    return activeSeries.map(s => {
+      // Filter points to only those present in visibleLabels
+      const visiblePts = s.points.filter(p => visibleLabels.includes(p.label));
+      
+      // Sort visiblePts by the order of label in visibleLabels to keep it chronological
+      visiblePts.sort((a, b) => visibleLabels.indexOf(a.label) - visibleLabels.indexOf(b.label));
 
-  const last = visibleCoords[visibleCoords.length - 1];
-  let linePath = '';
-  if (n > 0) {
-    linePath = `M ${visibleCoords[0].x.toFixed(2)} ${visibleCoords[0].y.toFixed(2)}`;
-    for (let i = 1; i < n; i++) {
-      const p0 = visibleCoords[i - 1];
-      const p1 = visibleCoords[i];
-      const dx = (p1.x - p0.x) * 0.4;
-      const cp1x = p0.x + dx;
-      const cp1y = p0.y;
-      const cp2x = p1.x - dx;
-      const cp2y = p1.y;
-      linePath += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
-    }
-  }
+      const coords = visiblePts.map(p => ({
+        x: xOf(p.label),
+        y: yOf(p.value),
+        label: p.label,
+        value: p.value
+      }));
 
-  const areaPath =
-    n > 1
-      ? `${linePath} L ${last.x.toFixed(2)} ${plotBottom.toFixed(2)} ` +
-        `L ${visibleCoords[0].x.toFixed(2)} ${plotBottom.toFixed(2)} Z`
-      : '';
+      // Calculate path
+      let linePath = '';
+      const n = coords.length;
+      if (n > 0) {
+        linePath = `M ${coords[0].x.toFixed(2)} ${coords[0].y.toFixed(2)}`;
+        for (let i = 1; i < n; i++) {
+          const p0 = coords[i - 1];
+          const p1 = coords[i];
+          const dx = (p1.x - p0.x) * 0.4;
+          const cp1x = p0.x + dx;
+          const cp1y = p0.y;
+          const cp2x = p1.x - dx;
+          const cp2y = p1.y;
+          linePath += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
+        }
+      }
 
-  const maxLabels = 12;
-  const step = Math.max(1, Math.ceil(n / maxLabels));
-  const rotate = n > 6;
-  const labelY = plotBottom + (rotate ? 12 : 16);
-  const labelChars = rotate ? 8 : 10;
+      const areaPath =
+        n > 1
+          ? `${linePath} L ${coords[n - 1].x.toFixed(2)} ${plotBottom.toFixed(2)} ` +
+            `L ${coords[0].x.toFixed(2)} ${plotBottom.toFixed(2)} Z`
+          : '';
 
-  const visibleLabelIndices = visibleCoords
-    .map((_, i) => i)
-    .filter((i) => i % step === 0 || i === n - 1);
+      return {
+        ...s,
+        points: visiblePts,
+        coords,
+        linePath,
+        areaPath
+      };
+    });
+  }, [activeSeries, visibleLabels, plotBottom]);
 
   // Interactive Hover Handler
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (!containerRef.current || visiblePoints.length === 0) return;
+    if (!containerRef.current || visibleLabels.length === 0) return;
     const rect = containerRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     
     // Scale mouse position to intrinsic VIEW_W
     const svgX = (mouseX / rect.width) * VIEW_W;
     
-    // Find nearest point
+    // Find nearest label
     let nearestIdx = 0;
     let minDist = Infinity;
     
-    visibleCoords.forEach((coord, i) => {
-      const dist = Math.abs(coord.x - svgX);
+    visibleLabels.forEach((label, i) => {
+      const coordX = xOf(label);
+      const dist = Math.abs(coordX - svgX);
       if (dist < minDist) {
         minDist = dist;
         nearestIdx = i;
       }
     });
     
-    setHoveredIndex(nearestIdx);
+    setHoveredLabelIndex(nearestIdx);
     
     // Map SVG coordinates back to client coordinates for HTML tooltip positioning
-    const coord = visibleCoords[nearestIdx];
-    const tooltipX = (coord.x / VIEW_W) * rect.width;
-    const tooltipY = (coord.y / H) * rect.height;
+    const activeLabel = visibleLabels[nearestIdx];
+    const tooltipX = (xOf(activeLabel) / VIEW_W) * rect.width;
+    
+    // Find average Y position of all active points on this label for vertical tooltip positioning
+    let ySum = 0;
+    let yCount = 0;
+    
+    seriesWithVisiblePoints.forEach(s => {
+      const p = s.coords.find(pt => pt.label === activeLabel);
+      if (p) {
+        ySum += p.y;
+        yCount++;
+      }
+    });
+    
+    const finalY = yCount > 0 ? ySum / yCount : plotBottom / 2;
+    const tooltipY = (finalY / H) * rect.height;
     
     setTooltipPos({ x: tooltipX, y: tooltipY });
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    setHoveredLabelIndex(null);
     setTooltipPos(null);
   };
 
   // Zoom handlers
   const handleXZoomIn = () => {
-    if (points.length > 3) {
+    if (allLabels.length > 3) {
       setXZoomLevel((prev) => Math.min(3, prev + 1));
     }
   };
@@ -204,13 +269,34 @@ export function LineChart({
 
   const isZoomed = xZoomLevel > 0 || yZoomMax !== max;
 
+  const maxLabels = 12;
+  const step = Math.max(1, Math.ceil(visibleLabels.length / maxLabels));
+  const rotate = visibleLabels.length > 6;
+  const labelY = plotBottom + (rotate ? 12 : 16);
+  const labelChars = rotate ? 8 : 10;
+
+  const visibleLabelIndices = visibleLabels
+    .map((_, i) => i)
+    .filter((i) => i % step === 0 || i === visibleLabels.length - 1);
+
+  // Compile active hover details
+  const activeLabel = hoveredLabelIndex !== null ? visibleLabels[hoveredLabelIndex] : null;
+  const hoveredPoints = hoveredLabelIndex !== null && activeLabel
+    ? seriesWithVisiblePoints
+        .map(s => {
+          const pt = s.coords.find(p => p.label === activeLabel);
+          return pt ? { name: s.name, color: s.color, value: pt.value } : null;
+        })
+        .filter((p): p is { name: string; color: string; value: number } => p !== null)
+    : [];
+
   return (
     <div ref={containerRef} className={`w-full relative group/chart ${className}`}>
       {/* Zoom Toolbar */}
       <div className="absolute top-2 right-2 z-20 flex items-center gap-1.5 opacity-0 group-hover/chart:opacity-100 transition-opacity duration-200 bg-[#0a0a0b]/80 border border-white/5 p-1 rounded-lg backdrop-blur-md">
         <button
           onClick={handleXZoomIn}
-          disabled={xZoomLevel === 3 || points.length <= 3}
+          disabled={xZoomLevel === 3 || allLabels.length <= 3}
           className="p-1 text-[#a1a1aa] hover:text-white disabled:opacity-30 transition-colors text-xs font-semibold cursor-pointer"
           title="Zoom In Timeline"
         >
@@ -254,20 +340,37 @@ export function LineChart({
       </div>
 
       {/* Floating Interactive Tooltip */}
-      {tooltipPos && hoveredIndex !== null && (
+      {tooltipPos && hoveredLabelIndex !== null && activeLabel && (
         <div
-          className="absolute z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full bg-[#161827] border border-amber-500/30 text-white rounded-lg px-2.5 py-1.5 text-xs shadow-xl flex flex-col items-center gap-0.5 animate-fade-in"
+          className="absolute z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full bg-[#161827] border border-white/10 text-white rounded-lg px-3 py-2 text-xs shadow-xl flex flex-col gap-1.5 animate-fade-in min-w-[150px]"
           style={{
             left: `${tooltipPos.x}px`,
             top: `${tooltipPos.y - 12}px`,
           }}
         >
-          <span className="font-semibold text-[10px] text-gray-400 uppercase tracking-wider leading-none">
-            {visiblePoints[hoveredIndex].label}
+          <span className="font-semibold text-[10px] text-gray-400 uppercase tracking-wider leading-none border-b border-white/5 pb-1">
+            {activeLabel}
           </span>
-          <span className="text-sm font-extrabold text-amber-400 leading-none mt-1">
-            {Number(visiblePoints[hoveredIndex].value.toFixed(3))}
-          </span>
+          <div className="flex flex-col gap-1">
+            {hoveredPoints.map((hp, idx) => (
+              <div key={idx} className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: hp.color }} />
+                  <span className="text-gray-300 font-medium">{hp.name}</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="font-bold text-white">
+                    {Number(hp.value.toFixed(1))}%
+                  </span>
+                  {levelMapping && (
+                    <span className="text-[9px] text-gray-400 font-semibold uppercase tracking-wider leading-none scale-90 origin-right">
+                      {levelMapping(hp.value)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -282,11 +385,13 @@ export function LineChart({
         style={{ display: 'block', overflow: 'visible', cursor: 'crosshair' }}
       >
         <defs>
-          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={accent} stopOpacity={0.32} />
-            <stop offset="55%" stopColor={accent} stopOpacity={0.1} />
-            <stop offset="100%" stopColor={accent} stopOpacity={0} />
-          </linearGradient>
+          {seriesWithVisiblePoints.map((s, idx) => (
+            <linearGradient key={`gradient-${idx}`} id={`lc-area-${uid}-${idx}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={s.color} stopOpacity={0.32} />
+              <stop offset="55%" stopColor={s.color} stopOpacity={0.1} />
+              <stop offset="100%" stopColor={s.color} stopOpacity={0} />
+            </linearGradient>
+          ))}
         </defs>
 
         {/* Horizontal gridlines */}
@@ -319,16 +424,28 @@ export function LineChart({
         })}
 
         {/* Gradient area fill under the line (2+ points only) */}
-        {n > 1 && <path d={areaPath} fill={`url(#${gradientId})`} stroke="none" />}
+        {seriesWithVisiblePoints.map((s, idx) => {
+          if (s.coords.length > 1 && s.areaPath) {
+            return (
+              <path
+                key={`area-${idx}`}
+                d={s.areaPath}
+                fill={`url(#lc-area-${uid}-${idx})`}
+                stroke="none"
+              />
+            );
+          }
+          return null;
+        })}
 
         {/* Vertical hover guide-line */}
-        {hoveredIndex !== null && (
+        {hoveredLabelIndex !== null && activeLabel && (
           <line
-            x1={visibleCoords[hoveredIndex].x}
+            x1={xOf(activeLabel)}
             y1={plotTop}
-            x2={visibleCoords[hoveredIndex].x}
+            x2={xOf(activeLabel)}
             y2={plotBottom}
-            stroke={accent}
+            stroke={seriesWithVisiblePoints[0]?.color || accent}
             strokeOpacity={0.25}
             strokeWidth={1.5}
             strokeDasharray="4 4"
@@ -336,75 +453,115 @@ export function LineChart({
           />
         )}
 
-        {/* The trend line (2+ points only) */}
-        {n > 1 && (
-          <path
-            d={linePath}
-            fill="none"
-            stroke={accent}
-            strokeWidth={2.2}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-          />
+        {/* Horizontal hover guide-line and level indicator label (only when single series) */}
+        {hoveredLabelIndex !== null && activeLabel && seriesWithVisiblePoints.length === 1 && (
+          <g>
+            <line
+              x1={plotLeft}
+              y1={seriesWithVisiblePoints[0].coords.find(c => c.label === activeLabel)?.y ?? plotBottom}
+              x2={plotRight}
+              y2={seriesWithVisiblePoints[0].coords.find(c => c.label === activeLabel)?.y ?? plotBottom}
+              stroke={seriesWithVisiblePoints[0].color}
+              strokeOpacity={0.2}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+            />
+            {levelMapping && (
+              <text
+                x={plotRight - 6}
+                y={(seriesWithVisiblePoints[0].coords.find(c => c.label === activeLabel)?.y ?? plotBottom) - 4}
+                textAnchor="end"
+                fontSize={9}
+                fontWeight={700}
+                fill={seriesWithVisiblePoints[0].color}
+                fillOpacity={0.8}
+                className="uppercase tracking-wider select-none font-semibold"
+              >
+                {levelMapping(seriesWithVisiblePoints[0].coords.find(c => c.label === activeLabel)?.value ?? 0)}
+              </text>
+            )}
+          </g>
         )}
 
-        {/* Data dots */}
-        {visibleCoords.map((c, i) => {
-          const isHovered = i === hoveredIndex;
-          const isLast = i === n - 1 && hoveredIndex === null;
-          
-          if (isHovered || isLast) {
+        {/* The trend line (2+ points only) */}
+        {seriesWithVisiblePoints.map((s, idx) => {
+          if (s.coords.length > 1 && s.linePath) {
             return (
-              <g key={`dot-${i}`}>
-                {/* Glowing halo */}
-                <circle cx={c.x} cy={c.y} r={8} fill={accent} fillOpacity={0.22} className="animate-pulse" />
-                <circle
-                  cx={c.x}
-                  cy={c.y}
-                  r={4}
-                  fill={accent}
-                  stroke="#ffffff"
-                  strokeWidth={1.5}
-                  vectorEffect="non-scaling-stroke"
-                />
-              </g>
+              <path
+                key={`line-${idx}`}
+                d={s.linePath}
+                fill="none"
+                stroke={s.color}
+                strokeWidth={2.2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
             );
           }
+          return null;
+        })}
 
-          return (
-            <circle
-              key={`dot-${i}`}
-              cx={c.x}
-              cy={c.y}
-              r={2.8}
-              fill={accent}
-              stroke="#0a0a0a"
-              strokeWidth={1}
-              strokeOpacity={0.4}
-              vectorEffect="non-scaling-stroke"
-              className="hover:scale-150 transition-transform duration-200"
-            />
-          );
+        {/* Data dots */}
+        {seriesWithVisiblePoints.flatMap((s, sIdx) => {
+          return s.coords.map((c, i) => {
+            const isHovered = hoveredLabelIndex !== null && activeLabel === c.label;
+            const isLast = i === s.coords.length - 1 && hoveredLabelIndex === null;
+
+            if (isHovered || isLast) {
+              return (
+                <g key={`dot-${sIdx}-${i}`}>
+                  {/* Glowing halo */}
+                  <circle cx={c.x} cy={c.y} r={8} fill={s.color} fillOpacity={0.22} className="animate-pulse" />
+                  <circle
+                    cx={c.x}
+                    cy={c.y}
+                    r={4}
+                    fill={s.color}
+                    stroke="#ffffff"
+                    strokeWidth={1.5}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </g>
+              );
+            }
+
+            return (
+              <circle
+                key={`dot-${sIdx}-${i}`}
+                cx={c.x}
+                cy={c.y}
+                r={2.8}
+                fill={s.color}
+                stroke="#0a0a0a"
+                strokeWidth={1}
+                strokeOpacity={0.4}
+                vectorEffect="non-scaling-stroke"
+                className="hover:scale-150 transition-transform duration-200"
+              />
+            );
+          });
         })}
 
         {/* X-axis labels */}
-        {visibleLabelIndices.map((i) => {
-          const c = visibleCoords[i];
-          const text = truncate(c.label, labelChars);
-          const isActive = i === hoveredIndex;
+        {visibleLabelIndices.map((idx) => {
+          const label = visibleLabels[idx];
+          const cX = xOf(label);
+          const text = truncate(label, labelChars);
+          const isActive = hoveredLabelIndex !== null && visibleLabels[hoveredLabelIndex] === label;
           
           if (rotate) {
             return (
               <text
-                key={`xlabel-${i}`}
-                x={c.x}
+                key={`xlabel-${label}`}
+                x={cX}
                 y={labelY}
                 fontSize={10}
                 fill={isActive ? '#ffffff' : MUTED}
                 fontWeight={isActive ? 700 : 400}
                 textAnchor="end"
-                transform={`rotate(-40 ${c.x} ${labelY})`}
+                transform={`rotate(-40 ${cX} ${labelY})`}
               >
                 {text}
               </text>
@@ -412,8 +569,8 @@ export function LineChart({
           }
           return (
             <text
-              key={`xlabel-${i}`}
-              x={c.x}
+              key={`xlabel-${label}`}
+              x={cX}
               y={labelY}
               fontSize={isActive ? 12 : 11}
               fontWeight={isActive ? 700 : 400}

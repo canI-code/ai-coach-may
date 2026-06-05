@@ -43,3 +43,7 @@ Supports OTP-based login (Phone/Email). Uses Redis for session management.
 9. **token Usage**: work in such a way that you optimize the token usage. Avoid unnecessary verbosity and try to be concise while still providing all the necessary information.
 
 10. **Feedback**: If you have any feedback or suggestions for improving the project, please share them with the team. We value your input and want to create the best possible product.
+
+11. **Things to note down**: 
+ - More instructions md files are stored under "md-files".
+ - For example, for new features, go through "CHANGES.md" file. for bug fixes, go through "BUG.md" file.

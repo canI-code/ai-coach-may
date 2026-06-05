@@ -5,6 +5,27 @@ import { ObjectId } from 'mongodb';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
+const getAttemptInterestPercentages = (
+  att: any,
+  qsMap: Map<string, any>
+): Record<string, number> => {
+  const m: Record<string, { correct: number; total: number }> = {};
+  (att.answers || []).forEach((ans: any) => {
+    const q = qsMap.get(ans.questionId.toString());
+    const interest = q?.interest;
+    if (!interest) return;
+    if (!m[interest]) m[interest] = { correct: 0, total: 0 };
+    m[interest].total++;
+    if (ans.isCorrect) m[interest].correct++;
+  });
+  
+  const res: Record<string, number> = {};
+  Object.entries(m).forEach(([interest, data]) => {
+    res[interest] = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+  });
+  return res;
+};
+
 export async function GET(req: Request) {
   try {
     const user = await getCurrentUser();
@@ -177,7 +198,8 @@ export async function GET(req: Request) {
             scorePercentage: att.scorePercentage || 0,
             level: att.levelDetermined || 'Beginner',
             duration: durationSeconds,
-            questionCount: att.questionIds?.length || 0
+            questionCount: att.questionIds?.length || 0,
+            interestPercentages: getAttemptInterestPercentages(att, allQsMap),
           }
         ]
       };
@@ -209,7 +231,8 @@ export async function GET(req: Request) {
         scorePercentage: att.scorePercentage || 0,
         level: att.levelAchieved || 'Beginner',
         duration: durationSeconds,
-        questionCount: att.questionIds?.length || 0
+        questionCount: att.questionIds?.length || 0,
+        interestPercentages: getAttemptInterestPercentages(att, practiceQsMap),
       });
     });
 

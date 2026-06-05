@@ -90,7 +90,7 @@ export async function GET(_req: NextRequest) {
       createdAt: toIso(r.createdAt) ?? '',
     }));
 
-    const metrics = computeDashboardMetrics(reports, sessions, new Date());
+    const metrics = computeDashboardMetrics(reports, sessions, new Date(), { trendLimit: 100, recentLimit: 100 });
 
     return NextResponse.json({ success: true, metrics });
   } catch (error) {

@@ -15,6 +15,11 @@
 
 ## Resolved Bugs
 
+- [x] **Individual Skill Focus Trend Graph Incorrect Data**
+  * **Completed Date:** 2026-06-05
+  * **Summary:** Updated the `/api/students/exam/history` endpoint to return `interestPercentages` per attempt (calculating individual interest/skill correct vs total counts from loaded questions maps). Refactored the progress page frontend (`individualSkillPoints` useMemo calculation) to filter all matching sessions (using `.filter` instead of `.find`) and retrieve `a.interestPercentages[selectedSkill]` with a fallback to `a.scorePercentage` when plotting the skill trend graph. Added integration tests to verify correctness of endpoint calculations.
+
+
 - [x] **Redirection to Mini-Report on End of Interview**
   * **Completed Date:** 2026-06-02
   * **Summary:** Modified the naturlich-end modal in the frontend to change its button click action from redirecting directly to `/report` to instead set `showEndPopup(false)`. This unmasks the compiling loader view, allowing the user to watch the AI behavioral compilation status and read the beautiful mini-report Session Ended summary card before choosing to leave.

@@ -92,7 +92,7 @@ export default function RecommendationsPage({ searchParams }: PageProps) {
         setError('');
 
         // 1. Load all sessions
-        const res = await fetch('/api/interview/sessions', { cache: 'no-store' });
+        const res = await fetch('/api/interview/sessions?flat=true', { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load sessions.');
         const data = await res.json();
         const allSessions = (data.sessions || []) as SessionItem[];
@@ -267,7 +267,7 @@ export default function RecommendationsPage({ searchParams }: PageProps) {
             <Button
               variant="secondary"
               icon={<BarChart3 size={16} />}
-              onClick={() => router.push(`/dashboard/b2c/reports?session=S-${sessionDisplayId}`)}
+              onClick={() => router.push(`/dashboard/b2c/progress?session=S-${sessionDisplayId}`)}
             >
               Full Report
             </Button>

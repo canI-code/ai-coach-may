@@ -88,8 +88,8 @@ export function HardwareCheck({ onPass, onCancel }: HardwareCheckProps) {
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { deviceId: selectedCamId ? { exact: selectedCamId } : undefined }, 
-        audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true
+        video: { deviceId: selectedCamId ? { ideal: selectedCamId } : undefined }, 
+        audio: selectedMicId ? { deviceId: { ideal: selectedMicId } } : true
       });
       streamRef.current = stream;
 
@@ -206,11 +206,20 @@ export function HardwareCheck({ onPass, onCancel }: HardwareCheckProps) {
       };
       rafRef.current = requestAnimationFrame(tick);
 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Hardware check failed:', err);
       setCamStatus('fail');
       setMicStatus('fail');
-      setError('Could not access Camera or Microphone. Please check browser permissions.');
+      
+      const errMsg = err.name === 'NotReadableError' || err.message?.includes('Could not start video source')
+        ? 'Your camera or microphone is already in use by another application (e.g., Zoom, Teams, or another browser tab). Please close other apps and try again.'
+        : err.name === 'OverconstrainedError'
+        ? 'The selected camera or microphone does not support the requested configuration. Please choose a different device.'
+        : err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError'
+        ? 'Access denied. Please check your browser permissions and allow access to your camera and microphone.'
+        : 'Could not access your camera or microphone. Please check connections and permissions.';
+        
+      setError(errMsg);
     }
   }, [selectedCamId, selectedMicId]);
 

@@ -486,7 +486,7 @@ export default function InterviewSessionPage({ params }: PageProps) {
         }
 
         const stream = await navigator.mediaDevices.getUserMedia({
-          audio: { deviceId: { exact: deviceId } }
+          audio: { deviceId: { ideal: deviceId } }
         });
 
         if (mediaStreamRef.current) {
@@ -1167,7 +1167,7 @@ export default function InterviewSessionPage({ params }: PageProps) {
     // Microphone → WebAudio AnalyserNode (numeric features only).
     try {
       const constraints = selectedMicId
-        ? { audio: { deviceId: { exact: selectedMicId } } }
+        ? { audio: { deviceId: { ideal: selectedMicId } } }
         : { audio: true };
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       mediaStreamRef.current = stream;
@@ -1207,8 +1207,12 @@ export default function InterviewSessionPage({ params }: PageProps) {
         // MediaRecorder unsupported — fall back to the Web Speech transcript only.
         mediaRecorderRef.current = null;
       }
-    } catch {
-      setErrorMessage('Microphone access is required to answer.');
+    } catch (err: any) {
+      console.error('[Audio error]:', err);
+      const msg = err.name === 'NotReadableError'
+        ? 'Microphone is already in use by another application. Please close other apps and try again.'
+        : 'Microphone access is required to answer. Please check browser permissions.';
+      setErrorMessage(msg);
       setPhase('error');
       return;
     }
@@ -2082,13 +2086,25 @@ export default function InterviewSessionPage({ params }: PageProps) {
                   screenshotFormat="image/jpeg"
                   videoConstraints={
                     selectedWebcamId
-                      ? { deviceId: { exact: selectedWebcamId } }
+                      ? { deviceId: { ideal: selectedWebcamId } }
                       : { facingMode: 'user' }
                   }
                   onUserMedia={(stream) => {
                     stream.getVideoTracks().forEach((track) => {
                       track.enabled = !cameraMuted;
                     });
+                  }}
+                  onUserMediaError={(err: any) => {
+                    console.error('[Webcam Error]:', err);
+                    const msg = err.name === 'NotReadableError' || err.message?.includes('Could not start video source')
+                      ? 'Webcam is already in use by another application (e.g. Zoom, Teams, or another tab). Please close other apps and try again.'
+                      : err.name === 'OverconstrainedError'
+                      ? 'The selected camera does not support the requested configuration. Please select a different camera in your profile.'
+                      : err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError'
+                      ? 'Webcam access was denied. Please allow camera permissions in your browser settings.'
+                      : 'Could not start video source. Please check your camera connection and browser permissions.';
+                    setErrorMessage(msg);
+                    setPhase('error');
                   }}
                   className="w-full h-full object-cover"
                 />

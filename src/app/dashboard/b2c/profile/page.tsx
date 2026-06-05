@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { GlassCard, CardTitle, CardDescription } from '@/app/components/ui/GlassCard';
 import { Button } from '@/app/components/ui/Button';
 import { Input, Select } from '@/app/components/ui/Input';
 import { AmbientGlow } from '@/app/components/ui/AmbientGlow';
 import { 
-  User, GraduationCap, Target, Lock, Unlock, Clock, Save, Info, Loader2, Check, Camera, Mic 
+  User, GraduationCap, Target, Lock, Unlock, Clock, Save, Info, Loader2, Check, Camera, Mic, Calendar
 } from 'lucide-react';
 import { INTERESTS_TAXONOMY, MAIN_FIELDS } from '@/lib/taxonomy';
 
@@ -23,6 +23,100 @@ export default function ProfilePage() {
   const [savingInt, setSavingInt] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Heatmap States & Fetch Hook
+  const [heatmapActivities, setHeatmapActivities] = useState<Record<string, number>>({});
+  const [selectedYear, setSelectedYear] = useState<number>(2026);
+  const [hoveredDay, setHoveredDay] = useState<{ date: Date; count: number; x: number; y: number } | null>(null);
+
+  // Delete Account States
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState('');
+  const [emailOtp, setEmailOtp] = useState('');
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [phoneOtpError, setPhoneOtpError] = useState('');
+  const [emailOtpError, setEmailOtpError] = useState('');
+  const [phoneOtpSuccess, setPhoneOtpSuccess] = useState('');
+  const [emailOtpSuccess, setEmailOtpSuccess] = useState('');
+  const [phoneCountdown, setPhoneCountdown] = useState(0);
+  const [emailCountdown, setEmailCountdown] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+
+  useEffect(() => {
+    async function loadActivityData() {
+      try {
+        const [sessionsRes, examsRes] = await Promise.all([
+          fetch('/api/interview/sessions?flat=true', { cache: 'no-store' }),
+          fetch('/api/students/exam/history', { cache: 'no-store' }),
+        ]);
+
+        const counts: Record<string, number> = {};
+
+        if (sessionsRes.ok) {
+          const sData = await sessionsRes.json();
+          const sessionsList = sData.sessions || [];
+          sessionsList.forEach((s: any) => {
+            if (s.status === 'completed' && s.createdAt) {
+              const dateStr = s.createdAt.slice(0, 10);
+              counts[dateStr] = (counts[dateStr] || 0) + 1;
+            }
+          });
+        }
+
+        if (examsRes.ok) {
+          const eData = await examsRes.json();
+          const attemptsList = eData.attempts || [];
+          attemptsList.forEach((s: any) => {
+            s.attempts.forEach((a: any) => {
+              if (a.date) {
+                const dateStr = a.date.slice(0, 10);
+                counts[dateStr] = (counts[dateStr] || 0) + 1;
+              }
+            });
+          });
+        }
+
+        setHeatmapActivities(counts);
+      } catch (err) {
+        console.error('Error fetching heatmap activity data:', err);
+      }
+    }
+    loadActivityData();
+  }, []);
+
+  const calendarDays = useMemo(() => {
+    const days: Date[] = [];
+    const startDate = new Date(selectedYear, 0, 1);
+    const dayOfWeek = startDate.getDay();
+    startDate.setDate(startDate.getDate() - dayOfWeek);
+
+    for (let i = 0; i < 371; i++) {
+      days.push(new Date(startDate));
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return days;
+  }, [selectedYear]);
+
+  const monthLabels = useMemo(() => {
+    const labels: { text: string; colIndex: number }[] = [];
+    let lastMonth = -1;
+    for (let col = 0; col < 53; col++) {
+      const firstDayOfWeek = calendarDays[col * 7];
+      if (firstDayOfWeek) {
+        const month = firstDayOfWeek.getMonth();
+        if (month !== lastMonth) {
+          labels.push({
+            text: firstDayOfWeek.toLocaleString('default', { month: 'short' }),
+            colIndex: col,
+          });
+          lastMonth = month;
+        }
+      }
+    }
+    return labels;
+  }, [calendarDays]);
 
   // Device Selection States
   const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
@@ -68,6 +162,109 @@ export default function ProfilePage() {
       setTimeout(() => setDeviceSuccess(''), 4000);
     } catch (err: any) {
       setDeviceError('Failed to save device configurations.');
+    }
+  };
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (phoneCountdown > 0) {
+      interval = setInterval(() => {
+        setPhoneCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [phoneCountdown]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (emailCountdown > 0) {
+      interval = setInterval(() => {
+        setEmailCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [emailCountdown]);
+
+  const sendPhoneOtp = async () => {
+    setPhoneOtpError('');
+    setPhoneOtpSuccess('');
+    if (!account?.phone) {
+      setPhoneOtpError('No registered phone number found.');
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: account.phone, role: 'student' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPhoneOtpSent(true);
+        setPhoneOtpSuccess(data.message || 'OTP sent successfully!');
+        setPhoneCountdown(60);
+      } else {
+        setPhoneOtpError(data.error || 'Failed to send OTP.');
+      }
+    } catch (err) {
+      setPhoneOtpError('Failed to send OTP.');
+    }
+  };
+
+  const sendEmailOtp = async () => {
+    setEmailOtpError('');
+    setEmailOtpSuccess('');
+    const emailAddr = account?.email || profile?.email;
+    if (!emailAddr) {
+      setEmailOtpError('No registered email address found.');
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: emailAddr, role: 'student' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEmailOtpSent(true);
+        setEmailOtpSuccess(data.message || 'OTP sent successfully!');
+        setEmailCountdown(60);
+      } else {
+        setEmailOtpError(data.error || 'Failed to send OTP.');
+      }
+    } catch (err) {
+      setEmailOtpError('Failed to send OTP.');
+    }
+  };
+
+  const handleDeleteAccount = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setDeleteError('');
+    setDeleting(true);
+
+    if (!phoneOtp || !emailOtp) {
+      setDeleteError('Both phone and email OTPs are required.');
+      setDeleting(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/students/profile/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phoneOtp, emailOtp }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        router.push('/login?deleted=true');
+      } else {
+        setDeleteError(data.error || 'Failed to request account deletion.');
+      }
+    } catch (err) {
+      setDeleteError('An error occurred. Please try again.');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -370,6 +567,105 @@ export default function ProfilePage() {
               </div>
             </div>
           </GlassCard>
+
+          {/* Hardware & Device Settings Card */}
+          <GlassCard className="relative overflow-hidden border-white/5 shadow-xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-white/5 text-white">
+                <Camera size={20} />
+              </div>
+              <div>
+                <CardTitle className="text-xl">Hardware Devices</CardTitle>
+                <CardDescription className="text-xs">
+                  Configure your preferred webcam and microphone.
+                </CardDescription>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveDevices} className="space-y-5 relative">
+              {deviceError && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                  {deviceError}
+                </div>
+              )}
+              {deviceSuccess && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                  {deviceSuccess}
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Camera</label>
+                  <select
+                    value={selectedCamId}
+                    onChange={(e) => setSelectedCamId(e.target.value)}
+                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  >
+                    {videoDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label || `Camera ${d.deviceId.slice(0, 5)}`}
+                      </option>
+                    ))}
+                    {videoDevices.length === 0 && (
+                      <option value="">No Camera Detected</option>
+                    )}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Microphone</label>
+                  <select
+                    value={selectedMicId}
+                    onChange={(e) => setSelectedMicId(e.target.value)}
+                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  >
+                    {audioDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label || `Microphone ${d.deviceId.slice(0, 5)}`}
+                      </option>
+                    ))}
+                    {audioDevices.length === 0 && (
+                      <option value="">No Microphone Detected</option>
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button 
+                  type="submit" 
+                  icon={<Save size={16} />}
+                  className="bg-amber-500 text-black hover:bg-amber-600 font-bold w-full"
+                >
+                  Save Devices
+                </Button>
+              </div>
+            </form>
+          </GlassCard>
+
+          {/* Danger Zone: Delete Account */}
+          <GlassCard className="border-red-500/15 shadow-lg bg-red-500/[0.01]">
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 shrink-0 mt-0.5">
+                <Unlock size={16} />
+              </div>
+              <div className="flex-1">
+                <CardTitle className="text-base mb-1 text-red-400 flex items-center gap-1.5 font-bold">
+                  Danger Zone
+                </CardTitle>
+                <CardDescription className="text-xs text-[#a1a1aa] leading-relaxed mb-3">
+                  Temporarily disable and schedule your account for deletion. All data will be permanently wiped after 30 days. You can cancel this request by logging back in.
+                </CardDescription>
+                <Button 
+                  onClick={() => setShowDeleteModal(true)} 
+                  className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-semibold text-xs w-full py-2 rounded-xl flex items-center justify-center gap-1"
+                >
+                  Delete Account
+                </Button>
+              </div>
+            </div>
+          </GlassCard>
         </div>
 
         {/* Right Columns: Educational Details & Interests Form */}
@@ -538,84 +834,285 @@ export default function ProfilePage() {
             </form>
           </GlassCard>
 
-          {/* Hardware & Device Settings Card */}
+          {/* Developer Activity Heatmap Card */}
           <GlassCard className="relative overflow-hidden border-white/5 shadow-xl transition-all duration-300">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-white/5 text-white">
-                <Camera size={20} />
+                <Calendar size={20} />
               </div>
               <div>
-                <CardTitle className="text-xl">Hardware & Devices Settings</CardTitle>
+                <CardTitle className="text-xl">Developer Activity Heatmap</CardTitle>
                 <CardDescription className="text-xs">
-                  Configure your preferred webcam and microphone for live mock interview sessions.
+                  Your daily practice velocity across mock interviews and practice exams.
                 </CardDescription>
               </div>
             </div>
 
-            <form onSubmit={handleSaveDevices} className="space-y-5 relative">
-              {deviceError && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
-                  {deviceError}
-                </div>
-              )}
-              {deviceSuccess && (
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-                  {deviceSuccess}
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Camera</label>
-                  <select
-                    value={selectedCamId}
-                    onChange={(e) => setSelectedCamId(e.target.value)}
-                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
-                  >
-                    {videoDevices.map((d) => (
-                      <option key={d.deviceId} value={d.deviceId}>
-                        {d.label || `Camera ${d.deviceId.slice(0, 5)}`}
-                      </option>
-                    ))}
-                    {videoDevices.length === 0 && (
-                      <option value="">No Camera Detected</option>
-                    )}
-                  </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Preferred Microphone</label>
-                  <select
-                    value={selectedMicId}
-                    onChange={(e) => setSelectedMicId(e.target.value)}
-                    className="w-full bg-[#161618] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
-                  >
-                    {audioDevices.map((d) => (
-                      <option key={d.deviceId} value={d.deviceId}>
-                        {d.label || `Microphone ${d.deviceId.slice(0, 5)}`}
-                      </option>
-                    ))}
-                    {audioDevices.length === 0 && (
-                      <option value="">No Microphone Detected</option>
-                    )}
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex justify-end pt-2">
-                <Button 
-                  type="submit" 
-                  icon={<Save size={16} />}
-                  className="bg-amber-500 text-black hover:bg-amber-600 font-bold min-w-[140px]"
+            <div className="flex flex-col md:flex-row gap-6 items-start relative">
+              
+              {/* Tooltip */}
+              {hoveredDay && (
+                <div
+                  className="absolute z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full bg-[#161827] border border-amber-500/30 text-white rounded-lg px-2.5 py-1.5 text-xs shadow-xl flex flex-col items-center gap-0.5"
+                  style={{
+                    left: `${hoveredDay.x}px`,
+                    top: `${hoveredDay.y}px`,
+                  }}
                 >
-                  Save Devices
-                </Button>
+                  <span className="font-semibold text-white">
+                    {hoveredDay.count} {hoveredDay.count === 1 ? 'activity' : 'activities'}
+                  </span>
+                  <span className="text-[10px] text-gray-400">
+                    {hoveredDay.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </div>
+              )}
+
+              {/* Grid SVG Container */}
+              <div className="flex-1 overflow-x-auto w-full pb-2">
+                <svg viewBox="0 0 780 130" className="min-w-[700px] overflow-visible select-none">
+                  {/* Month Labels */}
+                  {monthLabels.map((lbl, idx) => (
+                    <text
+                      key={`month-label-${idx}`}
+                      x={30 + lbl.colIndex * 14}
+                      y={12}
+                      fontSize={10}
+                      fill="#a1a1aa"
+                      fillOpacity={0.7}
+                    >
+                      {lbl.text}
+                    </text>
+                  ))}
+
+                  {/* Day Labels (Mon, Wed, Fri) */}
+                  <text x={0} y={42} fontSize={9} fill="#a1a1aa" fillOpacity={0.6} dominantBaseline="middle">Mon</text>
+                  <text x={0} y={70} fontSize={9} fill="#a1a1aa" fillOpacity={0.6} dominantBaseline="middle">Wed</text>
+                  <text x={0} y={98} fontSize={9} fill="#a1a1aa" fillOpacity={0.6} dominantBaseline="middle">Fri</text>
+
+                  {/* Heatmap Squares */}
+                  {Array.from({ length: 53 }).map((_, col) => (
+                    <g key={`col-${col}`}>
+                      {Array.from({ length: 7 }).map((_, row) => {
+                        const idx = col * 7 + row;
+                        const date = calendarDays[idx];
+                        if (!date || date.getFullYear() !== selectedYear) {
+                          return null;
+                        }
+                        const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                        const count = heatmapActivities[dateKey] || 0;
+
+                        // Determine shade
+                        let fill = 'rgba(255, 255, 255, 0.04)';
+                        let stroke = 'rgba(255, 255, 255, 0.02)';
+                        if (count > 0) {
+                          if (count === 1) {
+                            fill = 'rgba(245, 158, 11, 0.15)';
+                            stroke = 'rgba(245, 158, 11, 0.2)';
+                          } else if (count === 2) {
+                            fill = 'rgba(245, 158, 11, 0.35)';
+                            stroke = 'rgba(245, 158, 11, 0.4)';
+                          } else if (count === 3) {
+                            fill = 'rgba(245, 158, 11, 0.65)';
+                            stroke = 'rgba(245, 158, 11, 0.7)';
+                          } else {
+                            fill = 'rgba(245, 158, 11, 0.95)';
+                            stroke = 'rgba(245, 158, 11, 1)';
+                          }
+                        }
+
+                        return (
+                          <rect
+                            key={`cell-${col}-${row}`}
+                            x={30 + col * 14}
+                            y={22 + row * 14}
+                            width={11}
+                            height={11}
+                            rx={2}
+                            fill={fill}
+                            stroke={stroke}
+                            strokeWidth={1}
+                            className="transition-colors duration-150 cursor-pointer"
+                            onMouseEnter={(e) => {
+                              const rect = e.currentTarget.getBoundingClientRect();
+                              const container = e.currentTarget.ownerSVGElement?.parentElement;
+                              const containerRect = container?.getBoundingClientRect();
+                              if (rect && containerRect) {
+                                setHoveredDay({
+                                  date,
+                                  count,
+                                  x: rect.left - containerRect.left + rect.width / 2,
+                                  y: rect.top - containerRect.top - 8,
+                                });
+                              }
+                            }}
+                            onMouseLeave={() => setHoveredDay(null)}
+                          />
+                        );
+                      })}
+                    </g>
+                  ))}
+                </svg>
               </div>
-            </form>
+
+              {/* Year Selector */}
+              <div className="flex md:flex-col gap-2 shrink-0 p-1 rounded-xl bg-white/5 border border-white/5 md:sticky md:top-0 w-full md:w-auto">
+                {[2026, 2025, 2024, 2023].map((yr) => (
+                  <button
+                    key={yr}
+                    onClick={() => setSelectedYear(yr)}
+                    className={`px-4 py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center ${
+                      selectedYear === yr
+                        ? 'bg-amber-500 text-black font-bold'
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {yr}
+                  </button>
+                ))}
+              </div>
+
+            </div>
           </GlassCard>
 
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <GlassCard className="w-full max-w-md border-red-500/20 shadow-2xl relative" padding="lg">
+            <button 
+              onClick={() => {
+                setShowDeleteModal(false);
+                setPhoneOtp('');
+                setEmailOtp('');
+                setPhoneOtpSent(false);
+                setEmailOtpSent(false);
+                setPhoneOtpError('');
+                setEmailOtpError('');
+                setPhoneOtpSuccess('');
+                setEmailOtpSuccess('');
+                setDeleteError('');
+              }}
+              className="absolute top-4 right-4 text-white/50 hover:text-white font-bold text-sm cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="mb-6 flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-400 mb-3">
+                <Lock size={22} />
+              </div>
+              <CardTitle className="text-xl text-white">Delete Account Request</CardTitle>
+              <CardDescription className="text-xs text-zinc-400 mt-1 max-w-sm">
+                This will temporarily deactivate your account and schedule it for permanent deletion in 30 days. Log back in within 30 days to cancel this request.
+              </CardDescription>
+            </div>
+
+            <form onSubmit={handleDeleteAccount} className="space-y-5">
+              {deleteError && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                  {deleteError}
+                </div>
+              )}
+
+              {/* Phone Verification Section */}
+              <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-zinc-300">Phone Verification</label>
+                  <span className="text-[10px] text-zinc-500">{account?.phone ? account.phone.replace(/(\d{2})(\d{5})(\d{5})/, '$1 ***** $3') : ''}</span>
+                </div>
+                
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="4-digit OTP"
+                    maxLength={4}
+                    value={phoneOtp}
+                    onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ''))}
+                    disabled={deleting}
+                    className="flex-1 bg-[#161618] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 text-center tracking-widest font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={sendPhoneOtp}
+                    disabled={phoneCountdown > 0 || deleting}
+                    className="px-3 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/5 hover:bg-white/10 text-white cursor-pointer transition-all disabled:opacity-50"
+                  >
+                    {phoneCountdown > 0 ? `Resend (${phoneCountdown}s)` : phoneOtpSent ? 'Resend' : 'Send OTP'}
+                  </button>
+                </div>
+
+                {phoneOtpError && <p className="text-[10px] text-red-400 mt-1">{phoneOtpError}</p>}
+                {phoneOtpSuccess && <p className="text-[10px] text-emerald-400 mt-1">{phoneOtpSuccess}</p>}
+              </div>
+
+              {/* Email Verification Section */}
+              <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-zinc-300">Email Verification</label>
+                  <span className="text-[10px] text-zinc-500 truncate max-w-[180px]">{account?.email || profile?.email || ''}</span>
+                </div>
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="4-digit OTP"
+                    maxLength={4}
+                    value={emailOtp}
+                    onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, ''))}
+                    disabled={deleting}
+                    className="flex-1 bg-[#161618] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 text-center tracking-widest font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={sendEmailOtp}
+                    disabled={emailCountdown > 0 || deleting}
+                    className="px-3 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/5 hover:bg-white/10 text-white cursor-pointer transition-all disabled:opacity-50"
+                  >
+                    {emailCountdown > 0 ? `Resend (${emailCountdown}s)` : emailOtpSent ? 'Resend' : 'Send OTP'}
+                  </button>
+                </div>
+
+                {emailOtpError && <p className="text-[10px] text-red-400 mt-1">{emailOtpError}</p>}
+                {emailOtpSuccess && <p className="text-[10px] text-emerald-400 mt-1">{emailOtpSuccess}</p>}
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  fullWidth
+                  disabled={deleting}
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setPhoneOtp('');
+                    setEmailOtp('');
+                    setPhoneOtpSent(false);
+                    setEmailOtpSent(false);
+                    setPhoneOtpError('');
+                    setEmailOtpError('');
+                    setPhoneOtpSuccess('');
+                    setEmailOtpSuccess('');
+                    setDeleteError('');
+                  }}
+                  className="text-xs font-semibold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  fullWidth
+                  disabled={!phoneOtp || !emailOtp || deleting}
+                  className="bg-red-500 text-white hover:bg-red-600 font-bold text-xs"
+                >
+                  {deleting ? 'Deleting...' : 'Confirm Deletion'}
+                </Button>
+              </div>
+            </form>
+          </GlassCard>
+        </div>
+      )}
     </main>
   );
 }

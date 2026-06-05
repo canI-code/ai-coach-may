@@ -26,6 +26,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    let recovered = false;
+    if (user.deletionScheduled) {
+      const deletionScheduledAt = new Date(user.deletionScheduledAt);
+      const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+      if (Date.now() - deletionScheduledAt.getTime() > thirtyDaysMs) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
+      recovered = true;
+    }
+
     // Status and Role Checks
     if (user.role === 'mentee') {
       if (user.status === 'pending') return NextResponse.json({ error: 'Account pending mentor approval' }, { status: 403 });
@@ -103,6 +113,10 @@ export async function POST(request: Request) {
       delete updateData.$push; // Overwrite push with single array
     }
 
+    if (recovered) {
+      updateData.$unset = { deletionScheduled: "", deletionScheduledAt: "" };
+    }
+
     await db.collection('users').updateOne(
       { _id: user._id },
       updateData as any
@@ -117,7 +131,7 @@ export async function POST(request: Request) {
     });
 
     const { password: _, sessions: __, ...userWithoutSecrets } = user;
-    return NextResponse.json({ message: 'Login successful', user: userWithoutSecrets }, { status: 200 });
+    return NextResponse.json({ message: 'Login successful', user: userWithoutSecrets, recovered }, { status: 200 });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

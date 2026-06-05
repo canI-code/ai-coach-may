@@ -14,13 +14,10 @@ import { GlassCard, CardTitle, CardDescription } from '@/app/components/ui/Glass
 import { Button } from '@/app/components/ui/Button';
 import type {
   DashboardMetrics,
-  DashboardSessionSummary,
 } from '@/lib/interview/dashboard-metrics';
 import { StatCard } from './charts/StatCard';
 import { LineChart } from './charts/LineChart';
 import { RadarChart } from './charts/RadarChart';
-import { RecentInterviews } from './RecentInterviews';
-import { FocusAreas } from './FocusAreas';
 
 type FetchState = 'loading' | 'error' | 'ready';
 
@@ -56,14 +53,6 @@ export default function DashboardClient() {
   useEffect(() => {
     loadMetrics();
   }, [loadMetrics]);
-
-  const handleViewSession = useCallback(
-    (session: DashboardSessionSummary) => {
-      const base = `/dashboard/b2c/interview/${session.sessionId}`;
-      router.push(session.status === 'completed' ? `${base}/report` : base);
-    },
-    [router]
-  );
 
   // ── Loading ─────────────────────────────────────────────────────────────
   if (status === 'loading') {
@@ -202,18 +191,7 @@ export default function DashboardClient() {
         </GlassCard>
       </div>
 
-      {/* Bottom Row: 2/3 recent + 1/3 focus areas */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <RecentInterviews
-          sessions={metrics.recentSessions}
-          onView={handleViewSession}
-          className="lg:col-span-2"
-        />
-        <FocusAreas
-          weaknessTags={metrics.topWeaknessTags}
-          resources={metrics.recommendedResources}
-        />
-      </div>
+
     </div>
   );
 }

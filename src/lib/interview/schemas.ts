@@ -84,6 +84,8 @@ export interface SessionConfig {
   institutionCode?: string;
   sessionType?: 'full' | 'targeted';
   focusTags?: string[];
+  parentSessionId?: string;
+  attemptNumber?: number;
 }
 
 export interface ServedQuestion {
@@ -170,6 +172,8 @@ export interface InterviewSessionDoc {
   earlyExitReason?: string;
   reportId?: ObjectId;
   startedAt?: Date;
+  parentSessionId?: ObjectId;
+  attemptNumber?: number;
   createdAt: Date;
   updatedAt: Date;
 }

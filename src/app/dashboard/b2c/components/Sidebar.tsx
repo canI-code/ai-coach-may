@@ -60,7 +60,7 @@ export function Sidebar() {
     { name: 'Interview History', icon: History, path: '/dashboard/b2c/interview-history' },
     { name: 'Exam Practice', icon: BookOpen, path: '/dashboard/b2c/practice' },
     { name: 'Exam History', icon: ScrollText, path: '/dashboard/b2c/exam-history' },
-    { name: 'Reports', icon: BarChart3, path: '/dashboard/b2c/reports' },
+    { name: 'Progress', icon: BarChart3, path: '/dashboard/b2c/progress' },
     { name: 'Recommendations', icon: Lightbulb, path: '/dashboard/b2c/recommendations' },
     { name: 'Profile', icon: User, path: '/dashboard/b2c/profile' },
   ];
