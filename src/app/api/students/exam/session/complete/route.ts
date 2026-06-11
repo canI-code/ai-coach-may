@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
+import { getDbForUser } from '@/lib/db-selector';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { ProficiencyLevel } from '@/lib/assessment';
 
-const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 const MAX_TIME_PER_QUESTION = 120; // 2 minutes
 
 function getDifficultyWeight(diffStr: string): number {
@@ -39,8 +39,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing attemptId' }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
 
     const attempt = await db.collection('exam_attempts').findOne({
       _id: new ObjectId(attemptId),
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
       .find({ _id: { $in: attempt.questionIds } })
       .toArray();
       
-    const qsMap = new Map(poolQuestions.map(q => [q._id.toString(), q]));
+    const qsMap = new Map<string, any>(poolQuestions.map((q: any) => [q._id.toString(), q]));
 
     let totalScore = 0;
     let maxPossibleScore = 0;
@@ -138,6 +137,14 @@ export async function POST(req: Request) {
       { _id: attempt.sessionId },
       { $set: { status: 'completed', completedAt } }
     );
+
+    // Increment B2B usage count
+    if (user.role === 'mentee') {
+      await db.collection('users').updateOne(
+        { _id: user._id },
+        { $inc: { 'usage.examsCompleted': 1 } }
+      );
+    }
 
     // 3. Update overall user_assessment_stats rolling average for backward compatibility with existing profile/dashboard
     await db.collection('user_assessment_stats').updateOne(

@@ -8,10 +8,10 @@ export async function POST(request: Request) {
     const { email, phone, password, role, validateOnly } = await request.json();
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
-    const otpsCollection = db.collection('otps');
-
     const isB2C = role === 'student' || role === 'professional';
+    const isB2B = role === 'mentor' || role === 'mentee';
+    const db = client.db(isB2B ? 'aicoach_institutional' : 'aicoach');
+    const otpsCollection = client.db('aicoach').collection('otps');
     let user;
 
     if (isB2C) {
@@ -86,14 +86,6 @@ export async function POST(request: Request) {
       await otpsCollection.deleteOne({ identifier: otpIdentifier });
     }
 
-    // Device Limit (Mentor)
-    if (role === 'mentor') {
-      const activeSessions = user.sessions || [];
-      if (activeSessions.length >= 3) {
-        return NextResponse.json({ error: 'Active on 3 devices already.' }, { status: 403 });
-      }
-    }
-
     const sessionId = 'session_' + Math.random().toString(36).substring(7);
     const userAgent = request.headers.get('user-agent') || 'Unknown Device';
 
@@ -106,6 +98,17 @@ export async function POST(request: Request) {
       },
       $inc: { loginCount: 1 }
     };
+
+    // Device Limit (Mentor) - Session Rotation
+    if (role === 'mentor') {
+      const activeSessions = user.sessions || [];
+      if (activeSessions.length >= 3) {
+        // Keep the newest 2 and add the new one
+        const rotatedSessions = activeSessions.slice(-2);
+        updateData.$set.sessions = [...rotatedSessions, { id: sessionId, createdAt: new Date() }];
+        delete updateData.$push;
+      }
+    }
 
     // Single Device Enforcement for Mentee (B2B Student)
     if (user.role === 'mentee') {

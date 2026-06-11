@@ -69,6 +69,8 @@ export interface DashboardMetrics {
   avgDurationMinutes: number | null;
   /** Consecutive-day streak of interview activity ending today. */
   streakDays: number;
+  /** Longest streak of interview activity. */
+  longestStreak: number;
   /** Mean of each category across ready reports; null when none. */
   categoryAverages: CategoryScores | null;
   /** Chronological CI points (oldest → newest) for the trend chart. */
@@ -229,6 +231,53 @@ export function computeStreakDays(sessionDates: Date[], now: Date): number {
 }
 
 /**
+ * Count the longest consecutive-day streak of interview activity.
+ */
+export function computeLongestStreakDays(sessionDates: Date[]): number {
+  const days = new Set<string>();
+  for (const d of sessionDates) {
+    if (d instanceof Date && !Number.isNaN(d.getTime())) {
+      days.add(calendarDayKey(d));
+    }
+  }
+  if (days.size === 0) return 0;
+
+  const uniqueDates = Array.from(days).map(dayStr => {
+    const [y, m, d] = dayStr.split('-').map(Number);
+    return new Date(y, m, d);
+  });
+  uniqueDates.sort((a, b) => a.getTime() - b.getTime());
+
+  let longestStreak = 0;
+  let currentStreak = 0;
+  let prevTime: number | null = null;
+
+  for (const d of uniqueDates) {
+    const time = d.getTime();
+    if (prevTime === null) {
+      currentStreak = 1;
+    } else {
+      const diffDays = Math.round((time - prevTime) / (24 * 60 * 60 * 1000));
+      if (diffDays === 1) {
+        currentStreak++;
+      } else if (diffDays > 1) {
+        if (currentStreak > longestStreak) {
+          longestStreak = currentStreak;
+        }
+        currentStreak = 1;
+      }
+    }
+    prevTime = time;
+  }
+
+  if (currentStreak > longestStreak) {
+    longestStreak = currentStreak;
+  }
+
+  return longestStreak;
+}
+
+/**
  * Chronological CI trend points (oldest → newest) ordered by readyAt (fallback
  * createdAt), keeping only the last `limit` points. Labels render like "May 31".
  */
@@ -337,6 +386,9 @@ export function computeDashboardMetrics(
     safeSessions.map((s) => new Date(s.createdAt)),
     now,
   );
+  const longestStreak = computeLongestStreakDays(
+    safeSessions.map((s) => new Date(s.createdAt)),
+  );
 
   const categoryAverages = meanCategoryScores(safeReports);
   const ciTrend = buildCiTrend(safeReports, trendLimit);
@@ -400,7 +452,7 @@ export function computeDashboardMetrics(
   }
 
   const averageCi = safeReports.length > 0
-    ? Math.round(safeReports.reduce((sum, r) => sum + r.ciScore, 0) / safeReports.length)
+    ? Math.round((safeReports.reduce((sum, r) => sum + r.ciScore, 0) / safeReports.length) * 1000) / 1000
     : null;
   const bestCi = safeReports.length > 0
     ? Math.round(Math.max(...safeReports.map(r => r.ciScore)) * 1000) / 1000
@@ -415,6 +467,7 @@ export function computeDashboardMetrics(
     sessionsThisWeek,
     avgDurationMinutes,
     streakDays,
+    longestStreak,
     categoryAverages,
     ciTrend,
     topWeaknessTags,

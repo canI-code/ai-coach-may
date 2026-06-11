@@ -12,7 +12,8 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const db = client.db('aicoach');
     const otpsCollection = db.collection('otps');
-    const usersCollection = db.collection('users');
+    const isB2B = role === 'mentor' || role === 'mentee';
+    const usersCollection = client.db(isB2B ? 'aicoach_institutional' : 'aicoach').collection('users');
 
     const record = await otpsCollection.findOne({ identifier });
     const now = new Date();

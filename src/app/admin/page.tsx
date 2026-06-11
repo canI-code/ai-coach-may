@@ -15,6 +15,12 @@ export default function AdminPage() {
   const [selectedInst, setSelectedInst] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'institutions' | 'flagged' | 'questions'>('institutions');
 
+  // Rejection modal state
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [rejecting, setRejecting] = useState(false);
+
   const fetchInstitutions = async () => {
     try {
       const res = await fetch('/api/admin/institutions');
@@ -71,6 +77,34 @@ export default function AdminPage() {
       }
     } catch (err) {
       setMessage('Approval failed');
+    }
+  };
+  
+  const handleReject = async () => {
+    if (!rejectingId || !rejectionReason.trim()) return;
+    setRejecting(true);
+    setMessage('');
+    try {
+      const res = await fetch('/api/admin/institutions/reject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: rejectingId, reason: rejectionReason }),
+      });
+      if (res.ok) {
+        setMessage('Rejected successfully! Simulated notification logged.');
+        setShowRejectModal(false);
+        setRejectingId(null);
+        setRejectionReason('');
+        setSelectedInst(null);
+        fetchInstitutions();
+      } else {
+        const data = await res.json();
+        setMessage('Error: ' + data.error);
+      }
+    } catch (err) {
+      setMessage('Rejection failed');
+    } finally {
+      setRejecting(false);
     }
   };
 
@@ -260,17 +294,78 @@ export default function AdminPage() {
                           {selectedInst.consent ? 'Yes' : 'No'}
                         </div>
                       </div>
+                      
+                      {(selectedInst.selfieLocalPath || selectedInst.aadhaarLocalPath || selectedInst.documentLocalPath) && (
+                        <>
+                          <hr className="border-white/10" />
+                          <div className="space-y-3">
+                            {selectedInst.selfieLocalPath && (
+                              <div>
+                                <span className="text-muted block mb-1.5">Mentor Live Selfie:</span>
+                                <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-white/10 bg-white/5">
+                                  <img
+                                    src={`/api/admin/testing-files?filename=${selectedInst.selfieLocalPath}`}
+                                    alt="Mentor Selfie"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                            {selectedInst.aadhaarLocalPath && (
+                              <div className="flex justify-between items-center">
+                                <span className="text-muted">Aadhaar Photo:</span>
+                                <a
+                                  href={`/api/admin/testing-files?filename=${selectedInst.aadhaarLocalPath}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-amber-400 hover:text-amber-300 font-semibold underline text-xs inline-flex items-center gap-1"
+                                >
+                                  View Aadhaar
+                                </a>
+                              </div>
+                            )}
+                            {selectedInst.documentLocalPath && (
+                              <div className="flex justify-between items-center">
+                                <span className="text-muted">College Document:</span>
+                                <a
+                                  href={`/api/admin/testing-files?filename=${selectedInst.documentLocalPath}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-amber-400 hover:text-amber-300 font-semibold underline text-xs inline-flex items-center gap-1"
+                                >
+                                  View Document
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {selectedInst.status === 'pending' && (
-                      <Button 
-                        onClick={() => handleApprove(selectedInst._id)}
-                        fullWidth
-                        icon={<CheckCircle className="w-4 h-4" />}
-                        className="mt-6"
-                      >
-                        Approve Institution
-                      </Button>
+                      <div className="mt-6 flex gap-4">
+                        <Button 
+                          onClick={() => handleApprove(selectedInst._id)}
+                          fullWidth
+                          icon={<CheckCircle className="w-4 h-4" />}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                        >
+                          Approve
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            setRejectingId(selectedInst._id);
+                            setRejectionReason('');
+                            setShowRejectModal(true);
+                          }}
+                          fullWidth
+                          variant="secondary"
+                          icon={<XCircle className="w-4 h-4" />}
+                          className="border border-red-500/20 text-red-400 hover:bg-red-500/10 bg-red-500/5 hover:text-red-300"
+                        >
+                          Reject
+                        </Button>
+                      </div>
                     )}
                   </>
                 ) : (
@@ -383,6 +478,46 @@ export default function AdminPage() {
           </div>
         </Container>
       </main>
+
+      {showRejectModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <GlassCard className="max-w-md w-full border-red-500/20" padding="lg">
+            <h3 className="text-xl font-bold text-white mb-2">Reject Institution Registration</h3>
+            <p className="text-sm text-muted mb-4">
+              Please provide the reason for rejecting this institution. This reason will be emailed to the mentor.
+            </p>
+            
+            <textarea
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+              placeholder="e.g., The uploaded document does not match the college name..."
+              className="w-full h-32 bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-red-500/40 transition-all mb-6"
+            />
+
+            <div className="flex gap-4">
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => {
+                  setShowRejectModal(false);
+                  setRejectingId(null);
+                  setRejectionReason('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                fullWidth
+                disabled={!rejectionReason.trim() || rejecting}
+                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={handleReject}
+              >
+                {rejecting ? 'Rejecting...' : 'Confirm Reject'}
+              </Button>
+            </div>
+          </GlassCard>
+        </div>
+      )}
     </div>
   );
 }

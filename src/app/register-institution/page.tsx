@@ -52,6 +52,20 @@ export default function RegisterInstitution() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [capturedSelfie, setCapturedSelfie] = useState<string | null>(null);
+  const [documentBase64, setDocumentBase64] = useState<string | null>(null);
+  const [aadhaarBase64, setAadhaarBase64] = useState<string | null>(null);
+
+  const handleFileChange = (file: File, type: 'document' | 'aadhaar') => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (type === 'document') {
+        setDocumentBase64(reader.result as string);
+      } else {
+        setAadhaarBase64(reader.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -129,7 +143,10 @@ export default function RegisterInstitution() {
         body: JSON.stringify({
           ...formData,
           mentorPhone: countryCode + formData.mentorPhone,
-          documentType: formData.documentType === 'other' ? formData.otherDocumentType : formData.documentType
+          documentType: formData.documentType === 'other' ? formData.otherDocumentType : formData.documentType,
+          documentBase64,
+          aadhaarBase64,
+          selfieBase64: capturedSelfie
         }),
       });
       const data = await res.json();
@@ -437,6 +454,7 @@ export default function RegisterInstitution() {
                           const type = formData.documentType === 'other' ? formData.otherDocumentType : formData.documentType;
                           const ext = getFileExtension(file.name);
                           setFormData({...formData, documentName: `${type || 'document'}.${ext}`});
+                          handleFileChange(file, 'document');
                         }
                       }} 
                     />
@@ -509,6 +527,7 @@ export default function RegisterInstitution() {
                         if (file) {
                           const ext = getFileExtension(file.name);
                           setFormData({...formData, aadhaarPicName: `aadhaar.${ext}`});
+                          handleFileChange(file, 'aadhaar');
                         }
                       }} 
                     />

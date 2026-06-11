@@ -10,7 +10,7 @@ export async function GET() {
     }
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
+    const db = client.db('aicoach_institutional');
 
     const requests = await db.collection('users').find({ 
       role: 'mentee',

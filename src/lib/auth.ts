@@ -18,12 +18,20 @@ export async function getCurrentUser() {
     }
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
+    let db = client.db('aicoach');
 
-    const user = await db.collection('users').findOne({ 
+    let user = await db.collection('users').findOne({ 
       _id: new ObjectId(userId),
       'sessions.id': sessionId 
     });
+
+    if (!user) {
+      db = client.db('aicoach_institutional');
+      user = await db.collection('users').findOne({ 
+        _id: new ObjectId(userId),
+        'sessions.id': sessionId 
+      });
+    }
 
     if (!user) {
       console.error(`No user found for ID ${userId} and session ${sessionId}`);
@@ -36,3 +44,33 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export function isUserAccessBlocked(user: any, type: 'interview' | 'exam'): { blocked: boolean; reason?: string } {
+  if (user.role !== 'mentee') return { blocked: false };
+  
+  if (user.status === 'disabled') {
+    return { blocked: true, reason: 'Your institutional account has been disabled by your mentor.' };
+  }
+  
+  const limits = user.accessLimit;
+  const usage = user.usage || { interviewsCompleted: 0, examsCompleted: 0 };
+
+  if (limits) {
+    if (limits.expiresAt && new Date(limits.expiresAt) < new Date()) {
+      return { blocked: true, reason: 'Your institutional access has expired.' };
+    }
+
+    if (type === 'interview') {
+      if (limits.interviewsCount !== null && usage.interviewsCompleted >= limits.interviewsCount) {
+        return { blocked: true, reason: `You have reached your limit of ${limits.interviewsCount} interviews.` };
+      }
+    } else if (type === 'exam') {
+      if (limits.examsCount !== null && usage.examsCompleted >= limits.examsCount) {
+        return { blocked: true, reason: `You have reached your limit of ${limits.examsCount} exams.` };
+      }
+    }
+  }
+
+  return { blocked: false };
+}
+

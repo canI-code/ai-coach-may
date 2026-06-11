@@ -57,6 +57,33 @@ The currently selected year is highlighted.
         -  also add seperate color for each skill and mention it color at where the dropdown is .
 
 
-## in future (do only when shifted to "to do" section):
+# b2b related:
+- mentor:
+  - [x] ~~even a new mentor the dashboard is showing a graph with some values instead of 0.~~ (Verified: no dummy data, chart shows flat 0 line for new mentors)
+  - [x] ~~mentor should select education details like degree, subject, year etc before creating invite links~~ (Already implemented in invite modal)
+  - [x] ~~mentor profile section is missing.~~ (Exists at /dashboard/mentor/profile)
+  - [x] ~~mentor getting "Active on 3 devices" error.~~ (Fixed: implemented session rotation on login and session cleanup on logout)
 
-# [important] implement 
+- mentee section:
+ - [ ] after user uses invite method to login then he should not get a popup after signin to create username, enter educational details etc because those details will be set by his mentor and send invite code accordingly.
+ - [x] ~~for now remove the frontend for "request" method to login.~~ (Already hidden - code exists but no UI toggle visible)
+ - [x] ~~the urls are redirecting to /b2c but i want the b2b to be completely separate from b2c.~~ (Fixed: dynamic portalType routing implemented)
+
+
+# admin related:
+- [x] ~~when admin is approving any college mentor then he should also see the live pic and documents uploaded.~~ (Implemented in both admin and superadmin pages)
+- [x] ~~instead of just one button "approve institution" add approve and reject button. if rejected then admin should mention the reason that will be mailed to that mentor.~~ (Both buttons + rejection reason modal implemented)
+
+### important changes, handel with care:
+- [ ] Dashboard: The CI score is, not. The average of all the previous CI scores. Instead it is showing the current CI score, so it has to be actually the average. Of previously Ci scores. 
+- [ ] Show user his longest streak and current streak in dashboard. 
+- [ ] The CI score graphs are also not proper. They go on a course and then. State jumped to a particular point, creating a straight vertical line. And then again they become a. Earlier it was a smooth graph. Now there are some issues fixed them.
+- [ ] Progress: Similar issues are offering in the progress section “Skill Focus Trend” graphs should be shown monthly, weekly, yearly. also the graph is not proper. there are may vertical datapoints in the graph.
+- [ ] recommendation: currently user is getting recommendation session wise but i want that do be general. like it is continuously monitoring user’s performance and as per that the recommendations are generated using Ai with proper HTML formats.  now to make less usage of AI
+the system will have a “re-recommend” button which when user clicks then he gets a notification that recommendation will be generated shortly and user can continue his other activity, it will run in background. this is because even if we use a slow model there will be no worries to make it fast.
+- [ ] remove “full report” button in recommendation section.
+- [ ] make recommendation system fully autonomous. It will be 100% AI generated. replies should be strictly proper and AI should give content such that those can be converted to html-css styled.
+- [ ] to make it autonomous we will make use of threshold values. so the logic is: data will be taken from “Technical Skill Progress” and “Behavioral & Competency Skills” under “progress” section because those are the combined results of user so no need to fetch full data. 
+then there will be a fixed threshold value which you can set but keep it such that if user progress variation in positive or negative is less then no need to give any ai api request but if the progress is good then api request will go. but there is one issue: user with more sessions or old user small various will 
+also be similar to a new user’s bigger variation due to more number of sessions and old data. for example a user with 15 session if his any skill improve by 5% then that is almost same as a new user with 5 session having progress variation of 20% so you also need to take care of user’s profile oldness so for that you can derive some mathematical formula so that the threshold value change by taking into consideration user profile age and difference between previous and current status of each skill under technical and behavioral skills.
+- [ ] if you have any doubt then do ask me before implementing the plan.

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
+    const db = client.db('aicoach_institutional');
 
     const result = await db.collection('users').updateOne(
       { _id: new ObjectId(id), collegeName: mentor.collegeName },

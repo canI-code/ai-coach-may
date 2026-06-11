@@ -217,9 +217,10 @@ export default function Login() {
 
       const loginData = await loginRes.json();
       if (loginRes.ok) {
-        if (isB2C) router.push(loginData.recovered ? '/dashboard/b2c?recovered=true' : '/dashboard/b2c');
-        else if (userType === 'mentee') router.push('/dashboard/b2b');
-        else if (userType === 'mentor') router.push('/dashboard/mentor');
+        const portalType = isB2C ? 'b2c' : userType === 'mentee' ? 'b2b' : 'mentor';
+        if (isB2C) router.push(loginData.recovered ? `/dashboard/${portalType}?recovered=true` : `/dashboard/${portalType}`);
+        else if (userType === 'mentee') router.push(`/dashboard/${portalType}`);
+        else if (userType === 'mentor') router.push(`/dashboard/${portalType}`);
       } else {
         setError(loginData.error);
       }
@@ -347,7 +348,7 @@ export default function Login() {
                       </div>
                       <div>
                         <h3 className="text-white font-semibold">Non-Institutional</h3>
-                        <p className="text-sm text-muted">Student or Professional</p>
+                        <p className="text-sm text-muted">Student</p>
                       </div>
                     </div>
                   </button>
@@ -368,18 +369,16 @@ export default function Login() {
                       {category === 'institutional' ? 'For faculty and trainers' : 'For students preparing for interviews'}
                     </p>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => handleRoleSelection(category === 'institutional' ? 'mentee' : 'professional')}
-                    className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
-                  >
-                    <h3 className="text-white font-semibold text-lg">
-                      {category === 'institutional' ? 'Mentee' : 'Professional'}
-                    </h3>
-                    <p className="text-sm text-muted">
-                      {category === 'institutional' ? 'For registered students' : 'For working professionals'}
-                    </p>
-                  </button>
+                  {category === 'institutional' && (
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSelection('mentee')}
+                      className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
+                    >
+                      <h3 className="text-white font-semibold text-lg">Mentee</h3>
+                      <p className="text-sm text-muted">For registered students</p>
+                    </button>
+                  )}
                 </div>
               )}
 

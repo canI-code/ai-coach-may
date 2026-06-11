@@ -18,8 +18,18 @@ export const INTERVIEW_COLLECTIONS = {
 
 const POOL_TTL_SECONDS = 7200;
 
+import { getCurrentUser } from '@/lib/auth';
+
 export async function getInterviewDb(): Promise<Db> {
   const client = await clientPromise;
+  try {
+    const user = await getCurrentUser();
+    if (user && (user.role === 'mentor' || user.role === 'mentee')) {
+      return client.db('aicoach_institutional');
+    }
+  } catch (err) {
+    // cookies() lookup may throw during static generation / build time
+  }
   return client.db(INTERVIEW_DB);
 }
 

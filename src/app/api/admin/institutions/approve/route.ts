@@ -27,8 +27,8 @@ export async function POST(request: Request) {
       { $set: { status: 'approved', approvedAt: new Date() } }
     );
 
-    // 2. Create Mentor User
-    await db.collection('users').insertOne({
+    // 2. Create Mentor User in institutional database
+    await client.db('aicoach_institutional').collection('users').insertOne({
       email: institution.mentorEmail,
       password: institution.password,
       phone: institution.mentorPhone,

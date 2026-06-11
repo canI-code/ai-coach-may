@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
+    const db = client.db('aicoach_institutional');
 
     // Check if user already exists in users collection (approved or pending)
     const existingUser = await db.collection('users').findOne({ 

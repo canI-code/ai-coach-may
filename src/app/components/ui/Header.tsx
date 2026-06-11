@@ -55,7 +55,7 @@ export function Header({ children, showNav = true, className = '' }: HeaderProps
     if (userRole === 'admin') return '/admin';
     if (userRole === 'superadmin') return '/superadmin';
     if (userRole === 'mentor') return '/dashboard/mentor';
-    return '/dashboard/b2c';
+    return userRole === 'mentee' ? '/dashboard/b2b' : '/dashboard/b2c';
   };
 
   return (

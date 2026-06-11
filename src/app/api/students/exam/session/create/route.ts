@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/lib/auth';
+import { getCurrentUser, isUserAccessBlocked } from '@/lib/auth';
+import { getDbForUser } from '@/lib/db-selector';
 import clientPromise from '@/lib/mongodb';
 import { QuestionSelector } from '@/lib/question-pool/question-selector';
 import { ProficiencyEngine } from '@/lib/proficiency/proficiency-engine';
 import { ObjectId } from 'mongodb';
 import { getUserOpenFlaggedQuestionIds } from '@/lib/question-flags';
-
-const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
 export async function POST(req: Request) {
   try {
@@ -15,14 +14,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Enforce B2B user limits
+    if (user.role === 'mentee') {
+      const limitCheck = isUserAccessBlocked(user, 'exam');
+      if (limitCheck.blocked) {
+        return NextResponse.json({ error: 'limit_exceeded', message: limitCheck.reason }, { status: 403 });
+      }
+    }
+
     const { interests, questionCount = 20 } = await req.json();
 
     if (!interests || !Array.isArray(interests) || interests.length === 0) {
       return NextResponse.json({ error: 'Interests must be provided' }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
     const blockedQuestionIds = await getUserOpenFlaggedQuestionIds(db, user._id);
 
     // Get user's multi-dimensional proficiency profile
@@ -105,7 +111,7 @@ export async function POST(req: Request) {
       .find({ _id: { $in: allQuestionIds } })
       .toArray();
     
-    const qsMap = new Map(poolQuestions.map(q => [q._id.toString(), q]));
+    const qsMap = new Map<string, any>(poolQuestions.map((q: any) => [q._id.toString(), q]));
     const orderedQs = allQuestionIds.map(id => {
       const q = qsMap.get(id.toString());
       if (!q) return null;

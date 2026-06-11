@@ -21,7 +21,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import type { ObjectId } from 'mongodb';
 
-import { getCurrentUser } from '@/lib/auth';
+import { getCurrentUser, isUserAccessBlocked } from '@/lib/auth';
 import { findSession, getInterviewDb } from '@/lib/interview/session-store';
 import { getLLMGateway } from '@/lib/interview/llm-gateway';
 import { seedPool } from '@/lib/interview/cache-seeder';
@@ -57,6 +57,14 @@ export async function POST(req: NextRequest) {
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Enforce B2B user limits
+    if (user.role === 'mentee') {
+      const limitCheck = isUserAccessBlocked(user, 'interview');
+      if (limitCheck.blocked) {
+        return NextResponse.json({ error: 'limit_exceeded', message: limitCheck.reason }, { status: 403 });
+      }
     }
 
     // 2. Parse the request body (the session configuration only — no media).

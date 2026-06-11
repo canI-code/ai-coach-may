@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('aicoach');
+    const db = client.db('aicoach_institutional');
 
     const mentee = await db.collection('users').findOne({ _id: new ObjectId(id) });
     if (!mentee || mentee.collegeName !== mentor.collegeName) {

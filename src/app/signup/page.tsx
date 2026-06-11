@@ -39,6 +39,11 @@ export default function Signup() {
 
   const [colleges, setColleges] = useState([]);
   const [selectedCollege, setSelectedCollege] = useState('');
+  
+  // B2B Dual Signup States
+  const [menteeSignupMethod, setMenteeSignupMethod] = useState<'code' | 'request'>('code');
+  const [inviteCode, setInviteCode] = useState('');
+  const [menteePassword, setMenteePassword] = useState('');
 
   useEffect(() => {
     const fetchColleges = async () => {
@@ -61,6 +66,20 @@ export default function Signup() {
     return () => clearInterval(interval);
   }, [resendTimer]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const codeParam = params.get('code');
+      if (codeParam) {
+        setCategory('institutional');
+        setUserType('mentee');
+        setMenteeSignupMethod('code');
+        setInviteCode(codeParam);
+        setStep(2.5);
+      }
+    }
+  }, []);
+
   const handleCategorySelection = (cat: string) => {
     setCategory(cat);
     setStep(1.5);
@@ -80,49 +99,100 @@ export default function Signup() {
   const handleMenteeSubmit = async () => {
     setError('');
     
-    if (!selectedCollege || !details.fullName || !emailIdentifier || !phoneNumber || !details.gender || !details.dob) {
-      setError('Please fill in all required fields.');
-      return;
-    }
-    if (phoneNumber.length !== 10) {
-      setError('Phone number must be exactly 10 digits.');
-      return;
-    }
-    const age = calculateAge(details.dob);
-    if (age < 15) {
-      setError('You must be at least 15 years old.');
-      return;
-    }
-    if (age > 150) {
-      setError('Please enter a valid Date of Birth.');
-      return;
-    }
-
-    setMessage('Submitting request...');
-    try {
-      const payload = {
-        collegeName: selectedCollege,
-        fullName: details.fullName,
-        email: emailIdentifier,
-        phone: countryCode + phoneNumber,
-        gender: details.gender,
-        dob: details.dob,
-      };
-
-      const res = await fetch('/api/auth/mentee-request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Request submitted successfully! Waiting for mentor approval.');
-        setTimeout(() => router.push('/login'), 3000);
-      } else {
-        setError(data.error);
+    if (menteeSignupMethod === 'code') {
+      if (!inviteCode || !details.fullName || !emailIdentifier || !menteePassword || !phoneNumber || !details.gender || !details.dob) {
+        setError('Please fill in all required fields.');
+        return;
       }
-    } catch (err) {
-      setError('Failed to submit request.');
+      if (phoneNumber.length !== 10) {
+        setError('Phone number must be exactly 10 digits.');
+        return;
+      }
+      const age = calculateAge(details.dob);
+      if (age < 15) {
+        setError('You must be at least 15 years old.');
+        return;
+      }
+      if (age > 150) {
+        setError('Please enter a valid Date of Birth.');
+        return;
+      }
+      
+      setMessage('Processing signup...');
+      try {
+        const payload = {
+          inviteCode,
+          fullName: details.fullName,
+          email: emailIdentifier,
+          password: menteePassword,
+          phone: countryCode + phoneNumber,
+          gender: details.gender,
+          dob: details.dob,
+          accountType: 'institution',
+          role: 'mentee',
+        };
+
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setMessage('Signup successful! Redirecting to dashboard...');
+          const portalType = 'b2b'; // Mentee signup always routes to B2B portal
+          setTimeout(() => router.push(`/dashboard/${portalType}`), 2000);
+        } else {
+          setError(data.error);
+        }
+      } catch (err) {
+        setError('Direct signup failed.');
+      }
+    } else {
+      if (!selectedCollege || !details.fullName || !emailIdentifier || !phoneNumber || !details.gender || !details.dob) {
+        setError('Please fill in all required fields.');
+        return;
+      }
+      if (phoneNumber.length !== 10) {
+        setError('Phone number must be exactly 10 digits.');
+        return;
+      }
+      const age = calculateAge(details.dob);
+      if (age < 15) {
+        setError('You must be at least 15 years old.');
+        return;
+      }
+      if (age > 150) {
+        setError('Please enter a valid Date of Birth.');
+        return;
+      }
+
+      setMessage('Submitting request...');
+      try {
+        const payload = {
+          collegeName: selectedCollege,
+          fullName: details.fullName,
+          email: emailIdentifier,
+          phone: countryCode + phoneNumber,
+          gender: details.gender,
+          dob: details.dob,
+        };
+
+        const res = await fetch('/api/auth/mentee-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setMessage('Request submitted successfully! Waiting for mentor approval.');
+          setTimeout(() => router.push('/login'), 3000);
+        } else {
+          setError(data.error);
+        }
+      } catch (err) {
+        setError('Failed to submit request.');
+      }
     }
   };
 
@@ -219,7 +289,8 @@ export default function Signup() {
       });
       const data = await res.json();
       if (res.ok) {
-        router.push('/dashboard/b2c');
+        const portalType = userType === 'professional' ? 'b2c' : 'b2c'; // B2C roles (student/professional)
+        router.push(`/dashboard/${portalType}`);
       } else {
         setError(data.error);
       }
@@ -284,7 +355,7 @@ export default function Signup() {
                       </div>
                       <div>
                         <h3 className="text-white font-semibold">Individual User</h3>
-                        <p className="text-sm text-muted">Student or Professional</p>
+                        <p className="text-sm text-muted">Student</p>
                       </div>
                     </div>
                   </button>
@@ -309,8 +380,8 @@ export default function Signup() {
                         onClick={() => handleRoleSelection('mentee')}
                         className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
                       >
-                        <h3 className="text-white font-semibold text-lg">Request as Mentee</h3>
-                        <p className="text-sm text-muted">Student needing mentor approval</p>
+                        <h3 className="text-white font-semibold text-lg">Register as Mentee</h3>
+                        <p className="text-sm text-muted">Join using an invite link or code</p>
                       </button>
                     </>
                   ) : (
@@ -323,14 +394,6 @@ export default function Signup() {
                         <h3 className="text-white font-semibold text-lg">Practice as Student</h3>
                         <p className="text-sm text-muted">Preparing for college/placements</p>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => handleRoleSelection('professional')}
-                        className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
-                      >
-                        <h3 className="text-white font-semibold text-lg">Practice as Professional</h3>
-                        <p className="text-sm text-muted">Preparing for job interviews</p>
-                      </button>
                     </>
                   )}
                 </div>
@@ -338,21 +401,32 @@ export default function Signup() {
 
               {step === 2.5 && (
                 <div className="space-y-4">
-                  <p className="text-white font-medium mb-4">Request Mentee Access</p>
+                  <p className="text-white font-medium mb-2 text-center">Institutional Mentee Registration</p>
                   
-                  <Select
-                    label="Select College"
-                    value={selectedCollege}
-                    onChange={(e) => setSelectedCollege(e.target.value)}
-                    options={colleges.map((c: any) => ({ value: c.collegeName, label: c.collegeName }))}
-                    placeholder="Choose your institution"
-                  />
+                  <div className="space-y-4">
+                    <Input
+                      label="Invite Code"
+                      value={inviteCode}
+                      onChange={(e) => setInviteCode(e.target.value)}
+                      placeholder="INST-XXXX-XXXX"
+                      required
+                    />
+                    <Input
+                      label="Choose Password"
+                      type="password"
+                      value={menteePassword}
+                      onChange={(e) => setMenteePassword(e.target.value)}
+                      placeholder="Choose a password"
+                      required
+                    />
+                  </div>
                   
                   <Input
                     label="Full Name"
                     value={details.fullName}
                     onChange={(e) => setDetails({ ...details, fullName: e.target.value })}
                     placeholder="Your full name"
+                    required
                   />
                   
                   <Input
@@ -361,6 +435,7 @@ export default function Signup() {
                     value={emailIdentifier}
                     onChange={(e) => setEmailIdentifier(e.target.value)}
                     placeholder="your@email.com"
+                    required
                   />
                   
                   <div>
@@ -407,6 +482,7 @@ export default function Signup() {
                       { value: 'other', label: 'Other' },
                     ]}
                     placeholder="Select gender"
+                    required
                   />
                   
                   <Input
@@ -414,10 +490,11 @@ export default function Signup() {
                     type="date"
                     value={details.dob}
                     onChange={(e) => setDetails({ ...details, dob: e.target.value })}
+                    required
                   />
                   
                   <Button onClick={handleMenteeSubmit} fullWidth icon={<ArrowRight className="w-4 h-4" />}>
-                    Submit Request
+                    {menteeSignupMethod === 'code' ? 'Complete Registration' : 'Submit Request'}
                   </Button>
                 </div>
               )}

@@ -108,6 +108,13 @@ export async function POST(
       ...(reason ? { earlyExitReason: reason } : {}),
     });
 
+    if (user.role === 'mentee') {
+      await db.collection('users').updateOne(
+        { _id: user._id },
+        { $inc: { 'usage.interviewsCompleted': 1 } }
+      );
+    }
+
     // 4. Compile the report in the background after the response is flushed (Req 16.1).
     after(() => runReportJob(db, sessionId));
 
