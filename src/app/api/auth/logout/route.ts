@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { findInstituteByUserId } from '@/lib/b2b/registry';
 
 export async function POST() {
   const cookieStore = await cookies();
@@ -10,16 +11,21 @@ export async function POST() {
   if (token) {
     try {
       const [prefix, userId, sessionId] = token.split('|');
-      
+
       if (prefix === 'token' && userId && sessionId) {
         const client = await clientPromise;
-        
-        // Remove from both potential databases to be thorough
-        const dbs = ['aicoach', 'aicoach_institutional'];
-        
-        for (const dbName of dbs) {
-          const db = client.db(dbName);
-          await db.collection('users').updateOne(
+
+        // 1. Always clean from B2C database
+        await client.db('aicoach').collection('users').updateOne(
+          { _id: new ObjectId(userId) },
+          { $pull: { sessions: { id: sessionId } } } as any
+        );
+
+        // 2. Check B2B registry and clean from the user's institute DB
+        const result = await findInstituteByUserId(userId);
+        if (result) {
+          const instDb = client.db(result.institute.dbName);
+          await instDb.collection('users').updateOne(
             { _id: new ObjectId(userId) },
             { $pull: { sessions: { id: sessionId } } } as any
           );
@@ -31,6 +37,6 @@ export async function POST() {
   }
 
   cookieStore.delete('auth_token');
-  
+
   return NextResponse.json({ message: 'Logged out successfully' });
 }

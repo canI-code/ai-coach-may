@@ -53,13 +53,14 @@ export async function GET(req: NextRequest) {
               startedAt: 1,
               createdAt: 1,
               updatedAt: 1,
+              batchId: 1,
             },
           },
           { $sort: { createdAt: -1 } },
         ])
         .toArray();
 
-      const items = sessions.map((s) => ({
+      const items = sessions.map((s: any) => ({
         sessionId: s._id.toString(),
         role: s.config?.role ?? '—',
         aiPersona: s.config?.aiPersona ?? 'general_recruiter',
@@ -69,6 +70,7 @@ export async function GET(req: NextRequest) {
         earlyExitReason: s.earlyExitReason ?? null,
         createdAt: s.createdAt,
         updatedAt: s.updatedAt,
+        batchId: s.batchId ? s.batchId.toString() : null,
       }));
 
       return NextResponse.json({ success: true, count: items.length, sessions: items });
@@ -93,6 +95,7 @@ export async function GET(req: NextRequest) {
             startedAt: 1,
             createdAt: 1,
             updatedAt: 1,
+            batchId: 1,
           },
         },
         { $sort: { createdAt: 1 } },
@@ -140,6 +143,7 @@ export async function GET(req: NextRequest) {
         status: s.status,
         reportStatus: r?.status ?? 'pending',
         durationMinutes: s.config?.durationMinutes ?? 10,
+        batchId: s.batchId ? s.batchId.toString() : null,
       };
 
       if (!groupsMap.has(rootId)) {
@@ -173,6 +177,7 @@ export async function GET(req: NextRequest) {
         ...group,
         latestDate,
         canRetake,
+        batchId: latestAttempt ? (latestAttempt as any).batchId : null,
       };
     });
 

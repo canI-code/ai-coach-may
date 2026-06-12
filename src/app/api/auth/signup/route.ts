@@ -3,102 +3,53 @@ import clientPromise from '@/lib/mongodb';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
+/**
+ * B2C-only signup route.
+ * B2B users are created by their institution/mentor, not via self-registration.
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, phone, password, accountType, role, fullName, dob, inviteCode } = body;
+    const { phone, role, fullName, dob } = body;
 
-    if (!accountType || !role || !fullName || !dob) {
+    if (!role || !fullName || !dob) {
       return NextResponse.json({ error: 'Missing required profile fields' }, { status: 400 });
     }
 
+    // Only B2C roles allowed via self-signup
+    const validRoles = ['student', 'professional'];
+    if (!validRoles.includes(role)) {
+      return NextResponse.json(
+        { error: 'Self-registration is only available for students and professionals. For institutional access, please contact your institution.' },
+        { status: 400 }
+      );
+    }
+
+    if (!phone) {
+      return NextResponse.json({ error: 'Phone number is required' }, { status: 400 });
+    }
+
     const client = await clientPromise;
-    let db = client.db('aicoach');
+    const db = client.db('aicoach');
 
-    const isB2C = role === 'student' || role === 'professional';
-    let collegeName = '';
-    let invite: any = null;
-
-    // B2B Mentee Invite Code validation
-    if (role === 'mentee') {
-      if (!inviteCode) {
-        return NextResponse.json({ error: 'Invite code is required for direct B2B registration' }, { status: 400 });
-      }
-
-      // Check invitations in institutional database
-      invite = await client.db('aicoach_institutional').collection('invitations').findOne({
-        code: inviteCode,
-        status: 'active'
-      });
-
-      if (!invite) {
-        return NextResponse.json({ error: 'Invalid or inactive invite code' }, { status: 400 });
-      }
-
-      if (invite.expiresAt && new Date(invite.expiresAt) < new Date()) {
-        return NextResponse.json({ error: 'Invite code has expired' }, { status: 400 });
-      }
-
-      if (invite.maxUses !== null && invite.useCount >= invite.maxUses) {
-        return NextResponse.json({ error: 'Invite code usage limit reached' }, { status: 400 });
-      }
-
-      collegeName = invite.collegeName;
-      db = client.db('aicoach_institutional');
-    }
-
-    // Validation based on user type
-    if (isB2C) {
-      if (!phone) return NextResponse.json({ error: 'Phone number is required for B2C' }, { status: 400 });
-    } else {
-      if (!email || !password) return NextResponse.json({ error: 'Email and password are required for B2B' }, { status: 400 });
-    }
-
-    // Check if user already exists in target DB
-    const query = isB2C ? { phone } : { email };
-    const existingUser = await db.collection('users').findOne(query);
+    // Check if user already exists
+    const existingUser = await db.collection('users').findOne({ phone });
     if (existingUser) {
       return NextResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
-    // Prepare user document
+    // Prepare user document (B2C only)
     const userDoc: any = {
-      accountType,
+      accountType: 'personal',
       role,
       fullName,
       dob,
+      phone,
       createdAt: new Date(),
-      status: role === 'mentee' ? 'approved' : 'active'
+      status: 'active',
     };
 
-    if (role === 'mentee') {
-      userDoc.collegeName = collegeName;
-      userDoc.gender = body.gender;
-      userDoc.phone = phone;
-      userDoc.inviteCode = inviteCode;
-      userDoc.accessLimit = { interviewsCount: 10, examsCount: 10, expiresAt: null }; // default limit
-      userDoc.usage = { interviewsCompleted: 0, examsCompleted: 0 };
-      userDoc.degree = invite.degree || '';
-      userDoc.subject = invite.subject || '';
-      userDoc.year = invite.year || null;
-    }
-
-    if (isB2C) {
-      userDoc.phone = phone;
-    } else {
-      userDoc.email = email;
-      userDoc.password = await bcrypt.hash(password, 10);
-    }
-
     const result = await db.collection('users').insertOne(userDoc);
-
-    // If mentee, increment invitation useCount
-    if (role === 'mentee') {
-      await client.db('aicoach_institutional').collection('invitations').updateOne(
-        { code: inviteCode },
-        { $inc: { useCount: 1 } }
-      );
-    }
 
     // Create a simulated session for the new user
     const sessionId = 'session_initial';
@@ -116,10 +67,10 @@ export async function POST(request: Request) {
       path: '/',
     });
 
-    return NextResponse.json({ 
-      message: 'User created successfully', 
+    return NextResponse.json({
+      message: 'User created successfully',
       userId: result.insertedId,
-      role 
+      role,
     }, { status: 201 });
   } catch (error) {
     console.error('Signup error:', error);

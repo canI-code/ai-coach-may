@@ -47,6 +47,7 @@ export interface DashboardSessionSummary {
   createdAt: string;
   durationMinutes: number | null;
   categoryScores?: CategoryScores | null;
+  batchId?: string | null;
 }
 
 export interface WeaknessTagCount {
@@ -109,6 +110,7 @@ export interface SessionInput {
   createdAt: string;
   /** ISO; session end (updatedAt / last turn) for duration; null if unknown. */
   endedAt: string | null;
+  batchId?: string | null;
 }
 
 export interface ComputeOptions {
@@ -428,6 +430,7 @@ export function computeDashboardMetrics(
         createdAt: s.createdAt,
         durationMinutes: sessionDurationMinutes(s.createdAt, s.endedAt),
         categoryScores: rep ? rep.categoryScores : null,
+        batchId: s.batchId || null,
       };
     });
 

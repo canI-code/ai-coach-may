@@ -57,21 +57,32 @@ export function Sidebar() {
   };
 
   const params = useParams<{ portalType: string }>();
-  // Derive portalType from params (dynamic route) or pathname (static b2b route)
-  const portalType = params?.portalType || (pathname.startsWith('/dashboard/b2b') ? 'b2b' : 'b2c');
+  const portalType = params?.portalType || 'b2c';
   const dashboardPath = `/dashboard/${portalType}`;
   const portalPrefix = `/dashboard/${portalType}`;
 
-  const navItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, path: dashboardPath },
-    { name: 'Interview', icon: Video, path: `${portalPrefix}/interview` },
-    { name: 'Interview History', icon: History, path: `${portalPrefix}/interview-history` },
-    { name: 'Exam Practice', icon: BookOpen, path: `${portalPrefix}/practice` },
-    { name: 'Exam History', icon: ScrollText, path: `${portalPrefix}/exam-history` },
-    { name: 'Progress', icon: BarChart3, path: `${portalPrefix}/progress` },
-    { name: 'Recommendations', icon: Lightbulb, path: `${portalPrefix}/recommendations` },
-    { name: 'Profile', icon: User, path: `${portalPrefix}/profile` },
+  // Filter nav items based on B2B portal access
+  const enabledPortals: string[] | null = user?.enabledPortals || null;
+
+  const allNavItems = [
+    { name: 'Dashboard', icon: LayoutDashboard, path: dashboardPath, portal: null },
+    ...(portalType === 'b2b' ? [
+      { name: 'Batches', icon: BookOpen, path: `${portalPrefix}/batches`, portal: null },
+      { name: 'Chat', icon: MessageSquare, path: `${portalPrefix}/chat`, portal: null }
+    ] : []),
+    { name: 'Interview', icon: Video, path: `${portalPrefix}/interview`, portal: 'interview' },
+    { name: 'Interview History', icon: History, path: `${portalPrefix}/interview-history`, portal: 'interview' },
+    { name: 'Exam Practice', icon: BookOpen, path: `${portalPrefix}/practice`, portal: 'exam' },
+    { name: 'Exam History', icon: ScrollText, path: `${portalPrefix}/exam-history`, portal: 'exam' },
+    { name: 'Progress', icon: BarChart3, path: `${portalPrefix}/progress`, portal: null },
+    { name: 'Recommendations', icon: Lightbulb, path: `${portalPrefix}/recommendations`, portal: 'recommendation' },
+    { name: 'Profile', icon: User, path: `${portalPrefix}/profile`, portal: null },
   ];
+
+  // If enabledPortals is set (B2B mentee), filter to only show allowed portals
+  const navItems = enabledPortals
+    ? allNavItems.filter(item => item.portal === null || enabledPortals.includes(item.portal))
+    : allNavItems;
 
   return (
     <>
@@ -104,7 +115,7 @@ export function Sidebar() {
             </div>
              <div className="overflow-hidden">
               <div className="text-sm font-medium text-white truncate">{profile?.fullName || 'Student'}</div>
-              <div className="text-xs text-[#a1a1aa] truncate">{user?.role === 'mentee' ? (user.collegeName || 'Institutional') : 'Free Plan'}</div>
+              <div className="text-xs text-[#a1a1aa] truncate">{user?.collegeName || 'Free Plan'}</div>
             </div>
           </div>
         </div>

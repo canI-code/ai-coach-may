@@ -34,11 +34,11 @@ export async function GET() {
     // Evaluate completion status using shared utility
     let { isComplete, pendingFields } = evaluateProfileCompletion(profile);
 
+    // B2B mentees get auto-populated profiles
     if (user.role === 'mentee') {
       isComplete = true;
       pendingFields = [];
       
-      // Auto-populate missing details if needed
       const updateFields: any = {};
       let needsUpdate = false;
 
@@ -95,7 +95,8 @@ export async function GET() {
       profile,
       user: {
         role: user.role || 'student',
-        collegeName: user.collegeName || null
+        collegeName: user.collegeName || null,
+        enabledPortals: user.enabledPortals || null,
       },
       completionStatus: {
         isComplete,

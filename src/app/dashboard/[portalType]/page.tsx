@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { AmbientGlow } from '@/app/components/ui/AmbientGlow';
 import { GlassCard, CardTitle, CardDescription } from '@/app/components/ui/GlassCard';
 import { Button } from '@/app/components/ui/Button';
@@ -15,6 +15,8 @@ import {
 
 export default function B2CDashboard() {
   const router = useRouter();
+  const params = useParams();
+  const portalType = (params?.portalType as string) || 'b2c';
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -112,7 +114,7 @@ if (isLocked) {
             This helps us determine your current proficiency level and personalize your practice sessions.
           </CardDescription>
           <div className="space-y-4">
-            <Button fullWidth size="lg" icon={<ChevronRight size={20} />} onClick={() => router.push('/dashboard/b2c/assessment')}>
+            <Button fullWidth size="lg" icon={<ChevronRight size={20} />} onClick={() => router.push(`/dashboard/${portalType}/assessment`)}>
               Start Assessment
             </Button>
             <div className="flex gap-3">
@@ -167,8 +169,8 @@ if (isLocked) {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="secondary" icon={<BookOpen size={16} />} onClick={() => router.push('/dashboard/b2c/practice')}>Practice Exam</Button>
-              <Button icon={<Play size={16} />} className="bg-amber-500 hover:bg-amber-600 text-black" onClick={() => router.push('/dashboard/b2c/interview')}>Start Interview</Button>
+              <Button variant="secondary" icon={<BookOpen size={16} />} onClick={() => router.push(`/dashboard/${portalType}/practice`)}>Practice Exam</Button>
+              <Button icon={<Play size={16} />} className="bg-amber-500 hover:bg-amber-600 text-black" onClick={() => router.push(`/dashboard/${portalType}/interview`)}>Start Interview</Button>
             </div>
           </div>
 

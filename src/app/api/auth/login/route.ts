@@ -2,25 +2,95 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
+import { findInstituteByUserId, getInstituteDbForUser } from '@/lib/b2b/registry';
 
 export async function POST(request: Request) {
   try {
     const { email, phone, password, role, validateOnly } = await request.json();
 
     const client = await clientPromise;
+
+    // Determine if B2C (student/professional) or B2B (institution/mentor/mentee)
     const isB2C = role === 'student' || role === 'professional';
-    const isB2B = role === 'mentor' || role === 'mentee';
-    const db = client.db(isB2B ? 'aicoach_institutional' : 'aicoach');
-    const otpsCollection = client.db('aicoach').collection('otps');
-    let user;
+    const isB2B = role === 'institution' || role === 'mentor' || role === 'mentee';
+
+    let db: any;
+    let user: any;
 
     if (isB2C) {
+      // B2C: always use aicoach database
       if (!phone) return NextResponse.json({ error: 'Phone number is required' }, { status: 400 });
+      db = client.db('aicoach');
       user = await db.collection('users').findOne({ phone });
-    } else {
+
+      // Fallback: If not found in B2C, check all active B2B databases by phone
+      if (!user) {
+        const registry = db.collection('institute_registry');
+        const institutes = await registry.find({ status: 'active' }).toArray();
+        for (const inst of institutes) {
+          const instDb = client.db(inst.dbName);
+          const found = await instDb.collection('users').findOne({ phone });
+          if (found) {
+            user = found;
+            db = instDb;
+            break;
+          }
+        }
+      }
+    } else if (isB2B) {
+      // B2B: find user in their institute's database via registry
       if (!email || !password) return NextResponse.json({ error: 'Missing email or password' }, { status: 400 });
-      user = await db.collection('users').findOne({ email });
+
+      let searchIdentifier = email.trim();
+      if (/^\d{10}$/.test(searchIdentifier)) {
+        searchIdentifier = '+91' + searchIdentifier;
+      }
+      if (searchIdentifier.includes('@')) {
+        searchIdentifier = searchIdentifier.toLowerCase();
+      }
+
+      const query = searchIdentifier.includes('@') 
+        ? { email: searchIdentifier } 
+        : { phone: searchIdentifier };
+
+      // Search across institute databases for this email/phone
+      const registry = client.db('aicoach').collection('institute_registry');
+      const institutes = await registry.find({ status: 'active' }).toArray();
+
+      for (const inst of institutes) {
+        const instDb = client.db(inst.dbName);
+        const found = await instDb.collection('users').findOne(query);
+        if (found) {
+          user = found;
+          db = instDb;
+          break;
+        }
+      }
+
+      // Also check if it's an institution rep logging in via registry credentials
+      if (!user) {
+        const registryQuery = searchIdentifier.includes('@')
+          ? { 'loginCredentials.email': searchIdentifier, status: 'active' }
+          : { representativePhone: searchIdentifier, status: 'active' };
+
+        const inst = await registry.findOne(registryQuery as any);
+        if (inst) {
+          db = client.db(inst.dbName);
+          // Create/find the institution user in their DB
+          user = await db.collection('users').findOne({
+            $or: [
+              { email: inst.representativeEmail },
+              { phone: inst.representativePhone }
+            ],
+            role: 'institution'
+          });
+        }
+      }
+    } else {
+      return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
     }
+
+    const otpsCollection = client.db('aicoach').collection('otps');
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -36,13 +106,15 @@ export async function POST(request: Request) {
       recovered = true;
     }
 
-    // Status and Role Checks
-    if (user.role === 'mentee') {
-      if (user.status === 'pending') return NextResponse.json({ error: 'Account pending mentor approval' }, { status: 403 });
-      if (user.status === 'disabled') return NextResponse.json({ error: 'Account disabled by mentor' }, { status: 403 });
+    // Status checks for B2B users
+    if (user.role === 'mentee' && user.status === 'disabled') {
+      return NextResponse.json({ error: 'Account disabled by mentor' }, { status: 403 });
+    }
+    if (user.role === 'mentor' && user.status === 'disabled') {
+      return NextResponse.json({ error: 'Account disabled' }, { status: 403 });
     }
 
-    // Check Password (B2B only)
+    // Check Password (B2B only — B2C uses OTP)
     if (!isB2C) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
@@ -50,14 +122,13 @@ export async function POST(request: Request) {
       }
     }
 
-// Step 1: Validate Only (for Mentor/Mentee to trigger OTP)
+    // Step 1: Validate Only (for B2B to trigger OTP)
     if (validateOnly) {
       return NextResponse.json({ message: 'Credentials valid', user: { phone: user.phone } });
     }
 
-    // Step 2: Final Login - Must verify OTP first
+    // Step 2: Final Login — Must verify OTP first
     if (!validateOnly) {
-      // Determine the identifier used for OTP
       const otpIdentifier = isB2C ? phone : user.phone;
 
       if (!otpIdentifier) {
@@ -65,23 +136,23 @@ export async function POST(request: Request) {
       }
 
       const otpRecord = await otpsCollection.findOne({ identifier: otpIdentifier });
-      
+
       if (!otpRecord) {
         return NextResponse.json({ error: 'OTP not verified. Please request a new OTP.' }, { status: 400 });
       }
-      
+
       if (!otpRecord.verified) {
         return NextResponse.json({ error: 'OTP not verified. Please verify your OTP first.' }, { status: 400 });
       }
-      
+
       // Check if OTP was verified within last 5 minutes
       const verifiedAt = otpRecord.verifiedAt ? new Date(otpRecord.verifiedAt) : null;
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-      
+
       if (!verifiedAt || verifiedAt < fiveMinutesAgo) {
         return NextResponse.json({ error: 'OTP verification expired. Please verify again.' }, { status: 400 });
       }
-      
+
       // OTP verified! Clean up the OTP record
       await otpsCollection.deleteOne({ identifier: otpIdentifier });
     }
@@ -92,32 +163,38 @@ export async function POST(request: Request) {
     // Update Logic
     const updateData: any = {
       $push: { sessions: { id: sessionId, createdAt: new Date() } },
-      $set: { 
+      $set: {
         lastLogin: new Date(),
-        lastDevice: userAgent
+        lastDevice: userAgent,
       },
-      $inc: { loginCount: 1 }
+      $inc: { loginCount: 1 },
     };
 
-    // Device Limit (Mentor) - Session Rotation
-    if (role === 'mentor') {
+    // Session limits based on role
+    if (user.role === 'institution') {
+      // Institution reps: max 3 sessions (rotate oldest)
       const activeSessions = user.sessions || [];
       if (activeSessions.length >= 3) {
-        // Keep the newest 2 and add the new one
         const rotatedSessions = activeSessions.slice(-2);
         updateData.$set.sessions = [...rotatedSessions, { id: sessionId, createdAt: new Date() }];
         delete updateData.$push;
       }
-    }
-
-    // Single Device Enforcement for Mentee (B2B Student)
-    if (user.role === 'mentee') {
+    } else if (user.role === 'mentor') {
+      // Mentors: max 3 sessions (rotate oldest)
+      const activeSessions = user.sessions || [];
+      if (activeSessions.length >= 3) {
+        const rotatedSessions = activeSessions.slice(-2);
+        updateData.$set.sessions = [...rotatedSessions, { id: sessionId, createdAt: new Date() }];
+        delete updateData.$push;
+      }
+    } else if (user.role === 'mentee') {
+      // Mentees: single device enforcement
       updateData.$set.sessions = [{ id: sessionId, createdAt: new Date() }];
-      delete updateData.$push; // Overwrite push with single array
+      delete updateData.$push;
     }
 
     if (recovered) {
-      updateData.$unset = { deletionScheduled: "", deletionScheduledAt: "" };
+      updateData.$unset = { deletionScheduled: '', deletionScheduledAt: '' };
     }
 
     await db.collection('users').updateOne(

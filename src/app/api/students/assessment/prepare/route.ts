@@ -3,6 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
 import { getQuestionsForAssessment } from '@/lib/ai-generator';
 import { ObjectId } from 'mongodb';
+import { getDbForUser } from '@/lib/db-selector';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -14,7 +15,8 @@ export async function POST() {
     }
 
     const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
+    const mainDb = client.db(DB_NAME);
 
     const profile = await db.collection('user_profile').findOne({ userId: user._id });
     if (!profile) {
@@ -32,8 +34,8 @@ export async function POST() {
     });
 
     if (existingAttempt) {
-      const questions = await db.collection('questions_non_ai').find({ _id: { $in: existingAttempt.questionIds } }).toArray();
-      const aiQuestions = await db.collection('questions_ai').find({ _id: { $in: existingAttempt.questionIds } }).toArray();
+      const questions = await mainDb.collection('questions_non_ai').find({ _id: { $in: existingAttempt.questionIds } }).toArray();
+      const aiQuestions = await mainDb.collection('questions_ai').find({ _id: { $in: existingAttempt.questionIds } }).toArray();
       
       const allQs = [...questions, ...aiQuestions].map(q => ({
         _id: q._id,
@@ -87,8 +89,8 @@ export async function POST() {
     console.log(`📝 Created draft attempt ${result.insertedId} with ${allQuestionIds.length} questions.`);
 
     // Fetch question details for UI
-    const questions = await db.collection('questions_non_ai').find({ _id: { $in: allQuestionIds } }).toArray();
-    const aiQuestions = await db.collection('questions_ai').find({ _id: { $in: allQuestionIds } }).toArray();
+    const questions = await mainDb.collection('questions_non_ai').find({ _id: { $in: allQuestionIds } }).toArray();
+    const aiQuestions = await mainDb.collection('questions_ai').find({ _id: { $in: allQuestionIds } }).toArray();
     
     // Combine and sort by the original allQuestionIds order
     const qsMap = new Map([...questions, ...aiQuestions].map(q => [q._id.toString(), q]));

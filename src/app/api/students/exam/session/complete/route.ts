@@ -138,13 +138,8 @@ export async function POST(req: Request) {
       { $set: { status: 'completed', completedAt } }
     );
 
-    // Increment B2B usage count
-    if (user.role === 'mentee') {
-      await db.collection('users').updateOne(
-        { _id: user._id },
-        { $inc: { 'usage.examsCompleted': 1 } }
-      );
-    }
+
+
 
     // 3. Update overall user_assessment_stats rolling average for backward compatibility with existing profile/dashboard
     await db.collection('user_assessment_stats').updateOne(

@@ -17,13 +17,12 @@ export async function POST(request: Request) {
     const now = new Date();
 
     // CRITICAL: Check if user is ALREADY locked out BEFORE sending new OTP
-    // This prevents brute force - user cannot get new OTP if already locked
     if (existingRecord && existingRecord.lockoutUntil && existingRecord.lockoutUntil > now) {
       const minutesLeft = Math.ceil((existingRecord.lockoutUntil.getTime() - now.getTime()) / 60000);
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: `Account locked due to previous failed attempts. Try again in ${minutesLeft} minutes.`,
         lockout: true,
-        minutesLeft 
+        minutesLeft,
       }, { status: 429 });
     }
 
@@ -35,9 +34,8 @@ export async function POST(request: Request) {
       }
     }
 
-    // Generate/Simulate OTP: 6 digits for Mentor, 4 digits for others
-    const isMentor = role === 'mentor';
-    const simulatedOtp = isMentor ? '123456' : '1234';
+    // Simulated OTP: 123456 for all users during development
+    const simulatedOtp = '123456';
     const expiresAt = new Date(now.getTime() + 5 * 60000); // 5 minutes validity
 
     await otpsCollection.updateOne(
@@ -48,7 +46,6 @@ export async function POST(request: Request) {
           expiresAt,
           lastSentAt: now,
           role,
-          // Reset attempts ONLY if lockout has expired, else keep them and DON'T allow new OTP
           attempts: (existingRecord && existingRecord.lockoutUntil && existingRecord.lockoutUntil <= now) ? 0 : (existingRecord ? existingRecord.attempts : 0),
           lockoutUntil: null,
         },

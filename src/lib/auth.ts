@@ -1,7 +1,14 @@
 import { cookies } from 'next/headers';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { findInstituteByUserId, getInstituteDbForUser } from '@/lib/b2b/registry';
 
+/**
+ * Get the currently authenticated user from the auth cookie.
+ *
+ * Searches B2C (`aicoach`) first, then checks the B2B institute registry
+ * to locate the user in their isolated institute database.
+ */
 export async function getCurrentUser() {
   try {
     const cookieStore = await cookies();
@@ -18,59 +25,82 @@ export async function getCurrentUser() {
     }
 
     const client = await clientPromise;
-    let db = client.db('aicoach');
 
-    let user = await db.collection('users').findOne({ 
+    // 1. Check B2C database first
+    const b2cDb = client.db('aicoach');
+    let user = await b2cDb.collection('users').findOne({
       _id: new ObjectId(userId),
-      'sessions.id': sessionId 
+      'sessions.id': sessionId,
     });
 
-    if (!user) {
-      db = client.db('aicoach_institutional');
-      user = await db.collection('users').findOne({ 
+    if (user) return user;
+
+    // 2. Check B2B institute databases via registry
+    const result = await getInstituteDbForUser(userId);
+    if (result) {
+      user = await result.db.collection('users').findOne({
         _id: new ObjectId(userId),
-        'sessions.id': sessionId 
+        'sessions.id': sessionId,
       });
+      if (user) return user;
     }
 
-    if (!user) {
-      console.error(`No user found for ID ${userId} and session ${sessionId}`);
-      return null;
-    }
-
-    return user;
+    console.error(`No user found for ID ${userId} and session ${sessionId}`);
+    return null;
   } catch (err: any) {
     console.error('Auth check error:', err.message);
     return null;
   }
 }
 
-export function isUserAccessBlocked(user: any, type: 'interview' | 'exam'): { blocked: boolean; reason?: string } {
-  if (user.role !== 'mentee') return { blocked: false };
-  
-  if (user.status === 'disabled') {
-    return { blocked: true, reason: 'Your institutional account has been disabled by your mentor.' };
-  }
-  
-  const limits = user.accessLimit;
-  const usage = user.usage || { interviewsCompleted: 0, examsCompleted: 0 };
+/**
+ * Extended auth: returns the user along with database context.
+ * Useful for B2B routes that need to know which institute DB to use.
+ */
+export async function getCurrentUserWithContext() {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
 
-  if (limits) {
-    if (limits.expiresAt && new Date(limits.expiresAt) < new Date()) {
-      return { blocked: true, reason: 'Your institutional access has expired.' };
+    if (!token) return null;
+
+    const [prefix, userId, sessionId] = token.split('|');
+    if (prefix !== 'token' || !userId || !sessionId) return null;
+
+    const client = await clientPromise;
+
+    // 1. Check B2C
+    const b2cDb = client.db('aicoach');
+    let user = await b2cDb.collection('users').findOne({
+      _id: new ObjectId(userId),
+      'sessions.id': sessionId,
+    });
+
+    if (user) {
+      return { user, db: b2cDb, dbName: 'aicoach', isB2B: false, instituteId: undefined };
     }
 
-    if (type === 'interview') {
-      if (limits.interviewsCount !== null && usage.interviewsCompleted >= limits.interviewsCount) {
-        return { blocked: true, reason: `You have reached your limit of ${limits.interviewsCount} interviews.` };
-      }
-    } else if (type === 'exam') {
-      if (limits.examsCount !== null && usage.examsCompleted >= limits.examsCount) {
-        return { blocked: true, reason: `You have reached your limit of ${limits.examsCount} exams.` };
+    // 2. Check B2B
+    const result = await getInstituteDbForUser(userId);
+    if (result) {
+      user = await result.db.collection('users').findOne({
+        _id: new ObjectId(userId),
+        'sessions.id': sessionId,
+      });
+      if (user) {
+        return {
+          user,
+          db: result.db,
+          dbName: result.institute.dbName,
+          isB2B: true,
+          instituteId: result.institute._id?.toString(),
+        };
       }
     }
-  }
 
-  return { blocked: false };
+    return null;
+  } catch (err: any) {
+    console.error('Auth context check error:', err.message);
+    return null;
+  }
 }
-

@@ -13,6 +13,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
   const portalType = (params?.portalType as string) || 'b2c';
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [userRole, setUserRole] = useState<string>('student');
 
   useEffect(() => {
     const verifyAccess = async () => {
@@ -25,6 +26,39 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         
         const data = await res.json();
         const profile = data.profile;
+        const userRole = data.user?.role || 'student';
+        setUserRole(userRole);
+
+        // Determine correct portal type path based on role
+        let correctPath = '';
+        if (userRole === 'admin') {
+          if (pathname !== '/admin') correctPath = '/admin';
+        } else if (userRole === 'superadmin') {
+          if (pathname !== '/superadmin') correctPath = '/superadmin';
+        } else if (userRole === 'institution') {
+          if (!pathname.startsWith('/dashboard/b2b/institution')) {
+            correctPath = '/dashboard/b2b/institution';
+          }
+        } else if (userRole === 'mentor') {
+          if (!pathname.startsWith('/dashboard/b2b/mentor')) {
+            correctPath = '/dashboard/b2b/mentor';
+          }
+        } else if (userRole === 'mentee') {
+          if (portalType !== 'b2b') {
+            correctPath = '/dashboard/b2b';
+          }
+        } else {
+          // B2C: student / professional
+          if (portalType !== 'b2c') {
+            correctPath = '/dashboard/b2c';
+          }
+        }
+
+        if (correctPath) {
+          router.replace(correctPath);
+          return;
+        }
+
         const assessmentCompleted = profile?.assessmentCompleted;
 
         // Path logic
@@ -65,10 +99,12 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
   // If unauthorized but loading is done, we are usually in the middle of a redirect
   if (!isAuthorized) return null;
 
+  const showStudentSidebar = userRole === 'student' || userRole === 'professional' || userRole === 'mentee';
+
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-white flex font-sans">
-      <Sidebar />
-      <div className="flex-1 overflow-x-hidden">
+      {showStudentSidebar && <Sidebar />}
+      <div className={showStudentSidebar ? "flex-1 overflow-x-hidden" : "flex-1"}>
         {children}
       </div>
     </div>

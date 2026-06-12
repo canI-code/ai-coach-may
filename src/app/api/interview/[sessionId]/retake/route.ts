@@ -177,6 +177,19 @@ export async function POST(
       );
     }
 
+    if (user.batchId) {
+      try {
+        const sessionOid = new ObjectId(result.value.sessionId);
+        const batchOid = new ObjectId(user.batchId);
+        await db.collection('interview_sessions').updateOne(
+          { _id: sessionOid },
+          { $set: { batchId: batchOid } }
+        );
+      } catch (err) {
+        console.error('Failed to set batchId on retaken interview session:', err);
+      }
+    }
+
     const created = await db.collection('interview_sessions').findOne({ _id: new ObjectId(result.value.sessionId) });
     const startedAt = created?.startedAt ?? created?.createdAt ?? null;
     const durationMinutes = created?.config.durationMinutes ?? 0;

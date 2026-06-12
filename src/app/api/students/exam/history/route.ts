@@ -258,6 +258,7 @@ export async function GET(req: Request) {
         interestStats: sessionInterestStats,
         totalQuestionCount: session.totalQuestionCount || session.questionCount || 20,
         canRetake,
+        batchId: session.batchId ? session.batchId.toString() : null,
         attempts: sessionAttempts
       };
     }).filter(s => s.attempts.length > 0);

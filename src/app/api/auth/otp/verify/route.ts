@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { getDbForUser } from '@/lib/db-selector';
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +13,28 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const db = client.db('aicoach');
     const otpsCollection = db.collection('otps');
-    const isB2B = role === 'mentor' || role === 'mentee';
-    const usersCollection = client.db(isB2B ? 'aicoach_institutional' : 'aicoach').collection('users');
+
+    // Find user in the appropriate database via the unified db-selector
+    const userIdentifier = identifier.includes('@') ? { email: identifier } : { phone: identifier };
+    
+    // For flagging purposes, we need to find the user
+    // Try B2C first, then B2B via registry
+    let usersCollection: any = db.collection('users');
+    const b2cUser = await usersCollection.findOne(userIdentifier);
+    
+    if (!b2cUser) {
+      // Search across institute databases
+      const registry = db.collection('institute_registry');
+      const institutes = await registry.find({ status: 'active' }).toArray();
+      for (const inst of institutes) {
+        const instDb = client.db(inst.dbName);
+        const found = await instDb.collection('users').findOne(userIdentifier);
+        if (found) {
+          usersCollection = instDb.collection('users');
+          break;
+        }
+      }
+    }
 
     const record = await otpsCollection.findOne({ identifier });
     const now = new Date();
@@ -45,36 +66,26 @@ export async function POST(request: Request) {
       let errorMessage = '';
       let isFlagged = false;
 
-      // NEW LOCKOUT LOGIC FOR ALL USERS:
-      // After 5 wrong: 10 min block
-      // After another 5 (total 10): 30 min block
-      // After another 5 (total 15): Flag and deactivate account
-      
       if (attempts >= 15) {
-        // Flag and deactivate the account
         isFlagged = true;
         errorMessage = 'Account has been flagged and deactivated due to multiple failed attempts. Contact admin.';
-        
-        // Update the user record to flag the account
-        const userIdentifier = identifier.includes('@') ? { email: identifier } : { phone: identifier };
+
         await usersCollection.updateOne(
           userIdentifier,
-          { 
-            $set: { 
-              isFlagged: true, 
+          {
+            $set: {
+              isFlagged: true,
               isActive: false,
               flaggedAt: now,
-              flagReason: 'Multiple OTP verification failures'
-            }
+              flagReason: 'Multiple OTP verification failures',
+            },
           },
           { upsert: false }
         );
       } else if (attempts >= 10) {
-        // 30 minute lockout after 10 failed attempts
         lockoutUntil = new Date(now.getTime() + 30 * 60000);
         errorMessage = 'Account temporarily locked for 30 minutes due to multiple failed attempts.';
       } else if (attempts >= 5) {
-        // 10 minute lockout after 5 failed attempts
         lockoutUntil = new Date(now.getTime() + 10 * 60000);
         errorMessage = 'Too many failed attempts. Account locked for 10 minutes.';
       } else {
@@ -89,7 +100,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Success! Mark OTP as verified (don't delete yet - login API will verify this)
+    // Success! Mark OTP as verified
     await otpsCollection.updateOne(
       { identifier },
       { $set: { verified: true, verifiedAt: now } }

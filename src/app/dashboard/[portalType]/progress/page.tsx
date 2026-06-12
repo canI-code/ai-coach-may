@@ -80,6 +80,8 @@ export default function ProgressPage({ searchParams }: PageProps) {
   const [dashboardMetrics, setDashboardMetrics] = useState<any>(null);
   const [examHistory, setExamHistory] = useState<any>(null);
   const [userInterests, setUserInterests] = useState<string[]>([]);
+  const [batches, setBatches] = useState<any[]>([]);
+  const [selectedBatch, setSelectedBatch] = useState<string>('all');
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -125,7 +127,15 @@ export default function ProgressPage({ searchParams }: PageProps) {
           setExamHistory(eData);
         }
 
-        // 5. Handle Session parameter routing
+        // 5. Fetch B2B batches if applicable
+        if (portalType === 'b2b') {
+          const batchesRes = await fetch('/api/b2b/mentee/batches');
+          if (batchesRes.ok) {
+            setBatches(await batchesRes.json());
+          }
+        }
+
+        // 6. Handle Session parameter routing
         if (sessionQuery) {
           const cleanQuery = sessionQuery.replace(/^S-/i, '').toLowerCase();
           let matched = allSessions.find(
@@ -158,26 +168,35 @@ export default function ProgressPage({ searchParams }: PageProps) {
     }
 
     loadAllData();
-  }, [sessionQuery]);
+  }, [sessionQuery, portalType]);
 
   // --- Compute Datasets ---
 
   const interviewPoints = useMemo(() => {
     if (!dashboardMetrics?.recentSessions) return [];
     return dashboardMetrics.recentSessions
-      .filter((s: any) => s.status === 'completed' && s.ciScore !== null)
+      .filter((s: any) => {
+        const isMatch = s.status === 'completed' && s.ciScore !== null;
+        if (selectedBatch !== 'all') {
+          return isMatch && s.batchId === selectedBatch;
+        }
+        return isMatch;
+      })
       .map((s: any) => ({
         date: new Date(s.createdAt),
         value: s.ciScore,
         type: 'interview' as const,
         label: s.role,
       }));
-  }, [dashboardMetrics]);
+  }, [dashboardMetrics, selectedBatch]);
 
   const examPoints = useMemo(() => {
     if (!examHistory?.attempts) return [];
     const pts: any[] = [];
     examHistory.attempts.forEach((session: any) => {
+      if (selectedBatch !== 'all' && session.batchId !== selectedBatch) {
+        return;
+      }
       session.attempts.forEach((att: any) => {
         if (att.date) {
           pts.push({
@@ -190,7 +209,7 @@ export default function ProgressPage({ searchParams }: PageProps) {
       });
     });
     return pts;
-  }, [examHistory]);
+  }, [examHistory, selectedBatch]);
 
   // Dynamic grouping based on active tab and timescale selection
   const groupedPoints = useMemo(() => {
@@ -257,11 +276,43 @@ export default function ProgressPage({ searchParams }: PageProps) {
     return 'Expert';
   };
 
+  // Compile exam stats filtered by batch
+  const filteredExamHistoryStats = useMemo(() => {
+    if (!examHistory?.attempts) return {};
+    const interestTotals: Record<string, { sum: number; count: number }> = {};
+    
+    examHistory.attempts.forEach((session: any) => {
+      if (selectedBatch !== 'all' && session.batchId !== selectedBatch) {
+        return;
+      }
+      session.attempts.forEach((att: any) => {
+        if (att.interestPercentages) {
+          Object.entries(att.interestPercentages).forEach(([interest, pct]: [string, any]) => {
+            if (!interestTotals[interest]) {
+              interestTotals[interest] = { sum: 0, count: 0 };
+            }
+            interestTotals[interest].sum += pct;
+            interestTotals[interest].count += 1;
+          });
+        }
+      });
+    });
+    
+    const result: Record<string, number> = {};
+    Object.entries(interestTotals).forEach(([interest, data]) => {
+      result[interest] = Math.round(data.sum / data.count);
+    });
+    return result;
+  }, [examHistory, selectedBatch]);
+
   // Compile Technical Skill Scores
   const interviewRoleAccuracies = useMemo(() => {
     if (!dashboardMetrics?.recentSessions) return {};
     const roleData: Record<string, { sum: number; count: number }> = {};
     dashboardMetrics.recentSessions.forEach((s: any) => {
+      if (selectedBatch !== 'all' && s.batchId !== selectedBatch) {
+        return;
+      }
       if (s.status === 'completed' && s.categoryScores?.technicalAccuracy != null) {
         const r = s.role;
         if (!roleData[r]) roleData[r] = { sum: 0, count: 0 };
@@ -274,12 +325,11 @@ export default function ProgressPage({ searchParams }: PageProps) {
       result[role] = Math.round(data.sum / data.count);
     });
     return result;
-  }, [dashboardMetrics]);
+  }, [dashboardMetrics, selectedBatch]);
 
   const technicalSkills = useMemo(() => {
     return userInterests.map((interest) => {
-      const examStat = examHistory?.interestStats?.find((i: any) => i.interest === interest);
-      const examVal = examStat ? examStat.percentage : null;
+      const examVal = filteredExamHistoryStats[interest] ?? null;
       const interviewVal = interviewRoleAccuracies[interest] ?? null;
 
       let overallVal = 0;
@@ -303,18 +353,42 @@ export default function ProgressPage({ searchParams }: PageProps) {
         hasData: examVal !== null || interviewVal !== null
       };
     });
-  }, [activeTab, userInterests, examHistory, interviewRoleAccuracies]);
+  }, [activeTab, userInterests, filteredExamHistoryStats, interviewRoleAccuracies]);
 
   // Compile Non-Tech Skills
   const nonTechSkills = useMemo(() => {
-    const comm = dashboardMetrics?.categoryAverages?.communication ?? 0;
-    const body = dashboardMetrics?.categoryAverages?.bodyCi ?? 0;
-    const voice = dashboardMetrics?.categoryAverages?.voiceCi ?? 0;
+    let commSum = 0;
+    let bodySum = 0;
+    let voiceSum = 0;
+    let interviewCount = 0;
+
+    if (dashboardMetrics?.recentSessions) {
+      dashboardMetrics.recentSessions.forEach((s: any) => {
+        if (selectedBatch !== 'all' && s.batchId !== selectedBatch) return;
+        if (s.status === 'completed' && s.categoryScores) {
+          commSum += s.categoryScores.communication ?? 0;
+          bodySum += s.categoryScores.bodyCi ?? 0;
+          voiceSum += s.categoryScores.voiceCi ?? 0;
+          interviewCount++;
+        }
+      });
+    }
+
+    const comm = interviewCount > 0 
+      ? Math.round(commSum / interviewCount) 
+      : (selectedBatch === 'all' ? (dashboardMetrics?.categoryAverages?.communication ?? 0) : 0);
+    const body = interviewCount > 0 
+      ? Math.round(bodySum / interviewCount) 
+      : (selectedBatch === 'all' ? (dashboardMetrics?.categoryAverages?.bodyCi ?? 0) : 0);
+    const voice = interviewCount > 0 
+      ? Math.round(voiceSum / interviewCount) 
+      : (selectedBatch === 'all' ? (dashboardMetrics?.categoryAverages?.voiceCi ?? 0) : 0);
 
     const examAttemptsList = examHistory?.attempts || [];
     let examScoreSum = 0;
     let examScoreCount = 0;
     examAttemptsList.forEach((s: any) => {
+      if (selectedBatch !== 'all' && s.batchId !== selectedBatch) return;
       s.attempts.forEach((a: any) => {
         examScoreSum += a.scorePercentage;
         examScoreCount++;
@@ -340,7 +414,7 @@ export default function ProgressPage({ searchParams }: PageProps) {
         { name: 'Reasoning & Logic', value: reasoning },
       ];
     }
-  }, [activeTab, dashboardMetrics, examHistory]);
+  }, [activeTab, dashboardMetrics, examHistory, selectedBatch]);
 
   // Compile Combined Skills Series Points
   const SKILL_COLORS = useMemo(() => [
@@ -364,7 +438,13 @@ export default function ProgressPage({ searchParams }: PageProps) {
 
       if (activeTab === 'overall' || activeTab === 'interview') {
         const matchingInterviews = dashboardMetrics?.recentSessions
-          ?.filter((s: any) => s.role && s.role.trim().toLowerCase() === skillLower && s.status === 'completed' && s.ciScore !== null) || [];
+          ?.filter((s: any) => {
+            const isMatch = s.role && s.role.trim().toLowerCase() === skillLower && s.status === 'completed' && s.ciScore !== null;
+            if (selectedBatch !== 'all') {
+              return isMatch && s.batchId === selectedBatch;
+            }
+            return isMatch;
+          }) || [];
         matchingInterviews.forEach((s: any) => {
           pts.push({
             date: new Date(s.createdAt),
@@ -374,9 +454,13 @@ export default function ProgressPage({ searchParams }: PageProps) {
       }
 
       if (activeTab === 'overall' || activeTab === 'exam') {
-        const matchingExamSessions = examHistory?.attempts?.filter((s: any) => 
-          s.interests && s.interests.map((i: string) => i.trim().toLowerCase()).includes(skillLower)
-        ) || [];
+        const matchingExamSessions = examHistory?.attempts?.filter((s: any) => {
+          const isMatch = s.interests && s.interests.map((i: string) => i.trim().toLowerCase()).includes(skillLower);
+          if (selectedBatch !== 'all') {
+            return isMatch && s.batchId === selectedBatch;
+          }
+          return isMatch;
+        }) || [];
         matchingExamSessions.forEach((session: any) => {
           const matchingAttempts = session.attempts || [];
           matchingAttempts.forEach((a: any) => {
@@ -451,7 +535,7 @@ export default function ProgressPage({ searchParams }: PageProps) {
         points: formattedPoints
       };
     });
-  }, [userInterests, activeTab, skillsTimescale, dashboardMetrics, examHistory, SKILL_COLORS]);
+  }, [userInterests, activeTab, skillsTimescale, dashboardMetrics, examHistory, SKILL_COLORS, selectedBatch]);
 
   // --- Rendering Helpers ---
 
@@ -506,6 +590,23 @@ export default function ProgressPage({ searchParams }: PageProps) {
               </p>
             </div>
           </div>
+          {portalType === 'b2b' && batches.length > 0 && (
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2.5 rounded-xl border border-white/5 shrink-0 self-start md:self-auto">
+              <span className="text-xs text-[#a1a1aa] font-medium uppercase tracking-wider">Batch:</span>
+              <select
+                value={selectedBatch}
+                onChange={(e) => setSelectedBatch(e.target.value)}
+                className="bg-transparent text-white font-semibold outline-none text-sm cursor-pointer min-w-[140px]"
+              >
+                <option value="all" className="bg-[#0f111a]">All Batches</option>
+                {batches.map((b) => (
+                  <option key={b._id} value={b._id} className="bg-[#0f111a]">
+                    {b.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         {error && (

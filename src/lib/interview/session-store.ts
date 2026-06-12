@@ -19,13 +19,17 @@ export const INTERVIEW_COLLECTIONS = {
 const POOL_TTL_SECONDS = 7200;
 
 import { getCurrentUser } from '@/lib/auth';
+import { findInstituteByUserId } from '@/lib/b2b/registry';
 
 export async function getInterviewDb(): Promise<Db> {
   const client = await clientPromise;
   try {
     const user = await getCurrentUser();
-    if (user && (user.role === 'mentor' || user.role === 'mentee')) {
-      return client.db('aicoach_institutional');
+    if (user) {
+      const result = await findInstituteByUserId(user._id.toString());
+      if (result) {
+        return client.db(result.institute.dbName);
+      }
     }
   } catch (err) {
     // cookies() lookup may throw during static generation / build time

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
+import { getDbForUser } from '@/lib/db-selector';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -11,8 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
 
     const stats = await db.collection('user_assessment_stats').findOne({ userId: user._id });
 

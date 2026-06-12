@@ -54,8 +54,10 @@ export function Header({ children, showNav = true, className = '' }: HeaderProps
   const getDashboardLink = () => {
     if (userRole === 'admin') return '/admin';
     if (userRole === 'superadmin') return '/superadmin';
-    if (userRole === 'mentor') return '/dashboard/mentor';
-    return userRole === 'mentee' ? '/dashboard/b2b' : '/dashboard/b2c';
+    if (userRole === 'institution') return '/dashboard/b2b/institution';
+    if (userRole === 'mentor') return '/dashboard/b2b/mentor';
+    if (userRole === 'mentee') return '/dashboard/b2b';
+    return '/dashboard/b2c';
   };
 
   return (

@@ -171,6 +171,7 @@ export interface InterviewSessionDoc {
   seedingShortfallWarning?: string;
   earlyExitReason?: string;
   reportId?: ObjectId;
+  batchId?: ObjectId;
   startedAt?: Date;
   parentSessionId?: ObjectId;
   attemptNumber?: number;
@@ -210,6 +211,7 @@ export interface CoachingReportDoc {
   resources: Resource[];
   narrative?: string;
   behavioralTimeline: TimelineEntry[];
+  batchId?: ObjectId;
   persistenceError?: string;
   resourcesError?: boolean;
   createdAt: Date;

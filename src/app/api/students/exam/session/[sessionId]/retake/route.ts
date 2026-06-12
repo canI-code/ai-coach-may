@@ -172,6 +172,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ session
       }, { status: 503 });
     }
 
+    const batchId = user.batchId ? new ObjectId(user.batchId) : null;
     // 8. Create new attempt document inside exam_attempts linked to same sessionId
     const newAttempt = {
       userId: user._id,
@@ -179,7 +180,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ session
       attemptNumber: nextAttemptNumber,
       questionIds: allQuestionIds,
       answers: [],
-      startedAt: new Date()
+      startedAt: new Date(),
+      ...(batchId ? { batchId } : {})
     };
 
     const attemptResult = await db.collection('exam_attempts').insertOne(newAttempt);
@@ -187,7 +189,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ session
     // 9. Reset session status to active in exam_sessions
     await db.collection('exam_sessions').updateOne(
       { _id: new ObjectId(sessionId) },
-      { $set: { status: 'active', startedAt: new Date() }, $unset: { completedAt: "" } }
+      { 
+        $set: { 
+          status: 'active', 
+          startedAt: new Date(),
+          ...(batchId ? { batchId } : {}) 
+        }, 
+        $unset: { completedAt: "" } 
+      }
     );
 
     // 10. Fetch question details from the unified questions_ai collection

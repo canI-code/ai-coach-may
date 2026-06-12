@@ -7,6 +7,7 @@ import LogoutButton from '@/app/components/LogoutButton';
 import { CheckCircle, XCircle, AlertTriangle, Building, Mail, Phone, User, Flag } from 'lucide-react';
 
 export default function AdminPage() {
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
   const [institutions, setInstitutions] = useState<any[]>([]);
   const [flaggedUsers, setFlaggedUsers] = useState<any[]>([]);
   const [questionFlags, setQuestionFlags] = useState<any[]>([]);
@@ -23,7 +24,7 @@ export default function AdminPage() {
 
   const fetchInstitutions = async () => {
     try {
-      const res = await fetch('/api/admin/institutions');
+      const res = await fetch('/api/admin/b2b/requests');
       const data = await res.json();
       if (res.ok) setInstitutions(data);
     } catch (err) {
@@ -54,25 +55,48 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    fetchInstitutions();
-    fetchFlaggedUsers();
-    fetchQuestionFlags();
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/status');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
+            setAuthorized(true);
+            fetchInstitutions();
+            fetchFlaggedUsers();
+            fetchQuestionFlags();
+          } else {
+            setAuthorized(false);
+          }
+        } else {
+          setAuthorized(false);
+        }
+      } catch (err) {
+        setAuthorized(false);
+      }
+    };
+    checkAuth();
   }, []);
 
   const handleApprove = async (id: string) => {
     setMessage('Approving...');
     try {
-      const res = await fetch('/api/admin/institutions/approve', {
+      const res = await fetch('/api/admin/b2b/activate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ 
+          instituteId: id,
+          totalCredits: 100,
+          duration: '1 year',
+          enabledPortals: ['interview', 'exam']
+        }),
       });
+      const data = await res.json();
       if (res.ok) {
-        setMessage('Approved successfully!');
+        setMessage(`Approved and activated successfully! Login credentials: ${data.credentials?.email} / ${data.credentials?.password || '(auto-generated)'}`);
         setSelectedInst(null);
         fetchInstitutions();
       } else {
-        const data = await res.json();
         setMessage('Error: ' + data.error);
       }
     } catch (err) {
@@ -85,7 +109,7 @@ export default function AdminPage() {
     setRejecting(true);
     setMessage('');
     try {
-      const res = await fetch('/api/admin/institutions/reject', {
+      const res = await fetch('/api/admin/b2b/reject', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: rejectingId, reason: rejectionReason }),
@@ -168,6 +192,39 @@ export default function AdminPage() {
     }
   };
 
+  if (authorized === null) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0b] flex flex-col items-center justify-center p-4">
+        <AmbientGlow color="amber" size="lg" position="top-left" className="z-0" />
+        <div className="w-12 h-12 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin mb-4" />
+        <p className="text-[#a1a1aa] font-medium animate-pulse">Checking credentials...</p>
+      </div>
+    );
+  }
+
+  if (authorized === false) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0b] flex items-center justify-center p-4">
+        <AmbientGlow color="amber" size="lg" position="top-left" className="z-0" />
+        <GlassCard padding="lg" className="max-w-md w-full text-center border-red-500/20">
+          <div className="flex justify-center mb-4">
+            <XCircle className="w-12 h-12 text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
+          <p className="text-muted mb-6">You do not have administrative privileges to view this page.</p>
+          <div className="flex gap-4 justify-center">
+            <Link href="/login" className="btn-primary py-2.5 px-5 text-sm font-semibold rounded-xl text-center">
+              Sign In as Admin
+            </Link>
+            <Link href="/" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white/60 hover:text-white glass-card text-center">
+              Back to Home
+            </Link>
+          </div>
+        </GlassCard>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-grid">
       <AmbientGlow color="amber" size="lg" position="top-left" className="z-0" />
@@ -249,14 +306,14 @@ export default function AdminPage() {
                         <div className="flex items-center justify-between">
                           <span className="text-white font-medium">{inst.collegeName}</span>
                           <span className={`text-xs px-2 py-1 rounded-full ${
-                            inst.status === 'approved' 
+                            (inst.status === 'approved' || inst.status === 'active')
                               ? 'bg-emerald-500/20 text-emerald-400'
                               : 'bg-amber-500/20 text-amber-400'
                           }`}>
                             {inst.status}
                           </span>
                         </div>
-                        <p className="text-sm text-muted mt-1">{inst.mentorEmail}</p>
+                        <p className="text-sm text-muted mt-1">{inst.mentorEmail || inst.representativeEmail}</p>
                       </button>
                     ))
                   )}
@@ -272,63 +329,65 @@ export default function AdminPage() {
                         <div><span className="text-muted">College Name:</span></div>
                         <div className="text-white">{selectedInst.collegeName}</div>
                         <div><span className="text-muted">Location:</span></div>
-                        <div className="text-white">{selectedInst.collegeLocation}</div>
-                        <div><span className="text-muted">Document:</span></div>
-                        <div className="text-white">{selectedInst.documentType}</div>
+                        <div className="text-white">{selectedInst.collegeLocation || selectedInst.location}</div>
+                        <div><span className="text-muted">Website:</span></div>
+                        <div className="text-white">{selectedInst.websiteUrl || 'Not provided'}</div>
+                        <div><span className="text-muted">Document Type:</span></div>
+                        <div className="text-white">{selectedInst.documentType || selectedInst.documents?.documentType}</div>
                       </div>
                       <hr className="border-white/10" />
                       <div className="grid grid-cols-2 gap-3">
-                        <div><span className="text-muted">Mentor Name:</span></div>
-                        <div className="text-white">{selectedInst.mentorName}</div>
-                        <div><span className="text-muted">Mentor Email:</span></div>
-                        <div className="text-white">{selectedInst.mentorEmail}</div>
-                        <div><span className="text-muted">Mentor Phone:</span></div>
-                        <div className="text-white">{selectedInst.mentorPhone}</div>
+                        <div><span className="text-muted">Representative:</span></div>
+                        <div className="text-white">{selectedInst.mentorName || selectedInst.representativeName}</div>
+                        <div><span className="text-muted">Email:</span></div>
+                        <div className="text-white">{selectedInst.mentorEmail || selectedInst.representativeEmail}</div>
+                        <div><span className="text-muted">Phone:</span></div>
+                        <div className="text-white">{selectedInst.mentorPhone || selectedInst.representativePhone}</div>
                       </div>
                       <hr className="border-white/10" />
                       <div className="grid grid-cols-2 gap-3">
-                        <div><span className="text-muted">Aadhaar:</span></div>
-                        <div className="text-white">{selectedInst.aadhaarNumber || 'Not provided'}</div>
+                        <div><span className="text-muted">{selectedInst.documentType || selectedInst.documents?.documentType || 'Document'} Number:</span></div>
+                        <div className="text-white">{selectedInst.aadhaarNumber || selectedInst.documents?.aadhaarNumber || 'Not provided'}</div>
                         <div><span className="text-muted">Consent:</span></div>
                         <div className={selectedInst.consent ? 'text-emerald-400' : 'text-red-400'}>
                           {selectedInst.consent ? 'Yes' : 'No'}
                         </div>
                       </div>
                       
-                      {(selectedInst.selfieLocalPath || selectedInst.aadhaarLocalPath || selectedInst.documentLocalPath) && (
+                      {(selectedInst.selfieLocalPath || selectedInst.documents?.selfieLocalPath || selectedInst.aadhaarLocalPath || selectedInst.documents?.aadhaarLocalPath || selectedInst.documentLocalPath || selectedInst.documents?.documentLocalPath) && (
                         <>
                           <hr className="border-white/10" />
                           <div className="space-y-3">
-                            {selectedInst.selfieLocalPath && (
+                            {(selectedInst.selfieLocalPath || selectedInst.documents?.selfieLocalPath) && (
                               <div>
-                                <span className="text-muted block mb-1.5">Mentor Live Selfie:</span>
+                                <span className="text-muted block mb-1.5">Live Verification Selfie:</span>
                                 <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-white/10 bg-white/5">
                                   <img
-                                    src={`/api/admin/testing-files?filename=${selectedInst.selfieLocalPath}`}
-                                    alt="Mentor Selfie"
+                                    src={`/api/admin/testing-files?filename=${selectedInst.selfieLocalPath || selectedInst.documents?.selfieLocalPath}`}
+                                    alt="Verification Selfie"
                                     className="w-full h-full object-cover"
                                   />
                                 </div>
                               </div>
                             )}
-                            {selectedInst.aadhaarLocalPath && (
+                            {(selectedInst.aadhaarLocalPath || selectedInst.documents?.aadhaarLocalPath) && (
                               <div className="flex justify-between items-center">
-                                <span className="text-muted">Aadhaar Photo:</span>
+                                <span className="text-muted">Representative Photo:</span>
                                 <a
-                                  href={`/api/admin/testing-files?filename=${selectedInst.aadhaarLocalPath}`}
+                                  href={`/api/admin/testing-files?filename=${selectedInst.aadhaarLocalPath || selectedInst.documents?.aadhaarLocalPath}`}
                                   target="_blank"
                                   rel="noreferrer"
                                   className="text-amber-400 hover:text-amber-300 font-semibold underline text-xs inline-flex items-center gap-1"
                                 >
-                                  View Aadhaar
+                                  View ID Photo
                                 </a>
                               </div>
                             )}
-                            {selectedInst.documentLocalPath && (
+                            {(selectedInst.documentLocalPath || selectedInst.documents?.documentLocalPath) && (
                               <div className="flex justify-between items-center">
-                                <span className="text-muted">College Document:</span>
+                                <span className="text-muted">Existence Document:</span>
                                 <a
-                                  href={`/api/admin/testing-files?filename=${selectedInst.documentLocalPath}`}
+                                  href={`/api/admin/testing-files?filename=${selectedInst.documentLocalPath || selectedInst.documents?.documentLocalPath}`}
                                   target="_blank"
                                   rel="noreferrer"
                                   className="text-amber-400 hover:text-amber-300 font-semibold underline text-xs inline-flex items-center gap-1"

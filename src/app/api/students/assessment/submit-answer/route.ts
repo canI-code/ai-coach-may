@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { getDbForUser } from '@/lib/db-selector';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 
@@ -18,8 +19,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
 
     // Update the attempt with the new answer
     // Using $pull followed by $push to ensure we don't have duplicate answers for the same question

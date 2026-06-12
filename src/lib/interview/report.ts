@@ -1,4 +1,5 @@
-import type { Db, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
+import type { Db } from 'mongodb';
 import type { LLMGateway } from './llm-gateway';
 import { validateWithShield } from './schema-shield';
 import { buildNarrativePrompt } from './prompt-builder';
@@ -170,6 +171,7 @@ export async function compileReport(
     resources,
     behavioralTimeline: session.behavioralTimeline ?? [],
     readyAt: new Date(),
+    batchId: session.batchId ? new ObjectId(session.batchId) : undefined,
   };
   if (narrative !== undefined) patch.narrative = narrative;
 

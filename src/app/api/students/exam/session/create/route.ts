@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser, isUserAccessBlocked } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { getDbForUser } from '@/lib/db-selector';
 import clientPromise from '@/lib/mongodb';
 import { QuestionSelector } from '@/lib/question-pool/question-selector';
@@ -14,12 +14,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Enforce B2B user limits
+    // Enforce B2B credit limits
     if (user.role === 'mentee') {
-      const limitCheck = isUserAccessBlocked(user, 'exam');
-      if (limitCheck.blocked) {
-        return NextResponse.json({ error: 'limit_exceeded', message: limitCheck.reason }, { status: 403 });
+      const { checkCreditAvailable, deductCredit } = await import('@/lib/b2b/access');
+      const { db: userDb } = await getDbForUser(user._id);
+      const creditCheck = await checkCreditAvailable(userDb, user._id, 'exam');
+      if (!creditCheck.allowed) {
+        return NextResponse.json({ error: 'limit_exceeded', message: creditCheck.reason }, { status: 403 });
       }
+      await deductCredit(userDb, user._id, 'exam');
     }
 
     const { interests, questionCount = 20 } = await req.json();
@@ -84,13 +87,15 @@ export async function POST(req: Request) {
       }, { status: 503 });
     }
 
+    const batchId = user.batchId ? new ObjectId(user.batchId) : null;
     const session = {
       userId: user._id,
       sessionType: 'practice',
       interests,
       totalQuestionCount: questionCount,
       status: 'active',
-      startedAt: new Date()
+      startedAt: new Date(),
+      ...(batchId ? { batchId } : {})
     };
 
     const sessionResult = await db.collection('exam_sessions').insertOne(session);
@@ -101,7 +106,8 @@ export async function POST(req: Request) {
       attemptNumber: 1,
       questionIds: allQuestionIds,
       answers: [],
-      startedAt: new Date()
+      startedAt: new Date(),
+      ...(batchId ? { batchId } : {})
     };
 
     const attemptResult = await db.collection('exam_attempts').insertOne(attempt);

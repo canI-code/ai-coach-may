@@ -72,6 +72,7 @@ export async function GET(_req: NextRequest) {
       reportId: s.reportId ? s.reportId.toString() : null,
       createdAt: toIso(s.createdAt) ?? '',
       endedAt: toIso(s.updatedAt),
+      batchId: s.batchId ? s.batchId.toString() : null,
     }));
 
     const reports: ReportInput[] = reportDocs.map((r) => ({

@@ -9,6 +9,7 @@ import {
   Loader2, ChevronRight, Clock, Target, CheckCircle2, 
   AlertCircle, ArrowRight, Trophy, Zap, Shield, X
 } from 'lucide-react';
+import { INTERESTS_TAXONOMY, MAIN_FIELDS } from '@/lib/taxonomy';
 
 export default function InitialAssessment() {
   const router = useRouter();
@@ -18,6 +19,13 @@ export default function InitialAssessment() {
   const [preparing, setPreparing] = useState(true);
   const [error, setError] = useState('');
   const [userInterests, setUserInterests] = useState<string[]>([]);
+
+  // New interest selector state hooks
+  const [showInterestSelector, setShowInterestSelector] = useState(false);
+  const [selectedField, setSelectedField] = useState<string>('');
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [savingInterests, setSavingInterests] = useState(false);
+  const [saveError, setSaveError] = useState('');
   
   const [assessmentId, setAssessmentId] = useState('');
   const [questions, setQuestions] = useState<any[]>([]);
@@ -151,6 +159,77 @@ export default function InitialAssessment() {
     }
   };
 
+  const prepareAssessment = async () => {
+    setPreparing(true);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/students/assessment/prepare', { method: 'POST' });
+      if (!res.ok) {
+        const err = await res.json();
+        const errMsg = err.message || err.error || '';
+        if (res.status === 404 || res.status === 400 || errMsg.includes('Profile not found') || errMsg.includes('interests')) {
+          setShowInterestSelector(true);
+          setPreparing(false);
+          setLoading(false);
+          return;
+        }
+        throw new Error(errMsg || 'Failed to prepare assessment');
+      }
+      const data = await res.json();
+      setAssessmentId(data.assessmentId);
+      setQuestions(data.questions);
+      setStartedTime(Date.now());
+      setShowInterestSelector(false);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setPreparing(false);
+      setLoading(false);
+    }
+  };
+
+  const handleSaveInterests = async () => {
+    if (!selectedField) {
+      setSaveError('Please select a main field of study.');
+      return;
+    }
+    if (selectedInterests.length < 3) {
+      setSaveError('Please select at least 3 interests.');
+      return;
+    }
+
+    setSavingInterests(true);
+    setSaveError('');
+    try {
+      const res = await fetch('/api/students/profile/interests', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mainField: selectedField,
+          interests: selectedInterests
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to save interests');
+      }
+
+      const data = await res.json();
+      if (data.profile?.interests) {
+        setUserInterests(data.profile.interests);
+      }
+      
+      // Successfully saved! Now prepare the assessment
+      await prepareAssessment();
+    } catch (err: any) {
+      setSaveError(err.message);
+    } finally {
+      setSavingInterests(false);
+    }
+  };
+
   useEffect(() => {
     const fetchProfileInterests = async () => {
       try {
@@ -165,27 +244,6 @@ export default function InitialAssessment() {
     };
     
     fetchProfileInterests();
-
-    const prepareAssessment = async () => {
-      try {
-        const res = await fetch('/api/students/assessment/prepare', { method: 'POST' });
-        if (!res.ok) {
-          const err = await res.json();
-          // Fix: Use err.message for the professional error message
-          throw new Error(err.message || err.error || 'Failed to prepare assessment');
-        }
-        const data = await res.json();
-        setAssessmentId(data.assessmentId);
-        setQuestions(data.questions);
-        setStartedTime(Date.now());
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setPreparing(false);
-        setLoading(false);
-      }
-    };
-
     prepareAssessment();
   }, []);
 
@@ -242,6 +300,130 @@ export default function InitialAssessment() {
       setSubmitting(false);
     }
   };
+
+  if (showInterestSelector) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0b] text-white flex flex-col items-center justify-center p-4 overflow-y-auto">
+        <AmbientGlow color="amber" size="xl" position="center" />
+        <div className="w-full max-w-xl animate-in zoom-in-95 duration-300 py-8">
+          <GlassCard className="border-amber-500/20 overflow-hidden relative shadow-2xl" padding="lg">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-teal-500 to-amber-500" />
+            
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400 animate-pulse">
+                <Target size={28} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white leading-tight">Configure Your Profile</h2>
+                <p className="text-amber-500/80 text-sm font-semibold uppercase tracking-wider">Select Interests to Begin</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Step 1: Select Main Field */}
+              <div>
+                <label className="block text-sm font-semibold text-white/90 mb-3">
+                  1. Select your Main Field of Study
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {MAIN_FIELDS.map((field) => {
+                    const isSelected = selectedField === field;
+                    return (
+                      <button
+                        key={field}
+                        type="button"
+                        onClick={() => {
+                          setSelectedField(field);
+                          setSelectedInterests([]); // Reset interests when field changes
+                          setSaveError('');
+                        }}
+                        className={`p-4 rounded-xl border text-center transition-all duration-300 ${
+                          isSelected
+                            ? 'border-amber-500 bg-amber-500/10 text-amber-400 font-bold shadow-lg shadow-amber-500/5'
+                            : 'border-white/5 bg-white/5 text-[#a1a1aa] hover:border-white/10 hover:bg-white/[0.08] cursor-pointer'
+                        }`}
+                      >
+                        {field}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Step 2: Select Interests */}
+              {selectedField && (
+                <div className="animate-in fade-in slide-in-from-top-4 duration-300">
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="block text-sm font-semibold text-white/90">
+                      2. Select Interests (Select at least 3)
+                    </label>
+                    <span className="text-xs text-amber-500 font-semibold bg-amber-500/10 px-2 py-0.5 rounded-full">
+                      Selected: {selectedInterests.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2.5 max-h-[220px] overflow-y-auto pr-1">
+                    {INTERESTS_TAXONOMY[selectedField].map((interest) => {
+                      const isSelected = selectedInterests.includes(interest);
+                      return (
+                        <button
+                          key={interest}
+                          type="button"
+                          onClick={() => {
+                            if (isSelected) {
+                              setSelectedInterests(prev => prev.filter(i => i !== interest));
+                            } else {
+                              setSelectedInterests(prev => [...prev, interest]);
+                            }
+                            setSaveError('');
+                          }}
+                          className={`px-3 py-2 rounded-xl text-sm border transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? 'border-teal-500/50 bg-teal-500/15 text-teal-400 font-medium'
+                              : 'border-white/5 bg-white/5 text-[#a1a1aa] hover:border-white/10 hover:bg-white/[0.08]'
+                          }`}
+                        >
+                          {interest}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {saveError && (
+                <div className="flex items-center gap-2 text-red-400 bg-red-500/10 border border-red-500/20 p-3.5 rounded-xl text-sm font-medium animate-in shake duration-300">
+                  <AlertCircle size={18} className="shrink-0" />
+                  <span>{saveError}</span>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-2">
+                <Button 
+                  variant="ghost" 
+                  fullWidth 
+                  onClick={() => router.push(`/dashboard/${portalType}`)}
+                  disabled={savingInterests}
+                >
+                  Return to Dashboard
+                </Button>
+                <Button 
+                  variant="primary" 
+                  fullWidth 
+                  disabled={savingInterests || !selectedField || selectedInterests.length < 3}
+                  className="bg-amber-500 hover:bg-amber-600 text-black border-none font-bold disabled:opacity-50 cursor-pointer"
+                  onClick={handleSaveInterests}
+                  icon={savingInterests ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowRight size={18} />}
+                >
+                  {savingInterests ? 'Saving...' : 'Start Assessment'}
+                </Button>
+              </div>
+            </div>
+          </GlassCard>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     const isIncompleteError = error.includes('try again after some time');

@@ -3,6 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { ProficiencyLevel } from '@/lib/assessment';
+import { getDbForUser } from '@/lib/db-selector';
 
 const DB_NAME = process.env.MONGODB_DB_NAME || 'aicoach';
 const MAX_TIME_PER_QUESTION = 120; // 2 minutes
@@ -20,7 +21,8 @@ export async function POST(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db(DB_NAME);
+    const { db } = await getDbForUser(user._id);
+    const mainDb = client.db(DB_NAME);
 
     const attempt = await db.collection('user_assessment_attempts').findOne({
       _id: new ObjectId(assessmentId),
@@ -33,8 +35,8 @@ export async function POST(req: Request) {
     }
 
     // Fetch all questions to verify answers
-    const questions = await db.collection('questions_non_ai').find({ _id: { $in: attempt.questionIds } }).toArray();
-    const aiQuestions = await db.collection('questions_ai').find({ _id: { $in: attempt.questionIds } }).toArray();
+    const questions = await mainDb.collection('questions_non_ai').find({ _id: { $in: attempt.questionIds } }).toArray();
+    const aiQuestions = await mainDb.collection('questions_ai').find({ _id: { $in: attempt.questionIds } }).toArray();
     const qsMap = new Map([...questions, ...aiQuestions].map(q => [q._id.toString(), q]));
 
     let totalScore = 0;

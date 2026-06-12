@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { GlassCard, Button, Input, Select, Container, Section, Header, OtpInput } from '../components/ui';
+import { GlassCard, Button, Input, Container, Header, OtpInput } from '../components/ui';
 import { AmbientGlow } from '../components/ui';
-import { ArrowLeft, ArrowRight, Mail, Phone, Lock, User, School } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Mail, Phone, Lock, User, Briefcase } from 'lucide-react';
 
 export default function Login() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [category, setCategory] = useState('');
+  const [loginMode, setLoginMode] = useState<'b2c' | 'b2b' | ''>('');
   const [userType, setUserType] = useState('');
   
   const [countryCode, setCountryCode] = useState('+91');
@@ -18,8 +18,6 @@ export default function Login() {
   const [emailIdentifier, setEmailIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [college, setCollege] = useState('');
-  const [colleges, setColleges] = useState([]);
   
   const [verifyPhone, setVerifyPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -32,18 +30,7 @@ export default function Login() {
   const [lockoutMinutes, setLockoutMinutes] = useState(0);
   const [attemptsRemaining, setAttemptsRemaining] = useState(5);
 
-  const isB2C = userType === 'student' || userType === 'professional';
-
-  useEffect(() => {
-    const fetchColleges = async () => {
-      try {
-        const res = await fetch('/api/institutions');
-        const data = await res.json();
-        if (res.ok) setColleges(data);
-      } catch (err) { console.error(err); }
-    };
-    fetchColleges();
-  }, []);
+  const isB2C = loginMode === 'b2c';
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -65,14 +52,15 @@ export default function Login() {
     }
   }, []);
 
-  const handleCategorySelection = (cat: string) => {
-    setCategory(cat);
-    setStep(1.5);
-  };
-
-  const handleRoleSelection = (role: string) => {
-    setUserType(role);
-    setStep(2);
+  const handleModeSelection = (mode: 'b2c' | 'b2b') => {
+    setLoginMode(mode);
+    if (mode === 'b2c') {
+      setUserType('student');
+      setStep(2);
+    } else {
+      setStep(2);
+      setUserType('');
+    }
   };
 
   const handleInitialSubmit = async (e: React.FormEvent) => {
@@ -105,6 +93,7 @@ export default function Login() {
         setError('Failed to send OTP.');
       }
     } else {
+      // B2B: validate email + password first
       setMessage('Verifying credentials...');
       try {
         const res = await fetch('/api/auth/login', {
@@ -113,7 +102,7 @@ export default function Login() {
           body: JSON.stringify({ 
             email: emailIdentifier, 
             password, 
-            role: userType, 
+            role: 'institution', // generic B2B role — server will determine actual role
             validateOnly: true 
           }),
         });
@@ -124,7 +113,7 @@ export default function Login() {
           const otpRes = await fetch('/api/auth/otp/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ identifier: phoneToNotify, role: userType === 'mentor' ? 'mentor' : 'mentee' }),
+            body: JSON.stringify({ identifier: phoneToNotify, role: 'b2b' }),
           });
           if (otpRes.ok) {
             setIsOtpSent(true);
@@ -134,9 +123,11 @@ export default function Login() {
           }
         } else {
           setError(data.error);
+          setMessage('');
         }
       } catch (err) {
         setError('Login failed');
+        setMessage('');
       }
     }
   };
@@ -146,33 +137,25 @@ export default function Login() {
     const fullPhone = isB2C ? (countryCode + phoneNumber) : ''; 
     const identifier = isB2C ? fullPhone : verifyPhone;
     
-    console.log('handleVerifyAndLogin called, isLockedOut:', isLockedOut);
-    
     if (isLockedOut) {
       setError(`Account locked. Please wait ${lockoutMinutes} minutes before trying again.`);
       return;
     }
     
     try {
-      // First verify the OTP
-      console.log('Calling OTP verify API with identifier:', identifier, 'otp:', otp);
       const otpRes = await fetch('/api/auth/otp/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, otp, role: userType }),
+        body: JSON.stringify({ identifier, otp, role: userType || 'b2b' }),
       });
 
       const otpData = await otpRes.json();
-      console.log('OTP verify response:', otpRes.status, otpData);
       
-      // Check for lockout response
       if (otpRes.status === 429 && otpData.lockout) {
         setIsLockedOut(true);
         setLockoutMinutes(otpData.minutesLeft || 10);
         setError(otpData.error || 'Too many failed attempts. Please try again later.');
-        console.log('Lockout detected, setting isLockedOut=true');
         
-        // Start countdown to unlock
         const countdown = setInterval(() => {
           setLockoutMinutes(prev => {
             if (prev <= 1) {
@@ -189,24 +172,24 @@ export default function Login() {
       }
       
       if (!otpRes.ok) {
-        console.log('OTP not ok, setting error:', otpData.error);
-        // Update attempts remaining
         const attemptsMatch = otpData.error?.match(/(\d+)/);
         if (attemptsMatch) {
           setAttemptsRemaining(parseInt(attemptsMatch[1]));
         }
         setError(otpData.error || 'Invalid OTP');
-        setOtp(''); // Clear OTP on failure
+        setOtp('');
         return;
       }
 
-      console.log('OTP verified, proceeding to login');
-      const payload: any = { role: userType };
+      // OTP verified — now complete login
+      const payload: any = { role: userType || 'student' };
       if (isB2C) {
         payload.phone = fullPhone;
+        payload.role = 'student';
       } else {
         payload.email = emailIdentifier;
         payload.password = password;
+        payload.role = 'institution'; // server determines actual role
       }
 
       const loginRes = await fetch('/api/auth/login', {
@@ -217,10 +200,14 @@ export default function Login() {
 
       const loginData = await loginRes.json();
       if (loginRes.ok) {
-        const portalType = isB2C ? 'b2c' : userType === 'mentee' ? 'b2b' : 'mentor';
-        if (isB2C) router.push(loginData.recovered ? `/dashboard/${portalType}?recovered=true` : `/dashboard/${portalType}`);
-        else if (userType === 'mentee') router.push(`/dashboard/${portalType}`);
-        else if (userType === 'mentor') router.push(`/dashboard/${portalType}`);
+        const role = loginData.user?.role;
+        // Role-based redirect
+        if (role === 'institution') router.push('/dashboard/b2b/institution');
+        else if (role === 'mentor') router.push('/dashboard/b2b/mentor');
+        else if (role === 'mentee') router.push(loginData.recovered ? '/dashboard/b2b?recovered=true' : '/dashboard/b2b');
+        else if (role === 'admin') router.push('/admin');
+        else if (role === 'superadmin') router.push('/superadmin');
+        else router.push(loginData.recovered ? '/dashboard/b2c?recovered=true' : '/dashboard/b2c');
       } else {
         setError(loginData.error);
       }
@@ -236,11 +223,11 @@ export default function Login() {
       const res = await fetch('/api/auth/otp/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: emailIdentifier, role: 'mentee' }),
+        body: JSON.stringify({ identifier: emailIdentifier, role: 'b2b' }),
       });
       if (res.ok) {
         setStep(5);
-        setMessage('Reset OTP sent to email (Simulated: 1234).');
+        setMessage('Reset OTP sent (Simulated: 123456).');
       } else {
         const data = await res.json();
         setError(data.error);
@@ -281,16 +268,13 @@ export default function Login() {
     }
   };
 
-  const RoleCard = ({ role, label, description, onClick }: { role: string; label: string; description: string; onClick: () => void }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
-    >
-      <h3 className="text-white font-semibold text-lg mb-1">{label}</h3>
-      <p className="text-sm text-muted">{description}</p>
-    </button>
-  );
+  const getBackStep = () => {
+    if (step === 2) return 1;
+    if (step === 3) return 2;
+    if (step === 4) return 2;
+    if (step === 5) return 4;
+    return 1;
+  };
 
   return (
     <div className="min-h-screen bg-grid">
@@ -319,90 +303,50 @@ export default function Login() {
                 </div>
               )}
 
+              {/* Step 1: Select login mode */}
               {step === 1 && (
                 <div className="space-y-4">
-                  <p className="text-white font-medium mb-4">Select your category</p>
+                  <p className="text-white font-medium mb-4">How would you like to sign in?</p>
                   <button
                     type="button"
-                    onClick={() => handleCategorySelection('institutional')}
+                    onClick={() => handleModeSelection('b2c')}
                     className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
                   >
                     <div className="flex items-center gap-4">
                       <div className="icon-container icon-container-amber">
-                        <School className="w-5 h-5 text-amber-400" />
+                        <User className="w-5 h-5 text-amber-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Institutional</h3>
-                        <p className="text-sm text-muted">Mentor or Mentee</p>
+                        <h3 className="text-white font-semibold">Student / Professional</h3>
+                        <p className="text-sm text-muted">Individual practice with phone OTP</p>
                       </div>
                     </div>
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleCategorySelection('non-institutional')}
+                    onClick={() => handleModeSelection('b2b')}
                     className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
                   >
                     <div className="flex items-center gap-4">
                       <div className="icon-container icon-container-teal">
-                        <User className="w-5 h-5 text-teal-400" />
+                        <Briefcase className="w-5 h-5 text-teal-400" />
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Non-Institutional</h3>
-                        <p className="text-sm text-muted">Student</p>
+                        <h3 className="text-white font-semibold">Business</h3>
+                        <p className="text-sm text-muted">Institution, Mentor, or Mentee login</p>
                       </div>
                     </div>
                   </button>
                 </div>
               )}
 
-              {step === 1.5 && (
-                <div className="space-y-4">
-                  <button
-                    type="button"
-                    onClick={() => handleRoleSelection(category === 'institutional' ? 'mentor' : 'student')}
-                    className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
-                  >
-                    <h3 className="text-white font-semibold text-lg">
-                      {category === 'institutional' ? 'Mentor' : 'Student'}
-                    </h3>
-                    <p className="text-sm text-muted">
-                      {category === 'institutional' ? 'For faculty and trainers' : 'For students preparing for interviews'}
-                    </p>
-                  </button>
-                  {category === 'institutional' && (
-                    <button
-                      type="button"
-                      onClick={() => handleRoleSelection('mentee')}
-                      className="glass-card glass-card-hover rounded-2xl p-6 text-left w-full"
-                    >
-                      <h3 className="text-white font-semibold text-lg">Mentee</h3>
-                      <p className="text-sm text-muted">For registered students</p>
-                    </button>
-                  )}
-                </div>
-              )}
-
+              {/* Step 2: Credentials */}
               {step === 2 && (
                 <form onSubmit={handleInitialSubmit} className="space-y-4">
-                  <p className="text-white font-medium mb-4">Login as {userType}</p>
+                  <p className="text-white font-medium mb-4">
+                    {isB2C ? 'Sign in with phone' : 'Sign in with credentials'}
+                  </p>
                   
-                  {userType === 'mentor' && (
-                    <div className="space-y-2">
-                      <Select
-                        label="Select College"
-                        value={college}
-                        onChange={(e) => setCollege(e.target.value)}
-                        options={colleges.map((c: any) => ({ value: c.collegeName, label: c.collegeName }))}
-                        placeholder="Select your institution"
-                      />
-                      {college === 'other' && (
-                        <Link href="/register-institution" className="text-sm text-amber-400 hover:text-amber-300">
-                          Register your Institution
-                        </Link>
-                      )}
-                    </div>
-                  )}
-
                   {isB2C ? (
                     <div className="space-y-4">
                       <div>
@@ -441,12 +385,12 @@ export default function Login() {
                   ) : (
                     <div className="space-y-4">
                       <Input
-                        label="Email ID"
-                        type="email"
+                        label="Email ID / Phone Number"
+                        type="text"
                         icon={<Mail className="w-4 h-4" />}
                         value={emailIdentifier}
                         onChange={(e) => setEmailIdentifier(e.target.value)}
-                        placeholder="Enter your email"
+                        placeholder="Enter your email or phone number"
                         required
                       />
                       <Input
@@ -474,11 +418,12 @@ export default function Login() {
                 </form>
               )}
 
+              {/* Step 3: OTP Verification */}
               {step === 3 && (
                 <div className="space-y-4">
                   <p className="text-white font-medium mb-4 text-center">Verify Identity</p>
                   <p className="text-sm text-muted mb-6 text-center">
-                    Enter the {isB2C ? '4' : '6'}-digit code sent to your {isB2C ? 'phone' : 'email'} (Simulated: {isB2C ? '1234' : '123456'}).
+                    Enter the 6-digit code sent to your {isB2C ? 'phone' : 'registered phone'} (Simulated: 123456).
                   </p>
                   
                   {isLockedOut ? (
@@ -500,11 +445,11 @@ export default function Login() {
                       <OtpInput
                         value={otp}
                         onChange={setOtp}
-                        length={isB2C ? 4 : 6}
+                        length={6}
                         error={!!error}
                         disabled={isLockedOut}
                       />
-                      <Button onClick={handleVerifyAndLogin} fullWidth disabled={otp.length !== (isB2C ? 4 : 6) || isLockedOut}>
+                      <Button onClick={handleVerifyAndLogin} fullWidth disabled={otp.length !== 6 || isLockedOut}>
                         Verify & Login
                       </Button>
                       <Button
@@ -520,6 +465,7 @@ export default function Login() {
                 </div>
               )}
 
+              {/* Step 4: Forgot Password (B2B only) */}
               {step === 4 && (
                 <div className="space-y-4">
                   <p className="text-white font-medium mb-4">Forgot Password</p>
@@ -540,6 +486,7 @@ export default function Login() {
                 </div>
               )}
 
+              {/* Step 5: Reset Password */}
               {step === 5 && (
                 <div className="space-y-4">
                   <p className="text-white font-medium mb-4">Reset Password</p>
@@ -547,7 +494,7 @@ export default function Login() {
                     label="OTP Code"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter OTP (1234)"
+                    placeholder="Enter OTP (123456)"
                   />
                   <Input
                     label="New Password"
@@ -566,7 +513,7 @@ export default function Login() {
               {step > 1 && (
                 <button
                   type="button"
-                  onClick={() => setStep(step === 1.5 ? 1 : step === 3 ? 2 : (step === 4 ? 2 : (step === 5 ? 4 : 1.5)))}
+                  onClick={() => setStep(getBackStep())}
                   className="mt-6 text-sm text-muted hover:text-white transition-colors flex items-center gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />

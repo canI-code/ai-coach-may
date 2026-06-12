@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Container, Section, SectionHeader, GlassCard, Button, PricingCard, Header, AmbientGlow } from '../components/ui';
-import { Check, ArrowRight, Star } from 'lucide-react';
+import { Check, ArrowRight, Star, Building2 } from 'lucide-react';
 
 const plans = [
   {
@@ -85,9 +85,9 @@ export default function Plans() {
                     variant={plan.featured ? 'featured' : 'default'}
                     cta={
                       plan.title === 'Institution' ? (
-                        <Link href="/contact">
-                          <Button variant="ghost" fullWidth icon={<ArrowRight className="w-4 h-4" />}>
-                            Contact Sales
+                        <Link href="/plans/business">
+                          <Button variant="ghost" fullWidth icon={<Building2 className="w-4 h-4" />}>
+                            Business Purchase
                           </Button>
                         </Link>
                       ) : (
