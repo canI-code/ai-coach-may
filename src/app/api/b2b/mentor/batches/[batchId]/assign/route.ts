@@ -4,13 +4,13 @@ import { findInstituteByUserId, getInstituteDb } from '@/lib/b2b/registry';
 import { ObjectId } from 'mongodb';
 
 /**
- * POST /api/b2b/mentor/batches/[id]/assign
+ * POST /api/b2b/mentor/batches/[batchId]/assign
  * Assign mentees to a batch and optionally set portal limits.
  * Body: { menteeIds: string[], enabledPortals?: string[] }
  */
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ batchId: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -18,7 +18,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id: batchId } = await params;
+    const { batchId } = await params;
     const result = await findInstituteByUserId(user._id.toString());
     if (!result) return NextResponse.json({ error: 'Institute not found' }, { status: 404 });
 

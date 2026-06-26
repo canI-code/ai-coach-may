@@ -30,6 +30,7 @@ export async function GET() {
       dbName: institute.dbName,
       activatedAt: institute.activatedAt,
       status: institute.status,
+      branding: institute.branding || null,
     });
   } catch (error) {
     console.error('Institution profile error:', error);

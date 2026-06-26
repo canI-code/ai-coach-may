@@ -21,7 +21,11 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['src/lib/interview/**/*.test.ts', 'src/lib/dashboard-suite/**/*.test.ts'],
+    include: [
+      'src/lib/interview/**/*.test.ts',
+      'src/lib/dashboard-suite/**/*.test.ts',
+      'src/lib/b2b/**/*.test.ts'
+    ],
     exclude: ['node_modules', 'dist', '.next', 'skills', 'src/scripts/**'],
     // The foundation scaffold has no test files yet; later tasks add them.
     passWithNoTests: true,

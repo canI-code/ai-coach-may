@@ -6,6 +6,7 @@ import {
   Loader2,
   AlertCircle,
   Trophy,
+  Award,
   Target,
   BookOpen,
   ExternalLink,
@@ -77,6 +78,14 @@ interface ReportPayload {
   improvements?: string[];
   role?: string;
   aiPersona?: string;
+  mentorAnnotations?: {
+    annotations: {
+      questionIndex: number;
+      tSeconds: number;
+      feedback: string;
+    }[];
+    generalFeedback?: string;
+  };
 }
 
 interface ReportPollResponse {
@@ -1101,6 +1110,64 @@ export function ReportView({ sessionId }: ReportViewProps) {
               </div>
             )}
           </section>
+
+          {/* Coach & Mentor Feedback */}
+          {report.mentorAnnotations && (
+            <section className="rounded-3xl border border-amber-500/20 bg-amber-500/[0.02] backdrop-blur-md p-6 shadow-md text-left relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="mb-4 flex items-center gap-2 text-amber-400">
+                <Award size={18} />
+                <h3 className="text-lg font-semibold text-white">Coach & Mentor Feedback</h3>
+              </div>
+              
+              {report.mentorAnnotations.generalFeedback && (
+                <div className="mb-6 space-y-2">
+                  <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">General Summary</h4>
+                  <p className="whitespace-pre-line text-sm leading-relaxed text-zinc-300 bg-white/5 p-4 rounded-2xl border border-white/5">
+                    {report.mentorAnnotations.generalFeedback}
+                  </p>
+                </div>
+              )}
+
+              {report.mentorAnnotations.annotations && report.mentorAnnotations.annotations.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">Timestamped Annotations</h4>
+                  <div className="space-y-2">
+                    {report.mentorAnnotations.annotations.map((ann: any, idx: number) => {
+                      const tSec = Number(ann.tSeconds);
+                      const mm = Number.isFinite(tSec) && tSec >= 0 ? Math.floor(tSec / 60) : 0;
+                      const ss = Number.isFinite(tSec) && tSec >= 0 ? Math.floor(tSec % 60) : 0;
+                      const timeStr = `${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`;
+                      return (
+                        <div key={`${ann.questionIndex}-${ann.tSeconds}-${idx}`} className="flex items-start justify-between gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              {ann.questionIndex >= 0 ? (
+                                <span className="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                  Question {ann.questionIndex + 1}
+                                </span>
+                              ) : (
+                                <span className="text-xs font-bold text-teal-400 bg-teal-500/10 px-1.5 py-0.5 rounded">
+                                  Timeline Note
+                                </span>
+                              )}
+                              <span className="font-mono text-xs text-gray-500">
+                                [{timeStr}]
+                              </span>
+                            </div>
+                            <p className="text-sm text-white/90 leading-relaxed font-medium">
+                              {ann.feedback}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
 
           {/* Narrative summary */}
           {report.narrative && (

@@ -101,16 +101,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (user.batchId) {
+    const parsedBody = rawConfig as any;
+    const campaignId = parsedBody?.campaignId;
+    let campaignOid: ObjectId | null = null;
+    let campaignBatchOid: ObjectId | null = null;
+    if (campaignId) {
+      try {
+        campaignOid = new ObjectId(campaignId);
+        const campaign = await db.collection('practice_campaigns').findOne({ _id: campaignOid });
+        if (campaign) {
+          campaignBatchOid = campaign.batchId;
+        }
+      } catch (err) {
+        console.error('Failed to parse campaignId:', err);
+      }
+    }
+
+    if (campaignOid || user.batchId) {
       try {
         const sessionOid = new ObjectId(result.value.sessionId);
-        const batchOid = new ObjectId(user.batchId);
-        await db.collection('interview_sessions').updateOne(
-          { _id: sessionOid },
-          { $set: { batchId: batchOid } }
-        );
+        const updateFields: any = {};
+        if (campaignOid) updateFields.campaignId = campaignOid;
+
+        const finalBatchId = campaignBatchOid || (user.batchId ? new ObjectId(user.batchId) : null);
+        if (finalBatchId) updateFields.batchId = finalBatchId;
+
+        if (Object.keys(updateFields).length > 0) {
+          await db.collection('interview_sessions').updateOne(
+            { _id: sessionOid },
+            { $set: updateFields }
+          );
+        }
       } catch (err) {
-        console.error('Failed to set batchId on interview session:', err);
+        console.error('Failed to set campaignId/batchId on interview session:', err);
       }
     }
 

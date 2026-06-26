@@ -22,6 +22,8 @@ const INSTITUTE_COLLECTIONS = [
   'questions_ai',
   'user_profile',
   'user_assessment_stats',
+  'user_resumes',
+  'mentor_annotations',
 ] as const;
 
 /**
@@ -52,6 +54,7 @@ export async function createInstituteDatabase(dbName: string): Promise<Db> {
   await users.createIndex({ role: 1 });
   await users.createIndex({ mentorId: 1 }, { sparse: true });
   await users.createIndex({ batchId: 1 }, { sparse: true });
+  await users.createIndex({ batchIds: 1 }, { sparse: true });
 
   // batches
   const batches = db.collection('batches');
@@ -116,6 +119,14 @@ export async function createInstituteDatabase(dbName: string): Promise<Db> {
   // user_assessment_stats
   const assessmentStats = db.collection('user_assessment_stats');
   await assessmentStats.createIndex({ userId: 1 }, { unique: true });
+
+  // user_resumes
+  const userResumes = db.collection('user_resumes');
+  await userResumes.createIndex({ userId: 1, createdAt: -1 });
+
+  // mentor_annotations
+  const mentorAnnotations = db.collection('mentor_annotations');
+  await mentorAnnotations.createIndex({ sessionId: 1 }, { unique: true });
 
   console.log(`✅ Institute database "${dbName}" created with ${INSTITUTE_COLLECTIONS.length} collections and indexes.`);
   return db;

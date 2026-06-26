@@ -9,6 +9,7 @@ import {
   getReportStatusCache,
 } from '@/lib/interview/session-store';
 import { buildPerTurnHistory, compileStrengthsImprovements } from '@/lib/dashboard-suite/per-turn';
+import { findInstituteByUserId, getInstituteDb } from '@/lib/b2b/registry';
 
 // The report endpoint is polled until the background compilation finishes, so it must
 // always return request-time data and is never cached (Req 16.7).
@@ -92,6 +93,19 @@ export async function GET(
     const perTurnHistory = buildPerTurnHistory(session.turns || []);
     const { strengths, improvements } = compileStrengthsImprovements(session.turns || []);
 
+    // Check if B2B session and query mentor annotations
+    let mentorAnnotations = null;
+    const isB2B = !!session.batchId;
+    const registryResult = await findInstituteByUserId(session.userId.toString());
+    if (isB2B || registryResult) {
+      const dbToQuery = registryResult ? await getInstituteDb(registryResult.institute._id!) : db;
+      if (dbToQuery) {
+        mentorAnnotations = await dbToQuery.collection('mentor_annotations').findOne({
+          sessionId: session._id
+        });
+      }
+    }
+
     return NextResponse.json({
       reportId,
       status: 'ready',
@@ -112,6 +126,7 @@ export async function GET(
         improvements,
         role: session.config.role,
         aiPersona: session.config.aiPersona,
+        mentorAnnotations: mentorAnnotations || undefined,
       },
     });
   } catch (error) {

@@ -100,6 +100,39 @@ class OpenAICompatGateway implements LLMGateway {
 class MockGateway implements LLMGateway {
   async complete(req: LLMRequest): Promise<LLMResult> {
     const p = req.prompt;
+    if (p.includes('atsScore') || p.includes('ResumeAnalysisSchema') || p.includes('resumeText')) {
+      return {
+        ok: true,
+        text: JSON.stringify({
+          atsScore: 85,
+          formattingScore: 90,
+          skillsScore: 80,
+          experienceScore: 75,
+          hardSkills: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
+          softSkills: ['Communication', 'Leadership', 'Problem Solving'],
+          formattingFeedback: [
+            'Use standard font sizes and margins.',
+            'Ensure consistent bullet points layout.'
+          ],
+          googleXyzSuggestions: [
+            {
+              original: 'Led a team to build a web app.',
+              improved: 'Accomplished 30% speedup in web app rendering by leading a team of 4 to refactor React components.',
+              reason: 'Uses the Google XYZ formula: Accomplished [X] as measured by [Y], by doing [Z].'
+            }
+          ],
+          jobDescriptionMatch: {
+            roleName: 'Frontend Engineer',
+            matchPercentage: 85,
+            missingSkills: ['Tailwind CSS', 'Next.js'],
+            recommendations: [
+              'Add Next.js projects to showcase modern framework experience.',
+              'Highlight responsive styling work.'
+            ]
+          }
+        }),
+      };
+    }
     if (p.includes('technicalAccuracy')) {
       return {
         ok: true,

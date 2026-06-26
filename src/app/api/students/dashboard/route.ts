@@ -91,6 +91,29 @@ export async function GET() {
       }
     }
 
+    // Fetch placement readiness details
+    const [coachingReports, assessmentStats, examSessions] = await Promise.all([
+      db.collection('coaching_reports').find({ userId: user._id, status: 'ready' }).toArray(),
+      db.collection('user_assessment_stats').findOne({ userId: user._id }),
+      db.collection('exam_sessions').find({ userId: user._id }).toArray()
+    ]);
+
+    const examSessionIds = examSessions.map((es: any) => es._id);
+    const examAttempts = examSessionIds.length > 0
+      ? await db.collection('exam_attempts').find({ sessionId: { $in: examSessionIds }, completedAt: { $exists: true } }).toArray()
+      : [];
+
+    const examSessionsWithAttempts = examSessions.map((es: any) => {
+      const attempts = examAttempts.filter((a: any) => a.sessionId.toString() === es._id.toString());
+      return {
+        ...es,
+        attempts
+      };
+    });
+
+    const { calculatePlacementReadiness } = await import('@/lib/b2b/predictor');
+    const placementReadiness = calculatePlacementReadiness(coachingReports, assessmentStats, examSessionsWithAttempts);
+
     return NextResponse.json({
       profile,
       user: {
@@ -101,7 +124,8 @@ export async function GET() {
       completionStatus: {
         isComplete,
         pendingFields
-      }
+      },
+      placementReadiness
     });
 
   } catch (error) {

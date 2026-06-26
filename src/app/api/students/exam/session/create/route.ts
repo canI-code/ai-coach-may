@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       await deductCredit(userDb, user._id, 'exam');
     }
 
-    const { interests, questionCount = 20 } = await req.json();
+    const { interests, questionCount = 20, campaignId } = await req.json();
 
     if (!interests || !Array.isArray(interests) || interests.length === 0) {
       return NextResponse.json({ error: 'Interests must be provided' }, { status: 400 });
@@ -87,7 +87,21 @@ export async function POST(req: Request) {
       }, { status: 503 });
     }
 
-    const batchId = user.batchId ? new ObjectId(user.batchId) : null;
+    let campaignOid: ObjectId | null = null;
+    let campaignBatchOid: ObjectId | null = null;
+    if (campaignId) {
+      try {
+        campaignOid = new ObjectId(campaignId);
+        const campaign = await db.collection('practice_campaigns').findOne({ _id: campaignOid });
+        if (campaign) {
+          campaignBatchOid = campaign.batchId;
+        }
+      } catch (err) {
+        console.error('Failed to parse campaignId:', err);
+      }
+    }
+
+    const finalBatchId = campaignBatchOid || (user.batchId ? new ObjectId(user.batchId) : null);
     const session = {
       userId: user._id,
       sessionType: 'practice',
@@ -95,7 +109,8 @@ export async function POST(req: Request) {
       totalQuestionCount: questionCount,
       status: 'active',
       startedAt: new Date(),
-      ...(batchId ? { batchId } : {})
+      ...(finalBatchId ? { batchId: finalBatchId } : {}),
+      ...(campaignOid ? { campaignId: campaignOid } : {})
     };
 
     const sessionResult = await db.collection('exam_sessions').insertOne(session);
@@ -107,7 +122,8 @@ export async function POST(req: Request) {
       questionIds: allQuestionIds,
       answers: [],
       startedAt: new Date(),
-      ...(batchId ? { batchId } : {})
+      ...(finalBatchId ? { batchId: finalBatchId } : {}),
+      ...(campaignOid ? { campaignId: campaignOid } : {})
     };
 
     const attemptResult = await db.collection('exam_attempts').insertOne(attempt);

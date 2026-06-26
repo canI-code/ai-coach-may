@@ -29,6 +29,13 @@ export interface InstituteDocuments {
   selfieLocalPath?: string;
 }
 
+export interface InstituteBranding {
+  logoUrl?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  welcomeBannerText?: string;
+}
+
 export interface InstituteRegistryDoc {
   _id?: ObjectId;
   collegeName: string;
@@ -51,6 +58,7 @@ export interface InstituteRegistryDoc {
   createdAt: Date;
   activatedAt: Date | null;
   createdBy: ObjectId | null; // admin who activated
+  branding?: InstituteBranding;
 }
 
 // ── Collection accessor ──────────────────────────────────────────────────────
