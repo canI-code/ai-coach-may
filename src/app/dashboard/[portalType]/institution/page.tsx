@@ -2,22 +2,32 @@
 
 import { useState, useEffect } from 'react';
 import { GlassCard, CardTitle, CardDescription } from '@/app/components/ui';
-import { Users, UserPlus, CreditCard, TrendingUp, Clock, Loader2 } from 'lucide-react';
+import { Users, UserPlus, CreditCard, TrendingUp, Clock, Loader2, X, ArrowRight, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 export default function InstitutionOverview() {
+  const params = useParams();
   const [data, setData] = useState<any>(null);
   const [branding, setBranding] = useState<any>(null);
+  const [departments, setDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hideBanner, setHideBanner] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [overviewRes, brandingRes] = await Promise.all([
+        const [overviewRes, brandingRes, deptRes] = await Promise.all([
           fetch('/api/b2b/institution/overview'),
-          fetch('/api/b2b/branding')
+          fetch('/api/b2b/branding'),
+          fetch('/api/b2b/institution/departments')
         ]);
         if (overviewRes.ok) setData(await overviewRes.json());
         if (brandingRes.ok) setBranding(await brandingRes.json());
+        if (deptRes.ok) {
+          const deptData = await deptRes.json();
+          setDepartments(deptData.departments || []);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -36,6 +46,10 @@ export default function InstitutionOverview() {
   }
 
   const stats = data?.stats || {};
+  
+  const hasBranding = branding?.logoUrl && branding?.welcomeBannerText;
+  const hasDepartments = departments.length > 0;
+  const showOnboardingBanner = !hideBanner && (!hasBranding || !hasDepartments);
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -43,6 +57,38 @@ export default function InstitutionOverview() {
         <h1 className="text-2xl font-bold text-white">Institution Overview</h1>
         <p className="text-sm text-[#a1a1aa] mt-1">Monitor your institution's activity and resources</p>
       </div>
+
+      {/* Onboarding Banner */}
+      {showOnboardingBanner && (
+        <div className="p-4 rounded-xl border border-purple-500/30 bg-purple-500/10 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between relative">
+          <button 
+            onClick={() => setHideBanner(true)}
+            className="absolute top-2 right-2 text-purple-400/60 hover:text-purple-300"
+          >
+            <X size={16} />
+          </button>
+          <div className="flex gap-3">
+            <div className="mt-1">
+              <AlertCircle className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <h3 className="text-white font-medium">Complete Your Setup</h3>
+              <p className="text-sm text-purple-200/70 mt-1">
+                {!hasDepartments && !hasBranding 
+                  ? 'Add your departments and setup your whitelabel branding to get started.' 
+                  : !hasDepartments 
+                    ? 'Add departments before creating mentors or batches.' 
+                    : 'Configure your custom branding to personalize the portal for your students.'}
+              </p>
+            </div>
+          </div>
+          <Link href={`/dashboard/${params.portalType}/institution/settings`}>
+            <button className="whitespace-nowrap px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
+              Go to Settings <ArrowRight size={14} />
+            </button>
+          </Link>
+        </div>
+      )}
 
       {/* Custom Welcome Banner */}
       {branding?.welcomeBannerText && (

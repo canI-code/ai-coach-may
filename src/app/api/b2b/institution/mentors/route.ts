@@ -30,7 +30,27 @@ export async function GET() {
       }
     ).sort({ createdAt: -1 }).toArray();
 
-    return NextResponse.json(mentors);
+    // Fetch all mentees to calculate actual credit usage per mentor
+    const mentees = await db.collection('users').find(
+      { role: 'mentee' },
+      { projection: { mentorId: 1, 'credits.used': 1 } }
+    ).toArray();
+
+    // Map mentee usage to mentors
+    const usageByMentor: Record<string, number> = {};
+    for (const mentee of mentees) {
+      if (mentee.mentorId) {
+        const mentorIdStr = mentee.mentorId.toString();
+        usageByMentor[mentorIdStr] = (usageByMentor[mentorIdStr] || 0) + (mentee.credits?.used || 0);
+      }
+    }
+
+    const mentorsWithUsage = mentors.map(m => ({
+      ...m,
+      menteesUsedCredits: usageByMentor[m._id.toString()] || 0
+    }));
+
+    return NextResponse.json(mentorsWithUsage);
   } catch (error) {
     console.error('Institution mentors list error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

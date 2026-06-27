@@ -20,17 +20,31 @@ export async function GET() {
 
     const { institute } = result;
 
+    // Calculate actual credits used across all mentees in the tenant DB
+    const db = await getInstituteDb(institute._id!);
+    let actualCreditsUsed = 0;
+    if (db) {
+      const allMentees = await db.collection('users').find({ role: 'mentee' }, { projection: { 'credits.used': 1 } }).toArray();
+      actualCreditsUsed = allMentees.reduce((sum, mentee) => sum + (mentee.credits?.used || 0), 0);
+    }
+
+    const plan = {
+      ...institute.plan,
+      usedCredits: actualCreditsUsed
+    };
+
     return NextResponse.json({
       collegeName: institute.collegeName,
       location: institute.location,
       representativeName: institute.representativeName,
       representativeEmail: institute.representativeEmail,
       representativePhone: institute.representativePhone,
-      plan: institute.plan,
+      plan: plan,
       dbName: institute.dbName,
       activatedAt: institute.activatedAt,
       status: institute.status,
       branding: institute.branding || null,
+      documents: institute.documents || null,
     });
   } catch (error) {
     console.error('Institution profile error:', error);

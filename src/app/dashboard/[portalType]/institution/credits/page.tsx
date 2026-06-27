@@ -129,9 +129,10 @@ export default function InstitutionCredits() {
               .filter(m => (m.credits?.allocated || 0) > 0)
               .map(mentor => {
                 const allocated = mentor.credits?.allocated || 0;
-                const used = mentor.credits?.used || 0;
                 const remaining = mentor.credits?.remaining || 0;
-                const pct = allocated ? Math.round((used / allocated) * 100) : 0;
+                const distributed = Math.max(0, allocated - remaining);
+                const consumed = mentor.menteesUsedCredits || 0;
+                const pct = allocated ? Math.round((distributed / allocated) * 100) : 0;
                 
                 return (
                   <GlassCard key={mentor._id} className="p-5 border-white/5 hover:border-purple-500/20 transition-all duration-300">
@@ -147,29 +148,33 @@ export default function InstitutionCredits() {
                     
                     <div className="space-y-3">
                       <div className="flex justify-between text-xs">
-                        <span className="text-[#a1a1aa]">Used: <span className="font-semibold text-white">{used}</span></span>
+                        <span className="text-[#a1a1aa]">Distributed: <span className="font-semibold text-white">{distributed}</span></span>
                         <span className="text-purple-400 font-medium">{remaining} / {allocated} Remaining</span>
                       </div>
                       
                       <div className="h-2 rounded-full bg-white/5 overflow-hidden">
                         <div 
-                          className="h-full rounded-full bg-purple-500 transition-all duration-500"
+                          className="h-full rounded-full bg-blue-500 transition-all duration-500"
                           style={{ width: `${Math.min(pct, 100)}%` }}
                         />
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/5 text-center text-xs">
+                      <div className="grid grid-cols-4 gap-2 pt-2 border-t border-white/5 text-center text-xs">
                         <div>
                           <span className="block text-[#a1a1aa] text-[9px] uppercase tracking-wider">Allocated</span>
                           <span className="font-semibold text-white">{allocated}</span>
                         </div>
                         <div>
-                          <span className="block text-[#a1a1aa] text-[9px] uppercase tracking-wider">Used</span>
-                          <span className="font-semibold text-amber-400">{used}</span>
+                          <span className="block text-[#a1a1aa] text-[9px] uppercase tracking-wider">Distrib.</span>
+                          <span className="font-semibold text-blue-400">{distributed}</span>
                         </div>
                         <div>
                           <span className="block text-[#a1a1aa] text-[9px] uppercase tracking-wider">Remaining</span>
                           <span className="font-semibold text-emerald-400">{remaining}</span>
+                        </div>
+                        <div>
+                          <span className="block text-[#a1a1aa] text-[9px] uppercase tracking-wider">Consumed</span>
+                          <span className="font-semibold text-amber-400">{consumed}</span>
                         </div>
                       </div>
                     </div>

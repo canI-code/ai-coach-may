@@ -450,7 +450,7 @@ export default function SuperAdminDashboard() {
               <div>
                 <label className="block text-sm font-medium text-muted mb-2">Enabled Portals</label>
                 <div className="flex gap-2 flex-wrap">
-                  {['interview', 'exam', 'recommendation'].map(portal => (
+                  {['interview', 'exam', 'recommendation', 'resume'].map(portal => (
                     <button
                       key={portal}
                       type="button"

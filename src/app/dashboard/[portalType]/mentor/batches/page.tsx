@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { GlassCard, CardTitle, Button, Input } from '@/app/components/ui';
-import { BookOpen, Plus, Users, Loader2, Copy, Check, Activity, Coins, Link2, ChevronDown, ChevronUp, Calendar, Clock } from 'lucide-react';
+import { GlassCard, CardTitle, Button, Input, Select } from '@/app/components/ui';
+import { BookOpen, Plus, Users, Loader2, Copy, Check, Activity, Coins, Link2, ChevronDown, ChevronUp, Calendar, Clock, Download, FileText } from 'lucide-react';
+import { generateBatchReportPDF, BatchReportOptions } from '@/lib/b2b/batchReport';
+import { MenteeDetailsSlideover } from './MenteeDetailsSlideover';
 
 export default function MentorBatches() {
   const [batches, setBatches] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [batchesError, setBatchesError] = useState('');
   const [showCreate, setShowCreate] = useState(false);
@@ -19,6 +22,19 @@ export default function MentorBatches() {
   const [menteesMap, setMenteesMap] = useState<Record<string, any[]>>({});
   const [loadingMentees, setLoadingMentees] = useState<Record<string, boolean>>({});
   const [menteesErrorMap, setMenteesErrorMap] = useState<Record<string, string>>({});
+  
+  // State for slide-over mentee details
+  const [selectedMentee, setSelectedMentee] = useState<any | null>(null);
+
+  // Report Modal States
+  const [reportModalBatch, setReportModalBatch] = useState<any | null>(null);
+  const [reportOptions, setReportOptions] = useState<BatchReportOptions>({
+    includeProfile: true,
+    includeCredits: true,
+    includeSessions: true,
+    includeOverallReadiness: true,
+    includeDetailedBreakdown: true,
+  });
 
   // States for scheduled campaigns
   const [campaignsMap, setCampaignsMap] = useState<Record<string, any[]>>({});
@@ -94,15 +110,24 @@ export default function MentorBatches() {
     }
   };
 
-  const fetchBatches = async () => {
+  const fetchBatchesAndDeps = async () => {
     try {
       setLoading(true);
       setBatchesError('');
-      const res = await fetch('/api/b2b/mentor/batches');
-      if (res.ok) {
-        setBatches(await res.json());
+      const [batchesRes, deptRes] = await Promise.all([
+        fetch('/api/b2b/mentor/batches'),
+        fetch('/api/b2b/institution/departments')
+      ]);
+      
+      if (batchesRes.ok) {
+        setBatches(await batchesRes.json());
       } else {
         setBatchesError('Failed to load batches');
+      }
+
+      if (deptRes.ok) {
+        const deptData = await deptRes.json();
+        setDepartments(deptData.departments || []);
       }
     } catch {
       setBatchesError('Failed to load batches');
@@ -111,7 +136,7 @@ export default function MentorBatches() {
     }
   };
 
-  useEffect(() => { fetchBatches(); }, []);
+  useEffect(() => { fetchBatchesAndDeps(); }, []);
 
   const toggleExpand = async (batchId: string) => {
     const isExpanding = !expandedBatches[batchId];
@@ -194,7 +219,7 @@ export default function MentorBatches() {
         setMessage('Batch created successfully!');
         setShowCreate(false);
         setForm({ name: '', department: '', year: '' });
-        fetchBatches();
+        fetchBatchesAndDeps();
         setTimeout(() => setMessage(''), 3000);
       }
     } catch {} finally { setCreating(false); }
@@ -229,7 +254,13 @@ export default function MentorBatches() {
           <CardTitle className="text-sm mb-4">Create Batch</CardTitle>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input label="Batch Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="CSE 2024" />
-            <Input label="Department" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="Computer Science" />
+            <Select 
+              label="Department" 
+              value={form.department} 
+              onChange={(e) => setForm({ ...form, department: e.target.value })} 
+              options={departments.map(d => ({ value: d, label: d }))}
+              placeholder="Select Department"
+            />
             <Input label="Year" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} placeholder="2024-25" />
           </div>
           <Button onClick={handleCreate} disabled={creating} className="mt-4">{creating ? 'Creating...' : 'Create'}</Button>
@@ -239,7 +270,7 @@ export default function MentorBatches() {
       {batchesError && (
         <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm flex items-center justify-between">
           <span>{batchesError}</span>
-          <Button variant="secondary" size="sm" onClick={fetchBatches}>Retry</Button>
+          <Button variant="secondary" size="sm" onClick={fetchBatchesAndDeps}>Retry</Button>
         </div>
       )}
 
@@ -374,10 +405,23 @@ export default function MentorBatches() {
                   <div className="mt-6 border-t border-white/5 pt-4 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Column 1: Mentees & Placement Readiness (2/3 width on large screens) */}
                     <div className="lg:col-span-2 space-y-4">
-                      <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                        <Users className="w-4 h-4 text-teal-400" />
-                        Mentees & Placement Readiness
-                      </h4>
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                          <Users className="w-4 h-4 text-teal-400" />
+                          Mentees & Placement Readiness
+                        </h4>
+                        {!loadingMentees[batch._id] && !menteesErrorMap[batch._id] && menteesMap[batch._id]?.length > 0 && (
+                          <Button 
+                            variant="secondary" 
+                            size="sm" 
+                            onClick={() => setReportModalBatch(batch)}
+                            className="flex items-center gap-2"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            Download Report
+                          </Button>
+                        )}
+                      </div>
                       {loadingMentees[batch._id] ? (
                         <div className="flex items-center justify-center py-8">
                           <Loader2 className="w-6 h-6 text-teal-400 animate-spin" />
@@ -420,7 +464,11 @@ export default function MentorBatches() {
                                 }
 
                                 return (
-                                  <tr key={m._id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                                  <tr 
+                                    key={m._id} 
+                                    className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors cursor-pointer"
+                                    onClick={() => setSelectedMentee(m)}
+                                  >
                                     <td className="py-3 font-medium text-white">{m.fullName}</td>
                                     <td className="py-3 text-[#a1a1aa] font-mono">{m.email}</td>
                                     <td className="py-3 text-[#a1a1aa]">{m.profile?.degree || 'N/A'} · {m.profile?.course || 'N/A'}</td>
@@ -632,6 +680,98 @@ export default function MentorBatches() {
           })}
         </div>
       )}
+
+      {/* Report Config Modal */}
+      {reportModalBatch && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#18181b] border border-white/10 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-teal-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">Download Batch Report</h3>
+                <p className="text-sm text-[#a1a1aa]">{reportModalBatch.name}</p>
+              </div>
+            </div>
+            
+            <div className="space-y-4 mb-8">
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={reportOptions.includeProfile}
+                  onChange={(e) => setReportOptions(prev => ({ ...prev, includeProfile: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-teal-500 focus:ring-teal-500 focus:ring-offset-gray-900"
+                />
+                <span className="text-sm text-white font-medium">Include Profile Info (Degree & Course)</span>
+              </label>
+
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={reportOptions.includeCredits}
+                  onChange={(e) => setReportOptions(prev => ({ ...prev, includeCredits: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-teal-500 focus:ring-teal-500 focus:ring-offset-gray-900"
+                />
+                <span className="text-sm text-white font-medium">Include Credit Usage</span>
+              </label>
+
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={reportOptions.includeSessions}
+                  onChange={(e) => setReportOptions(prev => ({ ...prev, includeSessions: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-teal-500 focus:ring-teal-500 focus:ring-offset-gray-900"
+                />
+                <span className="text-sm text-white font-medium">Include Session Counts</span>
+              </label>
+
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={reportOptions.includeOverallReadiness}
+                  onChange={(e) => setReportOptions(prev => ({ ...prev, includeOverallReadiness: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-teal-500 focus:ring-teal-500 focus:ring-offset-gray-900"
+                />
+                <span className="text-sm text-white font-medium">Include Overall Readiness Tier & Score</span>
+              </label>
+
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={reportOptions.includeDetailedBreakdown}
+                  onChange={(e) => setReportOptions(prev => ({ ...prev, includeDetailedBreakdown: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-teal-500 focus:ring-teal-500 focus:ring-offset-gray-900"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm text-white font-medium">Include Detailed Breakdown</span>
+                  <span className="text-[10px] text-[#a1a1aa]">Communication, Technical, and Mock Interview Scores</span>
+                </div>
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
+              <Button variant="secondary" onClick={() => setReportModalBatch(null)}>Cancel</Button>
+              <Button 
+                variant="primary" 
+                onClick={() => {
+                  const mentees = menteesMap[reportModalBatch._id] || [];
+                  generateBatchReportPDF(reportModalBatch, mentees, reportOptions, "Mentor");
+                  setReportModalBatch(null);
+                }}
+              >
+                Generate PDF
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Slide-over */}
+      <MenteeDetailsSlideover 
+        mentee={selectedMentee} 
+        onClose={() => setSelectedMentee(null)} 
+      />
     </div>
   );
 }

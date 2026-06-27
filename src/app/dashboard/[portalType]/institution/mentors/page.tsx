@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { GlassCard, CardTitle, Button, Input } from '@/app/components/ui';
+import { GlassCard, CardTitle, Button, Input, Select } from '@/app/components/ui';
 import { UserPlus, Mail, Copy, Check, CreditCard, Loader2, Eye, EyeOff, Trash2, ChevronDown, ChevronUp, Save } from 'lucide-react';
 
 export default function InstitutionMentors() {
   const [mentors, setMentors] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -26,11 +27,19 @@ export default function InstitutionMentors() {
     fullName: '', email: '', phone: '', department: '', year: '', credits: 0,
   });
 
-  const fetchMentors = async () => {
+  const fetchMentorsAndDeps = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/b2b/institution/mentors');
-      if (res.ok) setMentors(await res.json());
+      const [mentorsRes, deptRes] = await Promise.all([
+        fetch('/api/b2b/institution/mentors'),
+        fetch('/api/b2b/institution/departments')
+      ]);
+      
+      if (mentorsRes.ok) setMentors(await mentorsRes.json());
+      if (deptRes.ok) {
+        const deptData = await deptRes.json();
+        setDepartments(deptData.departments || []);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -38,7 +47,7 @@ export default function InstitutionMentors() {
     }
   };
 
-  useEffect(() => { fetchMentors(); }, []);
+  useEffect(() => { fetchMentorsAndDeps(); }, []);
 
   const handleExpand = (mentor: any) => {
     if (expandedId === mentor._id) {
@@ -93,7 +102,7 @@ export default function InstitutionMentors() {
       if (res.ok) {
         setMessage('Mentor updated successfully!');
         setExpandedId(null);
-        fetchMentors();
+        fetchMentorsAndDeps();
       } else {
         setError(data.error || 'Failed to update mentor');
       }
@@ -118,7 +127,7 @@ export default function InstitutionMentors() {
       if (res.ok) {
         setMessage(data.message || 'Deletion request submitted successfully!');
         setExpandedId(null);
-        fetchMentors();
+        fetchMentorsAndDeps();
       } else {
         setError(data.error || 'Failed to submit deletion request');
       }
@@ -146,7 +155,7 @@ export default function InstitutionMentors() {
         setNewCredentials(data.credentials);
         setMessage(`Mentor "${form.fullName}" created successfully!`);
         setForm({ fullName: '', email: '', phone: '', department: '', year: '', credits: 0 });
-        fetchMentors();
+        fetchMentorsAndDeps();
       } else {
         setError(data.error);
       }
@@ -226,7 +235,13 @@ export default function InstitutionMentors() {
             <Input label="Full Name *" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} placeholder="Dr. Smith" />
             <Input label="Email *" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="mentor@college.edu" />
             <Input label="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91XXXXXXXXXX" />
-            <Input label="Department" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="Computer Science" />
+            <Select 
+              label="Department" 
+              value={form.department} 
+              onChange={(e) => setForm({ ...form, department: e.target.value })} 
+              options={departments.map(d => ({ value: d, label: d }))}
+              placeholder="Select Department"
+            />
             <Input label="Year / Batch" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} placeholder="2024-25" />
             <Input label="Initial Credits" type="number" value={form.credits.toString()} onChange={(e) => setForm({ ...form, credits: parseInt(e.target.value) || 0 })} placeholder="0 = request-based" />
           </div>
@@ -305,10 +320,12 @@ export default function InstitutionMentors() {
                         value={editForm.phone} 
                         onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })} 
                       />
-                      <Input 
+                      <Select 
                         label="Department" 
                         value={editForm.department} 
                         onChange={(e) => setEditForm({ ...editForm, department: e.target.value })} 
+                        options={departments.map(d => ({ value: d, label: d }))}
+                        placeholder="Select Department"
                       />
                       <Input 
                         label="Year / Batch" 

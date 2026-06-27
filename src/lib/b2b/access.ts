@@ -101,7 +101,7 @@ export async function deductCredit(
  */
 export function checkPortalAccess(
   user: any,
-  portal: 'interview' | 'exam' | 'recommendation'
+  portal: 'interview' | 'exam' | 'recommendation' | 'resume'
 ): PortalCheckResult {
   const enabledPortals: string[] = user.enabledPortals || [];
 

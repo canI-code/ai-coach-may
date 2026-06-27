@@ -43,7 +43,6 @@ export default function MentorLayout({ children }: { children: React.ReactNode }
   const basePath = '/dashboard/b2b/mentor';
   const navItems = [
     { name: 'Overview', icon: LayoutDashboard, path: basePath },
-    { name: 'Invite', icon: Link2, path: `${basePath}/invite` },
     { name: 'Batches', icon: BookOpen, path: `${basePath}/batches` },
     { name: 'Credits', icon: CreditCard, path: `${basePath}/credits` },
     { name: 'Chat', icon: MessageSquare, path: `${basePath}/chat` },

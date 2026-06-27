@@ -95,7 +95,7 @@ export function Sidebar() {
     { name: 'Exam History', icon: ScrollText, path: `${portalPrefix}/exam-history`, portal: 'exam' },
     { name: 'Progress', icon: BarChart3, path: `${portalPrefix}/progress`, portal: null },
     { name: 'Recommendations', icon: Lightbulb, path: `${portalPrefix}/recommendations`, portal: 'recommendation' },
-    { name: 'Resume Analyzer', icon: ScrollText, path: `${portalPrefix}/resume`, portal: null },
+    { name: 'Resume Analyzer', icon: ScrollText, path: `${portalPrefix}/resume`, portal: 'resume' },
     { name: 'Profile', icon: User, path: `${portalPrefix}/profile`, portal: null },
   ];
 

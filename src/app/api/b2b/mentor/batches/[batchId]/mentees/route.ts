@@ -89,6 +89,28 @@ export async function GET(
       const readiness = calculatePlacementReadiness(reports, stats, exams);
       const sessionCount = reports.length + exams.length;
 
+      // Extract lightweight history for the slide-over timeline
+      const history = {
+        interviews: reports.map(r => ({
+          _id: r._id.toString(),
+          role: r.jobRole || 'Mock Interview',
+          score: Math.round(r.ciScore || 0),
+          date: r.createdAt
+        })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5),
+        exams: exams.map(e => {
+          let score = 0;
+          if (e.attempts && e.attempts.length > 0) {
+            score = e.attempts.reduce((sum: number, att: any) => sum + (att.scorePercentage || 0), 0) / e.attempts.length;
+          }
+          return {
+            _id: e._id.toString(),
+            title: 'Assessment',
+            score: Math.round(score),
+            date: e.createdAt
+          };
+        }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5)
+      };
+
       return {
         _id: mentee._id,
         email: mentee.email,
@@ -96,6 +118,7 @@ export async function GET(
         credits: mentee.credits || { allocated: 0, used: 0, remaining: 0 },
         sessionCount,
         readiness,
+        history,
         profile: {
           degree: profile.education?.degree || 'N/A',
           course: profile.education?.course || 'N/A',

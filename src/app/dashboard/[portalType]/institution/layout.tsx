@@ -58,7 +58,7 @@ export default function InstitutionLayout({ children }: { children: React.ReactN
     { name: 'Overview', icon: LayoutDashboard, path: basePath },
     { name: 'Mentors', icon: Users, path: `${basePath}/mentors` },
     { name: 'Credits', icon: CreditCard, path: `${basePath}/credits` },
-    { name: 'Branding', icon: Palette, path: `${basePath}/branding` },
+    { name: 'Settings', icon: Settings, path: `${basePath}/settings` },
     { name: 'Profile', icon: User, path: `${basePath}/profile` },
   ];
 

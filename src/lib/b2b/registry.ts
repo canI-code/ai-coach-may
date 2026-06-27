@@ -15,7 +15,7 @@ import type { Collection, Db } from 'mongodb';
 export interface InstitutePlan {
   totalCredits: number;
   usedCredits: number;
-  enabledPortals: ('interview' | 'exam' | 'recommendation')[];
+  enabledPortals: ('interview' | 'exam' | 'recommendation' | 'resume')[];
   expiresAt: Date | null;
   duration: string; // e.g. "1 year"
 }
@@ -59,6 +59,7 @@ export interface InstituteRegistryDoc {
   activatedAt: Date | null;
   createdBy: ObjectId | null; // admin who activated
   branding?: InstituteBranding;
+  departments?: string[];
 }
 
 // ── Collection accessor ──────────────────────────────────────────────────────
